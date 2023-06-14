@@ -7,5 +7,12 @@
 - 推論停止
 
 ## ユーザーフロー
-graph TD
-  A[Windows] -->|ImageRecognitionWinApp起動| B[Home]
+```mermaid
+flowchart TD
+  A[Windows] -->|ImageRecognitionWinApp起動| B[Setup];
+  B -->|カメラ起動| C[推論実行、作業プロセス実行];
+```
+
+## 画面一覧
+ - Setup: 推論モデル選択、カメラ起動ボタン等の実行セットアップ画面
+ - 
