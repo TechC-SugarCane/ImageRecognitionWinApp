@@ -7,8 +7,7 @@
 - 推論停止
 
 ## ユーザーフロー
-
+![ImageRecognitionWinAppUserFlow.png](https://github.com/TechC-SugarCane/ImageRecognitionWinApp/edit/develop/ImageRecognitionWinAppUserFlow.png)
 
 ## 画面一覧
- - Setup: 推論モデル選択、カメラ起動ボタン等の実行セットアップ画面
- - 
+![imagerecognitionwinapp_screen.png](https://github.com/TechC-SugarCane/ImageRecognitionWinApp/edit/develop/imagerecognitionwinapp_screen.png)
