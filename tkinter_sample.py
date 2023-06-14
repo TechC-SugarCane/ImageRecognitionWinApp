@@ -43,6 +43,9 @@ class Application(tk.Frame):
     
         # BGR→RGB変換
         cv_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+        # print(type(cv_image))  <class 'numpy.ndarray'>
+        
         # NumPyのndarrayからPillowのImageへ変換
         pil_image = Image.fromarray(cv_image)
 
@@ -54,7 +57,7 @@ class Application(tk.Frame):
         pil_image = ImageOps.pad(pil_image, (canvas_width, canvas_height))
 
         # PIL.ImageからPhotoImageへ変換する
-        self.photo_image = ImageTk.PhotoImage(image=pil_image)
+        self.photo_image = ImageTk.PhotoImage(image=pil_image) # type: ignore
 
         # 画像の描画
         self.canvas.create_image(
