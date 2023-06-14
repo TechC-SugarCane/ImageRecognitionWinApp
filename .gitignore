@@ -1,2 +1,6 @@
 venv
 .env
+build
+dist
+# 良く分からんから無視
+tkinter_sample.spec
