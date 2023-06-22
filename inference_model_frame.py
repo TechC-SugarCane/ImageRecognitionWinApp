@@ -42,5 +42,6 @@ class InferenceModelFrame(ttk.Frame):
             )
             yolo_nas_rbtn.grid(row=2, column=0, padx=10, pady=10)
 
-    def show_selected_rbtn_value(self):
+    def show_selected_rbtn_value(self) -> str:
         print(self.selected_rbtn.get())
+        return self.selected_rbtn.get()
