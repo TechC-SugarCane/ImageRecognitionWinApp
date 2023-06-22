@@ -13,33 +13,29 @@ class CropsFrame(ttk.Frame):
             self.master: Tk = master
 
             # ラジオボタンの値を扱う
-            self.selected_crops: tk.StringVar = tk.StringVar()
+            self.selected_rbtn: tk.StringVar = tk.StringVar()
 
             pineapple_rbtn = ttk.Radiobutton(
                 self,
                 text="パイナップル",
-                variable=self.selected_crops,
+                variable=self.selected_rbtn,
                 value="パイナップル",
-                command=self.show_selected_crops_value,
+                command=self.show_selected_rbtn_value,
             )
-            # pineapple_rbtn.pack()
             pineapple_rbtn.grid(row=0, column=0, padx=10, pady=10)
 
             sugarcane_rbtn = ttk.Radiobutton(
                 self,
                 text="サトウキビ",
-                variable=self.selected_crops,
+                variable=self.selected_rbtn,
                 value="サトウキビ",
-                command=self.show_selected_crops_value,
+                command=self.show_selected_rbtn_value,
             )
-            # sugarcane_rbtn.pack()
             sugarcane_rbtn.grid(row=1, column=0, padx=10, pady=10)
 
-    def show_selected_crops_value(self):
-        print(self.selected_crops.get())
-
-    def show_selected_inference_model_value(self):
-        print(self.selected_crops.get())
+    def show_selected_rbtn_value(self) -> str:
+        print(self.selected_rbtn.get())
+        return self.selected_rbtn.get()
 
 
 """
