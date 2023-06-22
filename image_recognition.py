@@ -27,7 +27,7 @@ class ImageRecognition(ttk.Frame):
 
         # フレーム画像を取得
         is_success, frame = self.capture.read()
-        print(frame)
+        # print(frame)
 
         # BGRからRGBへ変換
         cv_image: np.ndarray = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -55,7 +55,23 @@ class ImageRecognition(ttk.Frame):
         # display_image()を10msec後に実行する
         self.display_id = self.after(10, self.display_image)
 
+    def display_stop(self):
+        """描画を停止する"""
+        self.after_cancel(self.display_id)
+        self.display_id = ""
+
+    def display_restart(self):
+        """描画を再開する"""
+        self.display_image()
+
+    def display_exit(self):
+        """アプリを終了する"""
+
 
 """
 カメラ起動する時、明らかに処理が重いな
+
+TODO 停止ボタンを押したらカメラを止める after_cancel
+TODO 再開ボタンを押したらdisplay_imageを実行
+TODO 終了ボタンを押したら、アプリ終了 setup画面に遷移でも良いかも
 """

@@ -15,16 +15,73 @@ class ViewProcess(tk.Frame):
             # ウィンドウサイズ
             self.master.geometry("1000x800")
 
-            # 停止ボタン
-            self.stop_button: ttk.Button = ttk.Button(self.master, text="停止")
-            self.stop_button.pack()
-            # 再開ボタン
-            self.restart_button: ttk.Button = ttk.Button(self.master, text="再開")
-            self.restart_button.pack()
-            # 終了
-            self.exit_button: ttk.Button = ttk.Button(self.master, text="終了")
-            self.exit_button.pack()
-
             self.image_recognition: ImageRecognition = ImageRecognition(self.master)
             self.image_recognition.pack()
             self.image_recognition.display_image()
+
+            # 停止ボタン
+            self.stop_button: ttk.Button = ttk.Button(
+                self.master,
+                text="停止",
+                command=lambda: [
+                    self.image_recognition.display_stop(),
+                    self.toggle_stop_button_state(),
+                ],
+                state="normal",
+            )
+            self.stop_button.pack()
+            # 再開ボタン
+            self.restart_button: ttk.Button = ttk.Button(
+                self.master,
+                text="再開",
+                command=lambda: [
+                    self.image_recognition.display_restart(),
+                    self.toggle_restart_button_state(),
+                ],
+                # state="normal",
+            )
+            self.restart_button.pack()
+            # 終了
+            self.exit_button: ttk.Button = ttk.Button(
+                self.master, text="終了", command=self.image_recognition.display_exit
+            )
+            self.exit_button.pack()
+
+    # ! 意図した挙動の時と、そうでない時の違いが分からん
+    # ? 設計として良くないな
+    def toggle_stop_button_state(self) -> None:
+        """停止ボタンの有効/無効を切り替える"""
+
+        # ! このprintを消すと、意図した挙動にならない ???
+        print(self.stop_button["state"])
+
+        if self.stop_button["state"] == "normal":
+            self.stop_button["state"] = "disable"
+            print("True")
+        elif self.stop_button["state"] == "disable":
+            self.stop_button["state"] = "normal"
+            print("False")
+        print(self.stop_button["state"])
+
+    def toggle_restart_button_state(self) -> None:
+        """
+        再開ボタンの有効/無効を切り替える
+        停止ボタンを有効にする
+        """
+
+        print(self.restart_button["state"])
+
+        if self.restart_button["state"] == "normal":
+            self.restart_button["state"] = "disable"
+        elif self.restart_button["state"] == "disable":
+            self.restart_button["state"] = "normal"
+
+
+"""
+! 処理激重
+停止は問題なさそう
+再開ボタンを連打すると挙動がヤバイ
+display_imageが複数実行されているかも
+描画されているときは、再開ボタンを押せないようにする
+描画が停止しているときは、停止ボタンは押せない and 再開ボタンは押せる
+"""
