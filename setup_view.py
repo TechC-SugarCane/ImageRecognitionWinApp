@@ -3,6 +3,7 @@ from tkinter import Tk, ttk
 
 from crops_frame import CropsFrame
 from inference_model_frame import InferenceModelFrame
+from view_process import ViewProcess
 
 
 class SetupView(ttk.Frame):
@@ -17,8 +18,8 @@ class SetupView(ttk.Frame):
             self.master.geometry("1000x800")
 
             # 作物のラベルを表示
-            crops_label = ttk.Label(self.master, text="作物")
-            crops_label.pack(side="top", padx=10, pady=10)
+            # crops_label: ttk.Label = ttk.Label(self.master, text="作物")
+            # crops_label.pack(side="top", padx=10, pady=10)
 
             # 作物のFrameを表示
             self.crops_frame: CropsFrame = CropsFrame(self.master)
@@ -33,10 +34,10 @@ class SetupView(ttk.Frame):
             )
 
             # 実行ボタン
-            execute_button = ttk.Button(
+            self.execute_button: ttk.Button = ttk.Button(
                 self.master, text="実行", command=self.screen_transition
             )
-            execute_button.pack(side="right", padx=10, pady=10, anchor="center")
+            self.execute_button.pack(side="right", padx=10, pady=10, anchor="center")
 
     def screen_transition(self):
         """画面遷移する"""
@@ -47,6 +48,16 @@ class SetupView(ttk.Frame):
 
         if crops_value != "" and inference_model_value != "":
             print("両方選択されている")
+
+            # ! 下記のframeやbuttonを扱うframeを用意して、それをdestroyしたい
+            self.crops_frame.destroy()
+            self.inference_model_frame.destroy()
+            self.execute_button.destroy()
+
+            # TODO 新しいFrameを作る カメラの映像を表示する
+            self.view_process: ViewProcess = ViewProcess(self.master)
+            self.view_process.pack(expand=True, fill="both")
+
         else:
             print("両方選択されていない")
             # モーダルウィンドウを表示
@@ -54,10 +65,10 @@ class SetupView(ttk.Frame):
 
     def create_modal_window(self) -> None:
         """モーダルウィンドウを作る"""
-        modal_window = tk.Toplevel(self)
+        modal_window: tk.Toplevel = tk.Toplevel(self)
         modal_window.geometry("300x200")
 
-        text_label = ttk.Label(modal_window, text="作物と推論モデル両方を選択してください")
+        text_label: ttk.Label = ttk.Label(modal_window, text="作物と推論モデル両方を選択してください")
         text_label.pack(padx=10, pady=10)
 
         # モーダルにする

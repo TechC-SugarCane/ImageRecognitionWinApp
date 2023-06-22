@@ -1,64 +1,49 @@
 import tkinter as tk
-from tkinter import filedialog
+from tkinter import Tk, ttk
 
 import cv2
+import numpy as np
 from PIL import Image, ImageOps, ImageTk  # 画像データ用
 
 
-class Application(tk.Frame):
-    def __init__(self, master=None):
+class ImageRecognition(ttk.Frame):
+    def __init__(self, master: Tk | None = None):
         super().__init__(master)
-        self.pack()
 
-        self.master.title("OpenCVの動画表示")  # type: ignore # ウィンドウタイトル
-        self.master.geometry("400x300")  # type: ignore # ウィンドウサイズ(幅x高さ)
+        if master is not None:
+            self.master: Tk = master
 
-        # Canvasの作成
-        self.canvas = tk.Canvas(self.master)
-        # Canvasにマウスイベント（左ボタンクリック）の追加
-        self.canvas.bind("<Button-1>", self.canvas_click)
-        # Canvasを配置
-        self.canvas.pack(expand=True, fill=tk.BOTH)
+            self.canvas: tk.Canvas = tk.Canvas(self.master)
+            self.canvas.pack(expand=True, fill="both")
 
-        # カメラをオープンする
-        self.capture = cv2.VideoCapture(1)
+            # カメラを起動する
+            self.capture: cv2.VideoCapture = cv2.VideoCapture(0)
 
-        self.disp_id = None
+            # self.display_image()
+            self.display_id: str = ""
 
-    def canvas_click(self, event):
-        """Canvasのマウスクリックイベント"""
-
-        if self.disp_id is None:
-            # 動画を表示
-            self.disp_image()
-        else:
-            # 動画を停止
-            self.after_cancel(self.disp_id)
-            self.disp_id = None
-
-    def disp_image(self):
+    def display_image(self):
         """画像をCanvasに表示する"""
 
-        # フレーム画像の取得
-        ret, frame = self.capture.read()
+        # フレーム画像を取得
+        is_success, frame = self.capture.read()
+        print(frame)
 
-        # BGR→RGB変換
-        cv_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        # BGRからRGBへ変換
+        cv_image: np.ndarray = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-        # print(type(cv_image))  <class 'numpy.ndarray'>
-
-        # NumPyのndarrayからPillowのImageへ変換
+        # NumpyのndarrayからPillowのImageへ変換
         pil_image = Image.fromarray(cv_image)
 
-        # キャンバスのサイズを取得
-        canvas_width = self.canvas.winfo_width()
-        canvas_height = self.canvas.winfo_height()
+        # Canvasのサイズを取得
+        canvas_width: int = self.canvas.winfo_width()
+        canvas_height: int = self.canvas.winfo_height()
 
         # 画像のアスペクト比（縦横比）を崩さずに指定したサイズ（キャンバスのサイズ）全体に画像をリサイズする
         pil_image = ImageOps.pad(pil_image, (canvas_width, canvas_height))
 
         # PIL.ImageからPhotoImageへ変換する
-        self.photo_image = ImageTk.PhotoImage(image=pil_image)  # type: ignore
+        self.photo_image = ImageTk.PhotoImage(image=pil_image)
 
         # 画像の描画
         self.canvas.create_image(
@@ -67,11 +52,10 @@ class Application(tk.Frame):
             image=self.photo_image,  # 表示画像データ
         )
 
-        # disp_image()を10msec後に実行する
-        self.disp_id = self.after(10, self.disp_image)
+        # display_image()を10msec後に実行する
+        self.display_id = self.after(10, self.display_image)
 
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = Application(master=root)
-    app.mainloop()
+"""
+カメラ起動する時、明らかに処理が重いな
+"""
