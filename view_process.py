@@ -63,6 +63,10 @@ class ViewProcess(tk.Frame):
             print("False")
         print(self.stop_button["state"])
 
+        # * 停止ボタンが押されたときに、再開ボタンが無効なら有効にする
+        if self.restart_button["state"] == "disable":
+            self.toggle_restart_button_state()
+
     def toggle_restart_button_state(self) -> None:
         """
         再開ボタンの有効/無効を切り替える
@@ -75,6 +79,10 @@ class ViewProcess(tk.Frame):
             self.restart_button["state"] = "disable"
         elif self.restart_button["state"] == "disable":
             self.restart_button["state"] = "normal"
+
+        # * 再開ボタンが押されたときに、停止ボタンが無効なら有効にする
+        if self.stop_button["state"] == "disable":
+            self.toggle_stop_button_state()
 
 
 """
