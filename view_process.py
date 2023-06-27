@@ -47,6 +47,7 @@ class ViewProcess(tk.Frame):
             )
             self.exit_button.pack()
 
+    # ! 下記の処理はバグっている
     # ! 意図した挙動の時と、そうでない時の違いが分からん
     # ? 設計として良くないな
     def toggle_stop_button_state(self) -> None:
