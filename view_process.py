@@ -53,7 +53,7 @@ class ViewProcess(tk.Frame):
     def toggle_stop_button_state(self) -> None:
         """停止ボタンの有効/無効を切り替える"""
 
-        # ! このprintを消すと、意図した挙動にならない ???
+        # ! このt \printを消すと、意図した挙動にならない ???
         print(self.stop_button["state"])
 
         if self.stop_button["state"] == "normal":
