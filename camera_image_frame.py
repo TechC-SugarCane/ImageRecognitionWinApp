@@ -13,8 +13,20 @@ class ImageRecognition(ttk.Frame):
         if master is not None:
             self.master: Tk = master
 
-            self.canvas: tk.Canvas = tk.Canvas(self.master)
-            self.canvas.pack(expand=True, fill="both")
+            # ウィンドウのサイズ
+            window_width: int = self.master.winfo_width()
+            print(f"ウィンドウ 幅：{window_width}")
+            window_height: int = self.master.winfo_height()
+            print(f"ウィンドウ 高さ：{window_height}")
+
+            # キャンバスのサイズ
+            canvas_width: int = window_width // 2
+            canvas_height: int = window_height
+
+            self.canvas: tk.Canvas = tk.Canvas(
+                self.master, width=canvas_width, height=canvas_height
+            )
+            self.canvas.pack(side="left", expand=True, fill="both")
 
             # カメラを起動する
             self.capture: cv2.VideoCapture = cv2.VideoCapture(0)
