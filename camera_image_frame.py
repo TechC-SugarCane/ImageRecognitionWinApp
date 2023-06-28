@@ -7,7 +7,7 @@ from PIL import Image, ImageOps, ImageTk  # 画像データ用
 
 
 class CameraImageFrame(ttk.Frame):
-    """カメラ映像を扱うクラス"""
+    """カメラ映像を扱う"""
     def __init__(self, master: Tk | None = None):
         super().__init__(master)
 
