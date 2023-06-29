@@ -1,7 +1,9 @@
 import tkinter as tk
 from tkinter import Tk, ttk
 
+from camera_image_frame import CameraImageFrame
 from image_recognition import ImageRecognition
+from infer_image_frame import InferImageFrame
 
 
 class ViewProcess(tk.Frame):
@@ -16,6 +18,7 @@ class ViewProcess(tk.Frame):
             self.master.geometry("1000x800")
 
             self.image_recognition: ImageRecognition = ImageRecognition(self.master)
+            # self.image_recognition: InferFrame = InferFrame(self.master)
             self.image_recognition.pack()
             self.image_recognition.display_image()
 
@@ -38,7 +41,7 @@ class ViewProcess(tk.Frame):
                     self.image_recognition.display_restart(),
                     self.toggle_restart_button_state(),
                 ],
-                # state="normal",
+                state="normal",
             )
             self.restart_button.pack()
             # 終了
