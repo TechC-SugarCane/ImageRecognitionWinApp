@@ -17,10 +17,6 @@ class SetupView(ttk.Frame):
             # ウィンドウサイズ（幅x高さ）
             self.master.geometry("1000x800")
 
-            # 作物のラベルを表示
-            # crops_label: ttk.Label = ttk.Label(self.master, text="作物")
-            # crops_label.pack(side="top", padx=10, pady=10)
-
             # 作物のFrameを表示
             self.crops_frame: CropsFrame = CropsFrame(self.master)
             self.crops_frame.pack(side="left", padx=40, pady=10, anchor="center")
