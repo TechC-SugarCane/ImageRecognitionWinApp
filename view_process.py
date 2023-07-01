@@ -1,9 +1,7 @@
 import tkinter as tk
 from tkinter import Tk, ttk
 
-from camera_image_frame import CameraImageFrame
 from image_recognition import ImageRecognition
-from infer_image_frame import InferImageFrame
 
 
 class ViewProcess(tk.Frame):
