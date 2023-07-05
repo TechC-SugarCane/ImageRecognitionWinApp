@@ -16,13 +16,16 @@ class ViewProcess(tk.Frame):
             self.master.geometry("1000x800")
 
             self.image_recognition: ImageRecognition = ImageRecognition(self.master)
-            # self.image_recognition: InferFrame = InferFrame(self.master)
-            self.image_recognition.pack()
+            self.image_recognition.pack(side="top", fill="both", expand=True)
             self.image_recognition.display_image()
+
+            # ボタンフレーム
+            button_frame = ttk.Frame(self.master)
+            button_frame.pack(side="bottom", pady=10)
 
             # 停止ボタン
             self.stop_button: ttk.Button = ttk.Button(
-                self.master,
+                button_frame,
                 text="停止",
                 command=lambda: [
                     self.image_recognition.display_stop(),
@@ -30,10 +33,10 @@ class ViewProcess(tk.Frame):
                 ],
                 state="normal",
             )
-            self.stop_button.pack()
+            self.stop_button.pack(side="left", padx=10)
             # 再開ボタン
             self.restart_button: ttk.Button = ttk.Button(
-                self.master,
+                button_frame,
                 text="再開",
                 command=lambda: [
                     self.image_recognition.display_restart(),
@@ -41,12 +44,12 @@ class ViewProcess(tk.Frame):
                 ],
                 state="normal",
             )
-            self.restart_button.pack()
+            self.restart_button.pack(side="left", padx=10)
             # 終了
             self.exit_button: ttk.Button = ttk.Button(
-                self.master, text="終了", command=self.image_recognition.display_exit
+                button_frame, text="終了", command=self.image_recognition.display_exit
             )
-            self.exit_button.pack()
+            self.exit_button.pack(side="left", padx=10)
 
     # ! 下記の処理はバグっている
     # ! 意図した挙動の時と、そうでない時の違いが分からん
