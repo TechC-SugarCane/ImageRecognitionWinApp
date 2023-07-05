@@ -41,11 +41,10 @@ class ImageRecognition(ttk.Frame):
 
             # カメラを起動する
             self.capture: cv2.VideoCapture = cv2.VideoCapture(0)
+            print(self.capture.get(cv2.CAP_PROP_FPS))
 
             # self.display_image()
-            self.camera_image_canvas_display_id: str = ""
-            self.infer_image_canvas_display_id: str = ""
-
+            self.display_id: str = ""
 
             self.model: Model = Model("Yolo v7", "sugarcane", "CPUExecutionProvider")
     
@@ -54,32 +53,10 @@ class ImageRecognition(ttk.Frame):
 
         # フレーム画像を取得
         is_success, frame = self.capture.read()
-        # print(frame)
 
-        # BGRからRGBへ変換
-        cv_image: np.ndarray = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
-        # NumpyのndarrayからPillowのImageへ変換
-        pil_image = Image.fromarray(cv_image)
-
-        # Canvasのサイズを取得
-        canvas_width: int = self.camera_image_canvas.winfo_width()
-        canvas_height: int = self.camera_image_canvas.winfo_height()
-
-        # 画像のアスペクト比（縦横比）を崩さずに指定したサイズ（キャンバスのサイズ）全体に画像をリサイズする
-        pil_image = ImageOps.pad(pil_image, (canvas_width, canvas_height))
-
-        # PIL.ImageからPhotoImageへ変換する
-        self.photo_image = ImageTk.PhotoImage(image=pil_image)
-
-        # 画像の描画
-        # カメラ映像のcanvasに画像を描画
-        self.camera_image_canvas.create_image(
-            canvas_width / 2,  # 画像表示位置(Canvasの中心)
-            canvas_height / 2,
-            image=self.photo_image,  # 表示画像データ
-        )
-
+        # FPSの表示
+        # ! 認識後のFPSではないな 一応30らしいが絶対嘘
+        print(self.capture.get(cv2.CAP_PROP_FPS))
 
         infer_frame = self.model.infer(frame)
 
@@ -107,7 +84,7 @@ class ImageRecognition(ttk.Frame):
         )
 
         # display_image()を10msec後に実行する
-        self.camera_image_canvas_display_id = self.after(10, self.display_image)
+        self.display_id = self.after(10, self.display_image)
 
     def display_stop(self):
         """描画を停止する"""
