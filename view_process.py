@@ -1,15 +1,15 @@
 import tkinter as tk
 from tkinter import Tk, ttk
-
+import customtkinter
 from image_recognition import ImageRecognition
 
 
-class ViewProcess(tk.Frame):
-    def __init__(self, master: Tk | None = None) -> None:
+class ViewProcess(customtkinter.CTkFrame):
+    def __init__(self, master=None):
         super().__init__(master)
 
         if master is not None:
-            self.master: Tk = master
+            self.master: customtkinter.CTk = master
             # ウィンドウタイトル
             self.master.title("view process")
             # ウィンドウサイズ
@@ -20,11 +20,11 @@ class ViewProcess(tk.Frame):
             self.image_recognition.display_image()
 
             # ボタンフレーム
-            button_frame = ttk.Frame(self.master)
+            button_frame = customtkinter.CTkFrame(self.master)
             button_frame.pack(side="bottom", pady=10)
 
             # 停止ボタン
-            self.stop_button: ttk.Button = ttk.Button(
+            self.stop_button: customtkinter.CTkButton = customtkinter.CTkButton(
                 button_frame,
                 text="停止",
                 command=lambda: [
@@ -35,7 +35,7 @@ class ViewProcess(tk.Frame):
             )
             self.stop_button.pack(side="left", padx=10)
             # 再開ボタン
-            self.restart_button: ttk.Button = ttk.Button(
+            self.restart_button: customtkinter.CTkButton = customtkinter.CTkButton(
                 button_frame,
                 text="再開",
                 command=lambda: [
@@ -46,7 +46,7 @@ class ViewProcess(tk.Frame):
             )
             self.restart_button.pack(side="left", padx=10)
             # 終了
-            self.exit_button: ttk.Button = ttk.Button(
+            self.exit_button: customtkinter.CTkButton = customtkinter.CTkButton(
                 button_frame, text="終了", command=self.image_recognition.display_exit
             )
             self.exit_button.pack(side="left", padx=10)
@@ -54,8 +54,8 @@ class ViewProcess(tk.Frame):
     # ! 下記の処理はバグっている
     # ! 意図した挙動の時と、そうでない時の違いが分からん
     # ? 設計として良くないな
-    def toggle_stop_button_state(self) -> None:
-        """停止ボタンの有効/無効を切り替える"""
+    def toggle_stop_button_state(self, master=None):
+        # 停止ボタンの有効/無効を切り替える
 
         # ! このt \printを消すと、意図した挙動にならない ???
         print(self.stop_button["state"])
@@ -72,11 +72,9 @@ class ViewProcess(tk.Frame):
         if self.restart_button["state"] == "disable":
             self.toggle_restart_button_state()
 
-    def toggle_restart_button_state(self) -> None:
-        """
-        再開ボタンの有効/無効を切り替える
-        停止ボタンを有効にする
-        """
+    def toggle_restart_button_state(self):
+        # 再開ボタンの有効/無効を切り替える
+        # 停止ボタンを有効にする
 
         print(self.restart_button["state"])
 
