@@ -1,46 +1,51 @@
 import os
-import torch
 import random
-import cv2
-import onnxruntime as ort
-import numpy as np
-from PIL import Image
-from function.letterbox import letterbox
-from function.draw import draw
 import time
 
+import cv2
+import numpy as np
+import onnxruntime as ort
+import torch
+from PIL import Image
+
+from function.draw import draw
+from function.letterbox import letterbox
+
+
 class Model:
-
     def __init__(self, model_type, model_name, providers):
-    
-        if model_type == "Yolo v7": # ここはのちにクラス継承などを使って判別させる予定
-
+        if model_type == "Yolo v7":  # ここはのちにクラス継承などを使って判別させる予定
             if model_name == "sugarcane":
                 print("use sugarcane model")
 
-                self.model = ort.InferenceSession(f"./model/{model_name}_v7.onnx", providers=providers)
+                self.model = ort.InferenceSession(
+                    f"./model/{model_name}_v7.onnx", providers=providers
+                )
                 self.label_names = ["sugarcane", "weed"]
 
             elif model_name == "pineapple":
                 print("use pineapple model")
 
-                self.model = ort.InferenceSession(f"./model/{model_name}_v7.onnx", providers=providers)
+                self.model = ort.InferenceSession(
+                    f"./model/{model_name}_v7.onnx", providers=providers
+                )
                 self.label_names = ["pineapple", "weed"]
 
             else:
                 print("This model is not supported")
-        
+
         else:
             print("this model type has not supported")
-
 
         self.outname = [self.model.get_outputs()[0].name]
         self.inname = [i.name for i in self.model.get_inputs()]
 
-        self.colors = {name: [random.randint(0, 255) for _ in range(3)] for i, name in enumerate(self.label_names)}
-    
+        self.colors = {
+            name: [random.randint(0, 255) for _ in range(3)]
+            for i, name in enumerate(self.label_names)
+        }
+
     def infer(self, frame):
-        
         # 時間の計測開始
         start_time = time.perf_counter()
 
@@ -55,9 +60,8 @@ class Model:
         copy_frame /= 255
 
         # run inference
-        inp = {self.inname[0] : copy_frame}
+        inp = {self.inname[0]: copy_frame}
         outputs = self.model.run(self.outname, inp)[0]
-
 
         # draw result
 
@@ -65,7 +69,7 @@ class Model:
 
         end_time = time.perf_counter()
 
-        fps = 1 / (end_time - start_time)
+        fps = int(1 / (end_time - start_time))
         print(f"FPS:{fps}")
 
-        return frame
+        return frame, fps
