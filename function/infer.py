@@ -7,6 +7,7 @@ import numpy as np
 from PIL import Image
 from function.letterbox import letterbox
 from function.draw import draw
+import time
 
 class Model:
 
@@ -39,6 +40,9 @@ class Model:
         self.colors = {name: [random.randint(0, 255) for _ in range(3)] for i, name in enumerate(self.label_names)}
     
     def infer(self, frame):
+        
+        # 時間の計測開始
+        start_time = time.perf_counter()
 
         copy_frame = frame.copy()
 
@@ -57,7 +61,11 @@ class Model:
 
         # draw result
 
-
         frame = draw(frame, outputs, ratio, dwdh, self.label_names, self.colors)
+
+        end_time = time.perf_counter()
+
+        fps = 1 / (end_time - start_time)
+        print(f"FPS:{fps}")
 
         return frame

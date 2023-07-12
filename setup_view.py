@@ -45,13 +45,14 @@ class SetupView(ttk.Frame):
         if crops_value != "" and inference_model_value != "":
             print("両方選択されている")
 
-            # ! 下記のframeやbuttonを扱うframeを用意して、それをdestroyしたい
             self.crops_frame.destroy()
             self.inference_model_frame.destroy()
             self.execute_button.destroy()
 
             # TODO 新しいFrameを作る カメラの映像を表示する
-            self.view_process: ViewProcess = ViewProcess(self.master)
+            self.view_process: ViewProcess = ViewProcess(
+                self.master, crops_value, inference_model_value
+            )
             self.view_process.pack(expand=True, fill="both")
 
         else:

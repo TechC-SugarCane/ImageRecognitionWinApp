@@ -19,7 +19,7 @@ class CropsFrame(ttk.Frame):
                 self,
                 text="パイナップル",
                 variable=self.selected_rbtn,
-                value="パイナップル",
+                value="pineapple",
                 command=self.show_selected_rbtn_value,
             )
             pineapple_rbtn.grid(row=0, column=0, padx=10, pady=10)
@@ -28,7 +28,7 @@ class CropsFrame(ttk.Frame):
                 self,
                 text="サトウキビ",
                 variable=self.selected_rbtn,
-                value="サトウキビ",
+                value="sugarcane",
                 command=self.show_selected_rbtn_value,
             )
             sugarcane_rbtn.grid(row=1, column=0, padx=10, pady=10)
