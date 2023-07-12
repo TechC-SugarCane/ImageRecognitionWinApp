@@ -45,7 +45,15 @@ class ImageRecognition(ttk.Frame):
             self.display_id: str = ""
 
             # self.model: Model = Model("Yolo v7", "sugarcane", "CPUExecutionProvider")
-            self.model: Model = Model(model_type=model_type, model_name=model_name, providers="CPUExecutionProvider")
+            self.model: Model = Model(
+                model_type=model_type,
+                model_name=model_name,
+                providers="CPUExecutionProvider",
+            )
+
+            # FPSを表示するラベル
+            self.fps_label = tk.Label(self.master, text="")  # type: ignore
+            self.fps_label.pack()
 
     def display_image(self):
         """画像をCanvasに表示する"""
@@ -53,7 +61,11 @@ class ImageRecognition(ttk.Frame):
         # フレーム画像を取得
         is_success, frame = self.capture.read()
 
-        infer_frame = self.model.infer(frame)
+        infer_frame, fps = self.model.infer(frame)
+
+        # FPSのテキストを更新
+        self.fps_label.config(text=fps)
+        self.fps_label.update()
 
         # BGRからRGBへ変換
         cv_image2: np.ndarray = cv2.cvtColor(infer_frame, cv2.COLOR_BGR2RGB)
