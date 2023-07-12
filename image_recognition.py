@@ -104,6 +104,7 @@ class ImageRecognition(ttk.Frame):
 
     def display_exit(self):
         """アプリを終了する"""
+        self.master.destroy()
 
 
 """
