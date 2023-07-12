@@ -12,7 +12,7 @@ from function.infer import Model
 class ImageRecognition(ttk.Frame):
     """カメラ映像と認識後画像を扱うカメラ"""
 
-    def __init__(self, master: Tk | None = None):
+    def __init__(self, master):
         super().__init__(master)
 
         if master is not None:
@@ -57,7 +57,7 @@ class ImageRecognition(ttk.Frame):
         print(self.capture.get(cv2.CAP_PROP_FPS))
 
         current_time: float = time.time()
-        infer_frame = self.model.infer(frame, current_time)
+        infer_frame = self.model.infer(frame)
 
         # BGRからRGBへ変換 色がおかしくなるので必要
         cv_image2: np.ndarray = cv2.cvtColor(infer_frame, cv2.COLOR_BGR2RGB)

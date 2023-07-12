@@ -7,7 +7,7 @@ from view_process import ViewProcess
 
 
 class SetupView(ttk.Frame):
-    def __init__(self, master: Tk | None = None) -> None:
+    def __init__(self, master) -> None:
         super().__init__(master)
 
         if master is not None:

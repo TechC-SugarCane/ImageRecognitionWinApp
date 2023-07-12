@@ -5,7 +5,7 @@ from image_recognition import ImageRecognition
 
 
 class ViewProcess(tk.Frame):
-    def __init__(self, master: Tk | None = None) -> None:
+    def __init__(self, master) -> None:
         super().__init__(master)
 
         if master is not None:
