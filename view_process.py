@@ -5,7 +5,7 @@ from image_recognition import ImageRecognition
 
 
 class ViewProcess(tk.Frame):
-    def __init__(self, master: Tk | None = None) -> None:
+    def __init__(self, master, crops_value, inference_model_value) -> None:
         super().__init__(master)
 
         if master is not None:
@@ -15,7 +15,7 @@ class ViewProcess(tk.Frame):
             # ウィンドウサイズ
             self.master.geometry("1000x800")
 
-            self.image_recognition: ImageRecognition = ImageRecognition(self.master)
+            self.image_recognition: ImageRecognition = ImageRecognition(self.master, model_type=inference_model_value, model_name=crops_value)
             self.image_recognition.pack(side="top", fill="both", expand=True)
             self.image_recognition.display_image()
 

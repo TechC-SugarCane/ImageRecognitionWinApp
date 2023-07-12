@@ -11,7 +11,7 @@ from function.infer import Model
 class ImageRecognition(ttk.Frame):
     """カメラ映像と認識後画像を扱うカメラ"""
 
-    def __init__(self, master: Tk | None = None):
+    def __init__(self, master, model_type, model_name):
         super().__init__(master)
 
         if master is not None:
@@ -44,7 +44,8 @@ class ImageRecognition(ttk.Frame):
 
             self.display_id: str = ""
 
-            self.model: Model = Model("Yolo v7", "sugarcane", "CPUExecutionProvider")
+            # self.model: Model = Model("Yolo v7", "sugarcane", "CPUExecutionProvider")
+            self.model: Model = Model(model_type=model_type, model_name=model_name, providers="CPUExecutionProvider")
 
     def display_image(self):
         """画像をCanvasに表示する"""
