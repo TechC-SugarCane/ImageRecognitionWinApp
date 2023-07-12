@@ -15,7 +15,9 @@ class ViewProcess(tk.Frame):
             # ウィンドウサイズ
             self.master.geometry("1000x800")
 
-            self.image_recognition: ImageRecognition = ImageRecognition(self.master, model_type=inference_model_value, model_name=crops_value)
+            self.image_recognition: ImageRecognition = ImageRecognition(
+                self.master, model_type=inference_model_value, model_name=crops_value
+            )
             self.image_recognition.pack(side="top", fill="both", expand=True)
             self.image_recognition.display_image()
 

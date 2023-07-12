@@ -24,7 +24,7 @@ class SetupView(ttk.Frame):
             # 推論モデルのFrameを表示
             self.inference_model_frame: InferenceModelFrame = InferenceModelFrame(
                 self.master
-            )
+            )  # type: ignore
             self.inference_model_frame.pack(
                 side="left", padx=40, pady=10, anchor="center"
             )
