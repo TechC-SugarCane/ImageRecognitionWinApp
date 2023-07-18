@@ -1,43 +1,30 @@
-import tkinter as tk
-from tkinter import Tk, ttk
+import customtkinter
 
 
-class CropsFrame(ttk.Frame):
-    def __init__(self, master: Tk | None = None) -> None:
-        super().__init__(master, borderwidth=5, relief="ridge", width=200, height=100)
+class CropsFrame(customtkinter.CTkFrame):
+    def __init__(self, master, **kwargs):
+        super().__init__(master=master)
 
-        # Frameサイズを固定
-        self.propagate(False)
+        self.selected_rbtn = customtkinter.StringVar()
 
-        if master is not None:
-            self.master: Tk = master
+        pineapple_rbtn = customtkinter.CTkRadioButton(
+            master=self,
+            text="パイナップル",
+            variable=self.selected_rbtn,
+            value="pineapple",
+            command=self.get_selected_rbtn_value,
+        )
+        pineapple_rbtn.grid(row=0, column=0, padx=10, pady=10)
 
-            # ラジオボタンの値を扱う
-            self.selected_rbtn: tk.StringVar = tk.StringVar()
+        sugarcane_rbtn = customtkinter.CTkRadioButton(
+            master=self,
+            text="サトウキビ",
+            variable=self.selected_rbtn,
+            value="sugarcane",
+            command=self.get_selected_rbtn_value,
+        )
+        sugarcane_rbtn.grid(row=1, column=0, padx=10, pady=10)
 
-            pineapple_rbtn = ttk.Radiobutton(
-                self,
-                text="パイナップル",
-                variable=self.selected_rbtn,
-                value="pineapple",
-                command=self.show_selected_rbtn_value,
-            )
-            pineapple_rbtn.grid(row=0, column=0, padx=10, pady=10)
-
-            sugarcane_rbtn = ttk.Radiobutton(
-                self,
-                text="サトウキビ",
-                variable=self.selected_rbtn,
-                value="sugarcane",
-                command=self.show_selected_rbtn_value,
-            )
-            sugarcane_rbtn.grid(row=1, column=0, padx=10, pady=10)
-
-    def show_selected_rbtn_value(self) -> str:
+    def get_selected_rbtn_value(self):
         print(self.selected_rbtn.get())
         return self.selected_rbtn.get()
-
-
-"""
-
-"""
