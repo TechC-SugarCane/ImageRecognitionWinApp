@@ -67,5 +67,6 @@ class ImageRecognition(customtkinter.CTkFrame):
     def display_restart(self):
         self.display_image()
 
+    # * 終了ボタン必要か？
     def display_exit(self):
         self.destroy()
