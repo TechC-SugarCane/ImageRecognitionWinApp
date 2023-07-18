@@ -1,0 +1,76 @@
+import customtkinter
+
+from crops_frame import CropsFrame
+from inference_model_frame import InferenceModelFrame
+from view_process import ViewProcess
+
+
+class Setup(customtkinter.CTk):
+    def __init__(self):
+        super().__init__()
+
+        # ウィンドウサイズ（幅x高さ）
+        self.geometry(geometry_string="1000x800")
+
+        # 作物のFrameを表示
+        self.crops_frame = CropsFrame(self)
+        self.crops_frame.pack(side="left", padx=40, pady=10, anchor="center")
+
+        # 推論モデルのFrameを表示
+        self.inference_model_frame = InferenceModelFrame(self)
+        self.inference_model_frame.pack(side="left", padx=40, pady=10, anchor="center")
+
+        # 実行ボタン
+        self.execute_button = customtkinter.CTkButton(
+            master=self, text="実行", command=self.screen_transition
+        )
+        self.execute_button.pack(side="right", padx=10, pady=10, anchor="center")
+
+    def screen_transition(self):
+        """画面遷移"""
+        crops_value = self.crops_frame.get_selected_rbtn_value()
+        inference_model_value = self.inference_model_frame.get_selected_rbtn_value()
+
+        if crops_value != "" and inference_model_value != "":
+            print("両方選択されている")
+
+            self.crops_frame.destroy()
+            self.inference_model_frame.destroy()
+            self.execute_button.destroy()
+
+            self.view_process = ViewProcess(
+                master=self.master,
+                crops_value=crops_value,
+                inference_model_value=inference_model_value,
+            )
+            self.view_process.pack(expand=True, fill="both")  # type: ignore
+
+        else:
+            print("両方選択されていない")
+            # モーダルウィンドウを表示
+            self.create_modal_windows()
+
+    def create_modal_windows(self):
+        modal_window = customtkinter.CTkToplevel(self)
+        modal_window.geometry(geometry_string="400x300")
+
+        text_label = customtkinter.CTkLabel(
+            master=modal_window, text="作物と推論モデル両方を選択してください"
+        )
+        text_label.pack(padx=10, pady=10)
+
+        # モーダルにする
+        modal_window.grab_set()
+        # モーダルウィンドウにフォーカスする
+        modal_window.focus_set()
+        # タスクバーに表示しない
+        modal_window.transient(master=self)
+
+        # 閉じられるまで待つ
+        app.wait_window(window=modal_window)
+        print("モーダルウィンドウが閉じられた")
+
+
+app = Setup()
+app.title(string="画像認識")
+app.mainloop()
