@@ -1,6 +1,5 @@
 import customtkinter
 import cv2
-import numpy as np
 from PIL import Image, ImageOps, ImageTk  # 画像データ用
 
 from function.infer import Model
@@ -61,11 +60,11 @@ class ImageRecognition(customtkinter.CTkFrame):
         self.display_id = self.after(ms=10, func=self.display_image)
 
     def display_stop(self):
+        """描画を一時停止する"""
         self.after_cancel(id=self.display_id)
         self.display_id = ""
 
     def display_restart(self):
-        self.display_image()
-
-    def display_exit(self):
-        self.destroy()
+        """描画を再開する"""
+        if not self.display_id:
+            self.display_image()
