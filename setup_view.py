@@ -7,7 +7,7 @@ from view_process import ViewProcess
 
 
 class SetupView(ttk.Frame):
-    def __init__(self, master: Tk | None = None) -> None:
+    def __init__(self, master) -> None:
         super().__init__(master)
 
         if master is not None:
@@ -16,10 +16,6 @@ class SetupView(ttk.Frame):
             self.master.title("setup")
             # ウィンドウサイズ（幅x高さ）
             self.master.geometry("1000x800")
-
-            # 作物のラベルを表示
-            # crops_label: ttk.Label = ttk.Label(self.master, text="作物")
-            # crops_label.pack(side="top", padx=10, pady=10)
 
             # 作物のFrameを表示
             self.crops_frame: CropsFrame = CropsFrame(self.master)

@@ -1,15 +1,16 @@
 import os
-#import torch
+import torch
 import random
+import time
+
 import cv2
-import onnxruntime as ort
 import numpy as np
+import onnxruntime as ort
+import torch
 from PIL import Image
 from function.letterbox import letterbox
 from function.draw import draw
 from function.score import nms, xywh2xyxy
-
-class Model:
 
     def __init__(self, model_type, model_name, providers):
     
@@ -48,32 +49,6 @@ class Model:
             #elif model_type == "Yolo nas":
             #   self.model = ort.InferenceSession(f"./model/{model_name}-yolonas.onnx", providers=providers)
             #   self.label_names = ["sugarcane", "weed"]
-        
-        ''' 過去データ
-        #yolov8
-        if model_type == "Yolo v8": # ここはのちにクラス継承などを使って判別させる予定
-
-            if model_name == "sugarcane":
-                print("use sugarcane model")
-
-                self.model = ort.InferenceSession(f"./model/{model_name}-yolov8.onnx", providers=providers)
-                self.label_names = ["sugarcane", "weed"]
-
-            elif model_name == "pineapple":
-                print("use pineapple model")
-
-                self.model = ort.InferenceSession(f"./model/{model_name}-yolov8.onnx", providers=providers)
-                self.label_names = ["pineapple", "weed"]
-
-            else:
-                print("This model is not supported")
-        
-        else:
-            print("this model type has not supported")
-        '''    
-
-        for i in self.model.get_outputs():
-            print(i)
 
         self.outname = [self.model.get_outputs()[0].name]
         self.inname = [i.name for i in self.model.get_inputs()]
@@ -98,7 +73,6 @@ class Model:
             # run inference
             inp = {self.inname[0] : copy_frame}
             outputs = self.model.run(self.outname, inp)[0]
-
 
             # draw result
             frame = draw(frame, outputs, ratio, dwdh, self.label_names, self.colors)

@@ -3,7 +3,7 @@ from tkinter import Tk, ttk
 
 
 class InferenceModelFrame(ttk.Frame):
-    def __init__(self, master: Tk | None = None) -> None:
+    def __init__(self, master) -> None:
         super().__init__(master, borderwidth=5, relief="ridge", width=200, height=100)
 
         # Frameサイズを固定
