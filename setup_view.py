@@ -73,4 +73,5 @@ class Setup(customtkinter.CTk):
 
 app = Setup()
 app.title(string="画像認識")
+
 app.mainloop()

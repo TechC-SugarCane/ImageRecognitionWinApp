@@ -35,3 +35,11 @@ def letterbox(im, new_shape=(640, 640), color=(114, 114, 114), auto=True, scaleu
     left, right = int(round(dw - 0.1)), int(round(dw + 0.1))
     im = cv2.copyMakeBorder(im, top, bottom, left, right, cv2.BORDER_CONSTANT, value=color)  # add border
     return im, r, (dw, dh)
+
+def cxcywh2xyxy(bboxes):
+    bboxes_like = np.zeros_like(bboxes)
+    bboxes_like[:, 0] = bboxes[:, 0] - bboxes[:, 2]/2
+    bboxes_like[:, 1] = bboxes[:, 1] - bboxes[:, 3]/2
+    bboxes_like[:, 2] = bboxes[:, 0] + bboxes[:, 2]/2
+    bboxes_like[:, 3] = bboxes[:, 1] + bboxes[:, 3]/2
+    return bboxes_like

@@ -11,7 +11,8 @@ class ViewProcess(customtkinter.CTkFrame):
             master=self, model_type=inference_model_value, model_name=crops_value
         )  # type: ignore
         self.image_recognition.pack(side="top", fill="both", expand="True")
-        self.image_recognition.display_image()
+
+        self.image_recognition.display_image
 
         button_frame = customtkinter.CTkFrame(master=self)
         button_frame.pack(side="bottom", pady=10)
@@ -19,7 +20,7 @@ class ViewProcess(customtkinter.CTkFrame):
         self.stop_button = customtkinter.CTkButton(
             master=button_frame,
             text="停止",
-            command=self.image_recognition.display_stop(),
+            command=self.image_recognition.display_stop,
             state="normal",
         )
         self.stop_button.pack(side="left", padx=10)
@@ -27,7 +28,8 @@ class ViewProcess(customtkinter.CTkFrame):
         self.restart_button = customtkinter.CTkButton(
             master=button_frame,
             text="再開",
-            command=self.image_recognition.display_restart(),
+            command=self.image_recognition.display_restart,
             state="normal",
         )
+
         self.restart_button.pack(side="left", padx=10)

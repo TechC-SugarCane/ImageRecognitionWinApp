@@ -20,15 +20,19 @@ class ImageRecognition(customtkinter.CTkFrame):
         )  # type: ignore
         self.infer_image_canvas.pack(side="top", expand=True, fill="both")
 
-        self.capture = cv2.VideoCapture(0)
+        self.capture = cv2.VideoCapture(1)
+
+        # self.capture = cv2.VideoCapture("./video/test2_1.mp4")
 
         self.display_id = ""
 
         self.model = Model(
             model_type=model_type,
             model_name=model_name,
-            providers="CPUExecutionProvider",
+            providers=['CUDAExecutionProvider', 'CPUExecutionProvider'],
         )
+
+        print(self.model)
 
         self.fps_label = customtkinter.CTkLabel(master=self, text="")
         self.fps_label.pack()
