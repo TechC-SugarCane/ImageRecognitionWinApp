@@ -1,24 +1,71 @@
 import cv2
 import numpy as np
-
-
+from .nozzle import nozzle
 def draw(frame, outputs, ratio, dwdh, label_names, colors):
 
-    for i, (batch_id, x0, y0, x1, y1, cls_id, score) in enumerate(outputs):
-        # frame = copy_frame[int(batch_id)]
-        box = np.array([x0,y0,x1,y1])
-        box -= np.array(dwdh*2)
-        box /= ratio
-        box = box.round().astype(np.int32).tolist()
-        cls_id = int(cls_id)
-        score = round(float(score),3)
-        name = label_names[cls_id]
-        color = colors[name]
-        name += ' '+str(score)
-        cv2.rectangle(frame,box[:2],box[2:],color,2)
-        cv2.putText(frame,name,(box[0], box[1] - 2),cv2.FONT_HERSHEY_SIMPLEX,0.75,[225, 255, 255],thickness=2) 
 
-    return frame
+	for i, (batch_id, x0, y0, x1, y1, cls_id, score) in enumerate(outputs):
+		cls_id = int(cls_id)
+		score = round(float(score),3)
+		name = label_names[cls_id]
+
+		# frame = copy_frame[int(batch_id)]
+		box = np.array([x0,y0,x1,y1])
+		box -= np.array(dwdh*2)
+		box /= ratio
+		box = box.round().astype(np.int32).tolist()
+
+		# if name == "weed":
+                      
+		# 		nozzle(frame, box)
+            
+			# tx = (box[0] - box[2]) * 0.5
+			# y = (box[1] - box[3]) * 0.5
+			# x = box[0] + tx
+			# ty = box[1] + y
+
+			# h, main, c = frame.shape
+			# main1 = main * 0.5 #-1,+1はハード側との微調整用
+			# main1_1 = main1 * 0.5 #0%-25%
+			# main2 = main1_1 + main1_1 #25%-50%
+			# main3 = main2 + main1_1 #50%-75%
+			# main4 = main3 + main1_1 #75%-100%
+            
+			# if ty <= h* 0.5: # 300～280の間の範囲で設定する
+			# 	#閾値の設定もここでできるようにしておく
+
+			# 	# main2 = main[1] * 0.5 
+			# 	#横
+			# 	if x <= main1_1: #-1,+1はハード側との微調整用　
+			# 			print(x)
+			# 			i =[1,0,0,0]
+			# 			print(i)
+			# 	if x >= main1_1 and x <= main2: #-1,+1はハード側との微調整用　
+			# 			print(x)
+			# 			i =[0,1,0,0]
+			# 			print(i)
+			# 	if x >= main2 and x <= main3: #-1,+1はハード側との微調整用　
+			# 			print(x)
+			# 			i =[0,0,1,0]
+			# 			print(i)
+			# 	if x >= main3 and x <= main4: #-1,+1はハード側との微調整用　
+			# 			print(x)
+			# 			i =[0,0,0,1]
+			# 			print(i)
+
+			# 	ser = serial.Serial('COM4',9600,timeout=None)
+			# 	ser.write(i)
+			# 	ser.close()
+
+		cls_id = int(cls_id)
+		score = round(float(score),3)
+		name = label_names[cls_id]
+		color = colors[name]
+		name += ' '+str(score)
+		cv2.rectangle(frame,box[:2],box[2:],color,2)
+		cv2.putText(frame,name,(box[0], box[1] - 2),cv2.FONT_HERSHEY_SIMPLEX,0.75,[225, 255, 255],thickness=2) 
+
+	return frame
 
 def plot_bbox(frame, bboxes):
     for bbox in bboxes:
