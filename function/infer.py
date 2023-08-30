@@ -1,5 +1,4 @@
 import os
-import torch
 import random
 import time
 import serial
@@ -24,6 +23,7 @@ class Model:
             
             if model_type == "Yolo v7":
                 self.model = ort.InferenceSession(f"./model/{model_name}_v7.onnx", providers=providers)
+
                 self.label_names = ["sugarcane", "weed"]
 
                 self.outname = [self.model.get_outputs()[0].name]
@@ -33,6 +33,7 @@ class Model:
             elif model_type == "Yolo v8":
                 self.model = ort.InferenceSession(f"./model/{model_name}_v8.onnx", providers=providers)
                 self.label_names = ["sugarcane", "weed"]
+
 
                 model_inputs = self.model.get_inputs()
                 self.input_names = [model_inputs[i].name for i in range(len(model_inputs))]
@@ -80,9 +81,10 @@ class Model:
     
     #改変？
     def infer(self, frame):
+        # 時間の計測開始
+        start_time = time.perf_counter()
 
         print(f"model_type: {self.model_type}")
-
 
         if self.model_type == "Yolo v7":
             
@@ -161,7 +163,7 @@ class Model:
 
                 # if cls == "weed":
                     
-                #     nozzle(image_draw, bbox)
+#                     nozzle(image_draw, bbox)
 
 
                 #     tx = (bbox[0] - bbox[2]) * 0.5

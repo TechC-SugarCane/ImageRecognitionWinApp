@@ -11,6 +11,7 @@ class ViewProcess(customtkinter.CTkFrame):
             master=self, model_type=inference_model_value, model_name=crops_value
         )  # type: ignore
         self.image_recognition.pack(side="top", fill="both", expand="True")
+
         self.image_recognition.display_image
 
         button_frame = customtkinter.CTkFrame(master=self)
@@ -32,4 +33,3 @@ class ViewProcess(customtkinter.CTkFrame):
         )
 
         self.restart_button.pack(side="left", padx=10)
- 
