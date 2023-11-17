@@ -38,12 +38,20 @@ class Setup(customtkinter.CTk):
             self.inference_model_frame.destroy()
             self.execute_button.destroy()
 
-            self.view_process = ViewProcess(
-                master=self.master,
+            # 二つのViewProcessインスタンスを作成
+            self.view_process1 = ViewProcess(
+                master=self,
                 crops_value=crops_value,
                 inference_model_value=inference_model_value,
             )
-            self.view_process.pack(expand=True, fill="both")  # type: ignore
+            self.view_process1.pack(side="left", expand=True, fill="both")
+
+            self.view_process2 = ViewProcess(
+                master=self,
+                crops_value=crops_value,
+                inference_model_value=inference_model_value,
+            )
+            self.view_process2.pack(side="right", expand=True, fill="both")
 
         else:
             print("両方選択されていない")

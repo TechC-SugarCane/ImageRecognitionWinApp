@@ -20,16 +20,18 @@ class ImageRecognition(customtkinter.CTkFrame):
         )  # type: ignore
         self.infer_image_canvas.pack(side="top", expand=True, fill="both")
 
+        # TODO ここで二つのカメラの映像
+        # 一台目のカメラ
         self.capture = cv2.VideoCapture(1)
-
-        # self.capture = cv2.VideoCapture("./video/test2_1.mp4")
+        # 二台目のカメラ
+        # self.capture = cv2.VideoCapture(2)
 
         self.display_id = ""
 
         self.model = Model(
             model_type=model_type,
             model_name=model_name,
-            providers=['CUDAExecutionProvider', 'CPUExecutionProvider'],
+            providers=["CUDAExecutionProvider", "CPUExecutionProvider"],
         )
 
         print(self.model)
