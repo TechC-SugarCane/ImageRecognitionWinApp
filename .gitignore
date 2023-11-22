@@ -7,3 +7,5 @@ dist
 tkinter_sample.spec
 __pycache__
 *.onnx
+video
+*.pth
