@@ -4,12 +4,12 @@ from image_recognition import ImageRecognition
 
 
 class ViewProcess(customtkinter.CTkFrame):
-    def __init__(self, master, crops_value, inference_model_value):
+    def __init__(self, master, crops_value, inference_model_value, camera_index):
         super().__init__(master=master)
 
         self.image_recognition = ImageRecognition(
-            master=self, model_type=inference_model_value, model_name=crops_value
-        )  # type: ignore
+            master=self, model_type=inference_model_value, model_name=crops_value, camera_index=camera_index
+        )
         self.image_recognition.pack(side="top", fill="both", expand="True")
 
         # 推論結果を表示する

@@ -43,6 +43,7 @@ class Setup(customtkinter.CTk):
                 master=self,
                 crops_value=crops_value,
                 inference_model_value=inference_model_value,
+                camera_index=0,
             )
             self.view_process1.pack(side="left", expand=True, fill="both")
 
@@ -50,6 +51,7 @@ class Setup(customtkinter.CTk):
                 master=self,
                 crops_value=crops_value,
                 inference_model_value=inference_model_value,
+                camera_index=1,
             )
             self.view_process2.pack(side="right", expand=True, fill="both")
 
