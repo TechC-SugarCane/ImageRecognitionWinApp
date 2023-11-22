@@ -6,7 +6,7 @@ from function.infer import Model
 
 
 class ImageRecognition(customtkinter.CTkFrame):
-    def __init__(self, master, model_type, model_name):
+    def __init__(self, master, model_type, model_name, camera_index):
         super().__init__(master=master)
 
         window_width = self.winfo_width()
@@ -20,16 +20,19 @@ class ImageRecognition(customtkinter.CTkFrame):
         )  # type: ignore
         self.infer_image_canvas.pack(side="top", expand=True, fill="both")
 
-        self.capture = cv2.VideoCapture(1)
+        # TODO ここで二つのカメラの映像
+        # 一台目のカメラ
+        self.capture = cv2.VideoCapture(camera_index) # type: ignore
 
-        # self.capture = cv2.VideoCapture("./video/test2_1.mp4")
+        # 二台目のカメラ
+        # self.capture = cv2.VideoCapture(2)
 
         self.display_id = ""
 
         self.model = Model(
             model_type=model_type,
             model_name=model_name,
-            providers=['CUDAExecutionProvider', 'CPUExecutionProvider'],
+            providers=["CUDAExecutionProvider", "CPUExecutionProvider"],
         )
 
         print(self.model)
@@ -40,12 +43,12 @@ class ImageRecognition(customtkinter.CTkFrame):
     def display_image(self):
         is_success, frame = self.capture.read()
 
-        infer_frame, fps = self.model.infer(frame=frame)
+        infer_frame, fps = self.model.infer(frame=frame) # type: ignore
 
         self.fps_label.configure(text=fps)
         self.fps_label.update()
 
-        cv_image = cv2.cvtColor(src=infer_frame, code=cv2.COLOR_BGR2RGB)
+        cv_image = cv2.cvtColor(src=infer_frame, code=cv2.COLOR_BGR2RGB) # type: ignore
         pil_image = Image.fromarray(obj=cv_image)
 
         canvas_width = self.infer_image_canvas.winfo_width()
