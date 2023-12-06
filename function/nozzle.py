@@ -1,35 +1,41 @@
 import serial
 
 def nozzle(frame, box):
-
+    
+    #雑草の座標を探す用
     tx = (box[0] - box[2]) * 0.5
     y = (box[1] - box[3]) * 0.5
     x = box[0] + tx
-    ty = box[1] + y
+    ty = box[1] + y #雑草　座標　中心？
 
     # separate line
     h, w, c = frame.shape
 
-    w = w * 0.5
-    w1 = w * 0.5 # 0%-25%
-    w2 = w1 + w1 # 25%-50%
-    w3 = w2 + w1 # 50%-75%
-    w4 = w3 + w1 # 75%-100%
+    #16分割
+    w16 = w // 16
     
+    #雑草の位置がこれでわかるんだお
+    weedbox = ty // w16
+    
+    #発射部分
     if ty <= 300 and ty <= 280:
+        
+        #1バイト*2＝8ビット*2
+        #前半 1バイト目
+        if weedbox <= 8:
+            #移動する分のビット 左シフト？
+            bit = weedbox - 1
+            frontbit = 0x10000000 >> bit
+            
+        #後半 2バイト目
+        else:
+            bit = weedbox - 9
+            backbit = 0x10000000 >> bit
 
-        if x <= w1:
-            i = [1, 0, 0, 0]
+        #リストにする 数値→バイナリ
+        weedbyte = bytes([frontbit, backbit])
 
-        if x >= w1 and x <= w2:
-            i = [0, 1, 0, 0]
-
-        if x >= w2 and x <= w3:
-            i = [0, 0, 1, 0]
-
-        if x >= w3 and x <= w4:
-            i = [0, 0, 0, 1]
-
-        ser = serial.Serial("COM4", 9600, timeout=None)
-        ser.write(i)
+        #送信部分
+        ser = serial.Serial("COM4", 115200, timeout=None)
+        ser.write(weedbyte)
         ser.close()
