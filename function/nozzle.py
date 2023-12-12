@@ -1,20 +1,23 @@
 import serial
 
 def nozzle(frame, box):
-    
-    #雑草の座標を探す用
+    """
+    ノズルを噴射させるための通信を行う
+    :param frame: 入力された画像、動画フレーム
+    :param box  : 雑草のバウンディングボックスデータ
+    """
+
+    # 雑草と認識されているバウンディングボックスの中心座標を求める
     tx = (box[0] - box[2]) * 0.5
     y = (box[1] - box[3]) * 0.5
     x = box[0] + tx
     ty = box[1] + y #雑草　座標　中心？
 
-    # separate line
+    # 現在のフレームのサイズを取得する
     h, w, c = frame.shape
-
-    #16分割
     w16 = w // 16
     
-    #雑草の位置がこれでわかるんだお
+    #雑草の位置を認識する
     weedbox = ty // w16
     
     #発射部分

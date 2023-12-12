@@ -9,17 +9,29 @@ from pathlib import Path
 from collections import OrderedDict,namedtuple
 
 def letterbox(im, new_shape=(640, 640), color=(114, 114, 114), auto=True, scaleup=True, stride=32):
-    # Resize and pad image while meeting stride-multiple constraints
+    """
+    :param im        : 画像データ
+    :param new_shape : リサイズ後の画像サイズ
+    :param color     : パディングするときの色 
+    :param auto      : 自動でパディングするかどうか
+    :param scaleup   : スケールアップするかどうか 
+    :param stride    : ストライドの大きさ
+
+    :return im       : パディングされた画像データ
+    :return r        : リサイズ後の画像サイズとリサイズ前の画像サイズの比率
+    :return (dw, dh) : パディングした分の画像サイズ
+    """
+    # 画像のリサイズとパディングを行う
     shape = im.shape[:2]  # current shape [height, width]
     if isinstance(new_shape, int):
         new_shape = (new_shape, new_shape)
 
-    # Scale ratio (new / old)
+    # 大きさの比率を計算する (new / old)
     r = min(new_shape[0] / shape[0], new_shape[1] / shape[1])
     if not scaleup:  # only scale down, do not scale up (for better val mAP)
         r = min(r, 1.0)
 
-    # Compute padding
+    # パディングするときの画像サイズを計算する
     new_unpad = int(round(shape[1] * r)), int(round(shape[0] * r))
     dw, dh = new_shape[1] - new_unpad[0], new_shape[0] - new_unpad[1]  # wh padding
 
@@ -35,11 +47,3 @@ def letterbox(im, new_shape=(640, 640), color=(114, 114, 114), auto=True, scaleu
     left, right = int(round(dw - 0.1)), int(round(dw + 0.1))
     im = cv2.copyMakeBorder(im, top, bottom, left, right, cv2.BORDER_CONSTANT, value=color)  # add border
     return im, r, (dw, dh)
-
-def cxcywh2xyxy(bboxes):
-    bboxes_like = np.zeros_like(bboxes)
-    bboxes_like[:, 0] = bboxes[:, 0] - bboxes[:, 2]/2
-    bboxes_like[:, 1] = bboxes[:, 1] - bboxes[:, 3]/2
-    bboxes_like[:, 2] = bboxes[:, 0] + bboxes[:, 2]/2
-    bboxes_like[:, 3] = bboxes[:, 1] + bboxes[:, 3]/2
-    return bboxes_like
