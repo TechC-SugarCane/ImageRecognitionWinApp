@@ -43,7 +43,7 @@ class Setup(customtkinter.CTk):
                 master=self,
                 crops_value=crops_value,
                 inference_model_value=inference_model_value,
-                camera_index=0,
+                camera_index=0, # ここで読み込ませる動画の設定を行う
             )
             self.view_process1.pack(side="left", expand=True, fill="both")
 
@@ -51,7 +51,7 @@ class Setup(customtkinter.CTk):
                 master=self,
                 crops_value=crops_value,
                 inference_model_value=inference_model_value,
-                camera_index=1,
+                camera_index=1, # videoフォルダーの下にある動画に置き換えてください
             )
             self.view_process2.pack(side="right", expand=True, fill="both")
 

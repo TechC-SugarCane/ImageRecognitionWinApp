@@ -18,6 +18,8 @@ def draw(frame, outputs, ratio, dwdh, label_names, colors):
 	for i, (batch_id, x0, y0, x1, y1, cls_id, score) in enumerate(outputs):
 		cls_id = int(cls_id)
 		score = round(float(score),3)
+		print(*label_names)
+		print(cls_id)
 		name = label_names[cls_id]
 
 		# frame = copy_frame[int(batch_id)]

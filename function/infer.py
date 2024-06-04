@@ -34,9 +34,9 @@ class Model:
             print(f"use YOLO v7 model. model name: {self.model_name}")
 
             # モデルの読み込み
-            self.model = ort.InferenceSession(f"./model/{self.model_name}_v7.onnx", providers=providers), 
+            self.model = ort.InferenceSession(f"./model/{self.model_name}_v7.onnx", providers=providers)
             self.label_names = labels                                   # 新しくしたデータセットを使ったラベル
-
+            
             self.outname = [self.model.get_outputs()[0].name]
             self.inname = [i.name for i in self.model.get_inputs()]
 

@@ -16,15 +16,6 @@ class InferenceModelFrame(customtkinter.CTkFrame):
         )
         yolov7_rbtn.grid(row=0, column=0, padx=10, pady=10)
 
-        yolov8_rbtn = customtkinter.CTkRadioButton(
-            master=self,
-            text="Yolo v8",
-            variable=self.selected_rbtn,
-            value="Yolo v8",
-            command=self.get_selected_rbtn_value,
-        )
-        yolov8_rbtn.grid(row=1, column=0, padx=10, pady=10)
-
         yolov_nas_rbtn = customtkinter.CTkRadioButton(
             master=self,
             text="Yolo NAS",
