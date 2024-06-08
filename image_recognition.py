@@ -21,17 +21,14 @@ class ImageRecognition(customtkinter.CTkFrame):
         self.infer_image_canvas.pack(side="top", expand=True, fill="both")
 
         # TODO ここで二つのカメラの映像
-        # 一台目のカメラ
         self.capture = cv2.VideoCapture(camera_index) # type: ignore
-
-        # 二台目のカメラ
-        # self.capture = cv2.VideoCapture(2)
 
         self.display_id = ""
 
         self.model = Model(
             model_type=model_type,
             model_name=model_name,
+            labels=["weed", model_name], # ラベル名の順序が異なっていたらこの部分の位置を逆にする
             providers=["CUDAExecutionProvider", "CPUExecutionProvider"],
         )
 
