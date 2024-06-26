@@ -101,3 +101,7 @@ python setup_view.py
 2. 左の開始ボタンを押して、カメラ映像を取得し、推論を開始
 ※カメラを二台使用する場合は、右の開始ボタンも押してください
 3. 推論を停止したい場合は、停止ボタンを押してください
+
+## コントリビューター向けガイドライン
+
+コントリビューター向けのガイドラインについては、こちらの[CONTRIBUTING.md](https://github.com/TechC-SugarCane/.github/blob/main/CONTRIBUTING.md)を参照してください。
