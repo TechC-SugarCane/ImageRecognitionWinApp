@@ -7,5 +7,7 @@
 - 推論停止
 
 ## ユーザーフロー
-graph TD
-  A[Windows] -->|ImageRecognitionWinApp起動| B[Home]
+![ImageRecognitionWinAppUserFlow.png](https://github.com/TechC-SugarCane/ImageRecognitionWinApp/edit/develop/ImageRecognitionWinAppUserFlow.png)
+
+## 画面一覧
+![imagerecognitionwinapp_screen.png](https://github.com/TechC-SugarCane/ImageRecognitionWinApp/edit/develop/imagerecognitionwinapp_screen.png)
