@@ -26,7 +26,22 @@
 
 ## Setup
 
-### 1. リポジトリをクローン
+### 1. git-lfsのインストール
+
+テスト用の動画ファイルを扱うために、git-lfsをインストールしてください。
+
+```bash
+# mac
+brew install git-lfs
+
+# windows
+# https://git-lfs.github.com/ からインストーラをダウンロードしてインストール
+
+# git-lfsの初期化
+git lfs install
+```
+
+### 2. リポジトリをクローン
 
 ```bash
 git clone git@github.com:TechC-SugarCane/ImageRecognitionWinApp.git
@@ -34,19 +49,19 @@ git clone git@github.com:TechC-SugarCane/ImageRecognitionWinApp.git
 cd ImageRecognitionWinApp
 ```
 
-### 2. Pythonの環境構築
+### 3. Pythonの環境構築
 
 ```bash
 pyenv install
 ```
 
-### 3. 仮想環境を作成
+### 4. 仮想環境を作成
 
 ```bash
 python -m venv .venv
 ```
 
-### 4. 仮想環境を有効化
+### 5. 仮想環境を有効化
 
 ```bash
 # mac
@@ -56,7 +71,7 @@ source .venv/bin/activate
 .venv\Scripts\activate
 ```
 
-### 5. ライブラリをインストール
+### 6. ライブラリをインストール
 
 ```bash
 # CPUで推論を行う場合
