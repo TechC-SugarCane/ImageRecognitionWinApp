@@ -38,12 +38,12 @@ class Model:
             self.outname = [self.model.get_outputs()[0].name]
             self.inname = [i.name for i in self.model.get_inputs()]
 
-        elif model_type == "Yolo NAS":
-            print(f"Use YOLO NAS model. model name: {self.model_name}")
-            self.model = ort.InferenceSession(f"./model/{model_name}_nas.onnx", providers=providers)
+        # elif model_type == "Yolo NAS":
+        #     print(f"Use YOLO NAS model. model name: {self.model_name}")
+        #     self.model = ort.InferenceSession(f"./model/{model_name}_nas.onnx", providers=providers)
 
-            self.outname = [self.model.get_outputs()[0].name]
-            self.inname = [i.name for i in self.model.get_inputs()]
+        #     self.outname = [self.model.get_outputs()[0].name]
+        #     self.inname = [i.name for i in self.model.get_inputs()]
 
         # ランダムでバウンディングボックスの色を決める
         self.colors = {name: [random.randint(0, 255) for _ in range(3)] for i, name in enumerate(self.labels)}
