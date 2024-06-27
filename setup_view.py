@@ -21,9 +21,7 @@ class Setup(customtkinter.CTk):
         self.inference_model_frame.pack(side="left", padx=40, pady=10, anchor="center")
 
         # 実行ボタン
-        self.execute_button = customtkinter.CTkButton(
-            master=self, text="実行", command=self.screen_transition
-        )
+        self.execute_button = customtkinter.CTkButton(master=self, text="実行", command=self.screen_transition)
         self.execute_button.pack(side="right", padx=10, pady=10, anchor="center")
 
     def screen_transition(self):
@@ -43,7 +41,8 @@ class Setup(customtkinter.CTk):
                 master=self,
                 crops_value=crops_value,
                 inference_model_value=inference_model_value,
-                camera_index=0, # ここで読み込ませる動画の設定を行う
+                # camera_index=0,  # ここで読み込ませる動画の設定を行う
+                camera_index='video/multi_data1.mp4',  # ここで読み込ませる動画の設定を行う
             )
             self.view_process1.pack(side="left", expand=True, fill="both")
 
@@ -51,7 +50,7 @@ class Setup(customtkinter.CTk):
                 master=self,
                 crops_value=crops_value,
                 inference_model_value=inference_model_value,
-                camera_index=1, # videoフォルダーの下にある動画に置き換えてください
+                camera_index=1,  # videoフォルダーの下にある動画に置き換えてください
             )
             self.view_process2.pack(side="right", expand=True, fill="both")
 
@@ -64,9 +63,7 @@ class Setup(customtkinter.CTk):
         modal_window = customtkinter.CTkToplevel(self)
         modal_window.geometry(geometry_string="400x300")
 
-        text_label = customtkinter.CTkLabel(
-            master=modal_window, text="作物と推論モデル両方を選択してください"
-        )
+        text_label = customtkinter.CTkLabel(master=modal_window, text="作物と推論モデル両方を選択してください")
         text_label.pack(padx=10, pady=10)
 
         # モーダルにする

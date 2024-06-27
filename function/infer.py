@@ -2,16 +2,17 @@ import os
 import random
 import time
 
-import serial
 import cv2
 import numpy as np
 import onnxruntime as ort
-import torch
 from PIL import Image
+import serial
+import torch
 
-from function.letterbox import letterbox
 from function.draw import draw
+from function.letterbox import letterbox
 from function.nozzle import nozzle
+
 
 class Model:
     def __init__(self, model_type, model_name, labels, providers):
@@ -22,12 +23,12 @@ class Model:
         :param labels     : ラベルの名前を格納したリスト ['sugarcane'('pineapple'), 'weed']
         :param providers  : onnxでモデルを読み込んだ時のプロバイダー ['CUDAExecutionProvider', 'CPUExecutionProvider']
         """
-    
+
         self.model_type = model_type
         self.model_name = model_name
         self.providers = providers
         self.labels = labels
-    
+
         # 選択されたモデルのバージョンをチェック
         if model_type == "Yolo v7":
             print(f"Use YOLO v7 model. model name: {self.model_name}")
@@ -47,7 +48,7 @@ class Model:
 
         # ランダムでバウンディングボックスの色を決める
         self.colors = {name: [random.randint(0, 255) for _ in range(3)] for i, name in enumerate(self.labels)}
-    
+
     def infer(self, frame):
         """
         入力された画像を選択されたモデルを使用して推論を行う
@@ -57,10 +58,8 @@ class Model:
         :return fps  : フレームレート
         """
 
-
         # モデルのバージョンごとにそれぞれ推論処理を行う
         if self.model_type == "Yolo v7":
-            
             # 時間の計測を開始
             start_time = time.perf_counter()
 
@@ -75,12 +74,12 @@ class Model:
             copy_frame /= 255
 
             # 推論処理の実装
-            inp = {self.inname[0] : copy_frame}
+            inp = {self.inname[0]: copy_frame}
             outputs = self.model.run(self.outname, inp)[0]
 
             # バウンディングボックスを入力されたフレームに描画する
             frame = draw(frame, outputs, ratio, dwdh, self.labels, self.colors)
-            
+
             # 時間の計測を終了 fps の計算をする
             end_time = time.perf_counter()
             fps = int(1 / (end_time - start_time))

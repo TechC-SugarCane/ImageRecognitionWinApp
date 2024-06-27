@@ -12,9 +12,6 @@ class ViewProcess(customtkinter.CTkFrame):
         )
         self.image_recognition.pack(side="top", fill="both", expand="True")
 
-        # 推論結果を表示する
-        self.image_recognition.display_image
-
         button_frame = customtkinter.CTkFrame(master=self)
         button_frame.pack(side="bottom", pady=10)
 

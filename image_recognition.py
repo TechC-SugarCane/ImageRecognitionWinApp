@@ -15,13 +15,11 @@ class ImageRecognition(customtkinter.CTkFrame):
         canvas_width = window_width // 2
         canvas_height = window_height
 
-        self.infer_image_canvas = customtkinter.CTkCanvas(
-            master=self, width=canvas_width, height=canvas_height
-        )  # type: ignore
+        self.infer_image_canvas = customtkinter.CTkCanvas(master=self, width=canvas_width, height=canvas_height)  # type: ignore
         self.infer_image_canvas.pack(side="top", expand=True, fill="both")
 
         # TODO ここで二つのカメラの映像
-        self.capture = cv2.VideoCapture(camera_index) # type: ignore
+        self.capture = cv2.VideoCapture(camera_index)  # type: ignore
 
         self.display_id = ""
 
@@ -40,12 +38,12 @@ class ImageRecognition(customtkinter.CTkFrame):
     def display_image(self):
         is_success, frame = self.capture.read()
 
-        infer_frame, fps = self.model.infer(frame=frame) # type: ignore
+        infer_frame, fps = self.model.infer(frame=frame)  # type: ignore
 
         self.fps_label.configure(text=fps)
         self.fps_label.update()
 
-        cv_image = cv2.cvtColor(src=infer_frame, code=cv2.COLOR_BGR2RGB) # type: ignore
+        cv_image = cv2.cvtColor(src=infer_frame, code=cv2.COLOR_BGR2RGB)  # type: ignore
         pil_image = Image.fromarray(obj=cv_image)
 
         canvas_width = self.infer_image_canvas.winfo_width()

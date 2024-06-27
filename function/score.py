@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def nms(boxes, scores, iou_threshold):
     # Sort by score
     sorted_indices = np.argsort(scores)[::-1]
@@ -21,6 +22,7 @@ def nms(boxes, scores, iou_threshold):
 
     return keep_boxes
 
+
 def compute_iou(box, boxes):
     # Compute xmin, ymin, xmax, ymax for both boxes
     xmin = np.maximum(box[0], boxes[:, 0])
@@ -40,6 +42,7 @@ def compute_iou(box, boxes):
     iou = intersection_area / union_area
 
     return iou
+
 
 def xywh2xyxy(x):
     # Convert bounding box (x, y, w, h) to bounding box (x1, y1, x2, y2)
