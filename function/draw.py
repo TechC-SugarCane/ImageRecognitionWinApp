@@ -1,10 +1,20 @@
+from typing import Literal, Tuple
+
 import cv2
+from cv2.typing import MatLike
 import numpy as np
 
 from .nozzle import nozzle
 
 
-def draw(frame, outputs, ratio, dwdh, label_names, colors):
+def draw(
+    frame: MatLike,
+    outputs: np.ndarray,
+    ratio: float,
+    dwdh: Tuple[float, float],
+    label_names: list[Literal["sugarcane", "pineapple", "weed"]],
+    colors: dict[str, list[int]],
+) -> MatLike:
     """
     推論した結果をフレームに描画させる
     :param frame   		: 入力された画像データまたは動画データ
@@ -12,6 +22,7 @@ def draw(frame, outputs, ratio, dwdh, label_names, colors):
     :param ratio 		: リサイズ後の画像サイズとリサイズ前の画像サイズの比率
     :param dwdh			: パディングした分の画像サイズ
     :param label_names  : ラベルのリスト
+    :param colors 		: バウンディングボックスの色
 
     :return frame 		: バウンディングボックスが描画されているフレームデータ
     """

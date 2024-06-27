@@ -1,10 +1,25 @@
+from typing import Literal
+
 import customtkinter
 
 from image_recognition import ImageRecognition
 
 
 class ViewProcess(customtkinter.CTkFrame):
-    def __init__(self, master, crops_value, inference_model_value, camera_index):
+    def __init__(
+        self,
+        master: customtkinter.CTkFrame,
+        inference_model_value: Literal["Yolo v7", "Yolo NAS"],
+        crops_value: Literal["sugarcane", "pineapple"],
+        camera_index: int | str,
+    ) -> None:
+        """
+        描画処理を行う
+        :param master                : 親クラス
+        :param inference_model_value : 使用するモデルのバージョン
+        :param crops_value           : 推論する作物の名前
+        :param camera_index          : 使用するカメラのインデックス or 動画のパス
+        """
         super().__init__(master=master)
 
         self.image_recognition = ImageRecognition(

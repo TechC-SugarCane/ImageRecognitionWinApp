@@ -2,7 +2,8 @@ import customtkinter
 
 
 class CropsFrame(customtkinter.CTkFrame):
-    def __init__(self, master, **kwargs):
+    def __init__(self, master: customtkinter.CTkFrame) -> None:
+        """作物の選択画面"""
         super().__init__(master=master)
 
         self.selected_rbtn = customtkinter.StringVar()
@@ -25,6 +26,8 @@ class CropsFrame(customtkinter.CTkFrame):
         )
         sugarcane_rbtn.grid(row=1, column=0, padx=10, pady=10)
 
-    def get_selected_rbtn_value(self):
-        print(self.selected_rbtn.get())
-        return self.selected_rbtn.get()
+    def get_selected_rbtn_value(self) -> str:
+        """選択された作物を取得"""
+        crops = self.selected_rbtn.get()
+        print("Selected crops: ", crops)
+        return crops

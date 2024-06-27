@@ -1,9 +1,19 @@
+from typing import Tuple
+
 import cv2
 import numpy as np
 
 
-def letterbox(im, new_shape=(640, 640), color=(114, 114, 114), auto=True, scaleup=True, stride=32):
+def letterbox(
+    im: np.ndarray,
+    new_shape: Tuple[int, int] = (640, 640),
+    color: Tuple[int, int, int] = (114, 114, 114),
+    auto: bool = True,
+    scaleup: bool = True,
+    stride: int = 32,
+) -> Tuple[np.ndarray, float, Tuple[float, float]]:
     """
+    画像をリサイズしてパディングする
     :param im        : 画像データ
     :param new_shape : リサイズ後の画像サイズ
     :param color     : パディングするときの色
