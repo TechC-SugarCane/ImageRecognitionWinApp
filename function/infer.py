@@ -17,9 +17,9 @@ class Model:
     def __init__(self, model_type, model_name, labels, providers):
         """
         モデルの読み込み、基礎設定を行う
-        :param model_type : 使用するモデルのバージョン (Yolo v7 or Yolo nas)
+        :param model_type : 使用するモデルのバージョン (Yolo v7 or Yolo NAS)
         :param model_name : 使用するモデルの名前 (sugarcane or pineapple)
-        :param labels     : ラベルの名前を格納したリスト
+        :param labels     : ラベルの名前を格納したリスト ['sugarcane'('pineapple'), 'weed']
         :param providers  : onnxでモデルを読み込んだ時のプロバイダー ['CUDAExecutionProvider', 'CPUExecutionProvider']
         """
     
@@ -30,7 +30,7 @@ class Model:
     
         # 選択されたモデルのバージョンをチェック
         if model_type == "Yolo v7":
-            print(f"use YOLO v7 model. model name: {self.model_name}")
+            print(f"Use YOLO v7 model. model name: {self.model_name}")
 
             # モデルの読み込み
             self.model = ort.InferenceSession(f"./model/{self.model_name}_v7.onnx", providers=providers)
@@ -38,9 +38,12 @@ class Model:
             self.outname = [self.model.get_outputs()[0].name]
             self.inname = [i.name for i in self.model.get_inputs()]
 
-        # elif model_type == "Yolo nas":
-        #   self.model = ort.InferenceSession(f"./model/{model_name}-yolonas.onnx", providers=providers)
-        #   self.label_names = labels.append(self.model_name)
+        # elif model_type == "Yolo NAS":
+        #     print(f"Use YOLO NAS model. model name: {self.model_name}")
+        #     self.model = ort.InferenceSession(f"./model/{model_name}_nas.onnx", providers=providers)
+
+        #     self.outname = [self.model.get_outputs()[0].name]
+        #     self.inname = [i.name for i in self.model.get_inputs()]
 
         # ランダムでバウンディングボックスの色を決める
         self.colors = {name: [random.randint(0, 255) for _ in range(3)] for i, name in enumerate(self.labels)}

@@ -28,7 +28,7 @@ class ImageRecognition(customtkinter.CTkFrame):
         self.model = Model(
             model_type=model_type,
             model_name=model_name,
-            labels=["weed", model_name], # ラベル名の順序が異なっていたらこの部分の位置を逆にする
+            labels=[model_name, "weed"],  # ここでラベルを設定
             providers=["CUDAExecutionProvider", "CPUExecutionProvider"],
         )
 
