@@ -1,17 +1,12 @@
-import os
 import random
 import time
 
-import cv2
 import numpy as np
 import onnxruntime as ort
-from PIL import Image
-import serial
-import torch
+import torch  # これ消すとエラー出る. onnxruntime側で必要みたい
 
 from function.draw import draw
 from function.letterbox import letterbox
-from function.nozzle import nozzle
 
 
 class Model:
