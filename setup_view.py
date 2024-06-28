@@ -1,3 +1,5 @@
+import argparse
+
 import customtkinter
 
 from crops_frame import CropsFrame
@@ -6,8 +8,10 @@ from view_process import ViewProcess
 
 
 class Setup(customtkinter.CTk):
-    def __init__(self) -> None:
+    def __init__(self, args: argparse.Namespace) -> None:
         super().__init__()
+
+        self.args = args
 
         # ウィンドウサイズ（幅x高さ）
         self.geometry(geometry_string="1000x800")
@@ -36,12 +40,18 @@ class Setup(customtkinter.CTk):
             self.inference_model_frame.destroy()
             self.execute_button.destroy()
 
+            camera_index1 = 0  # 左のカメラ
+            camera_index2 = 1  # 右のカメラ
+            if self.args.test:
+                camera_index1 = 'video/multi_data1.mp4'
+                camera_index2 = 'video/multi_data2.mp4'
+
             # 二つのViewProcessインスタンスを作成
             self.view_process1 = ViewProcess(
                 master=self,
                 inference_model_value=inference_model_value,
                 crops_value=crops_value,
-                camera_index=0,  # ここで読み込ませる動画の設定を行う
+                camera_index=camera_index1, # ここで読み込ませる動画の設定を行う
             )
             self.view_process1.pack(side="left", expand=True, fill="both")
 
@@ -49,7 +59,7 @@ class Setup(customtkinter.CTk):
                 master=self,
                 inference_model_value=inference_model_value,
                 crops_value=crops_value,
-                camera_index=1,  # videoフォルダーの下にある動画に置き換えてください
+                camera_index=camera_index2, # videoフォルダーの下にある動画に置き換えてください
             )
             self.view_process2.pack(side="right", expand=True, fill="both")
 
@@ -78,7 +88,13 @@ class Setup(customtkinter.CTk):
 
 
 if __name__ == "__main__":
-    app = Setup()
+    # --test が指定された場合はテストモードで実行, --serial が指定された場合はシリアル通信モードで実行
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-t", "--test", action="store_true", help="テスト用動画で推論するモード")
+    parser.add_argument("-s", "--serial", action="store_true", help="シリアル通信モード")
+    args = parser.parse_args()  # args.test, args.serial で引数にアクセス可能
+
+    app = Setup(args)
     app.title(string="画像認識")
 
     app.mainloop()
