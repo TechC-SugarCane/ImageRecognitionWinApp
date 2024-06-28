@@ -1,20 +1,24 @@
-import cv2
-import time
-# import requests
-import random
-import numpy as np
-import onnxruntime as ort
-from PIL import Image
-from pathlib import Path
-from collections import OrderedDict,namedtuple
+from typing import Tuple
 
-def letterbox(im, new_shape=(640, 640), color=(114, 114, 114), auto=True, scaleup=True, stride=32):
+import cv2
+import numpy as np
+
+
+def letterbox(
+    im: np.ndarray,
+    new_shape: Tuple[int, int] = (640, 640),
+    color: Tuple[int, int, int] = (114, 114, 114),
+    auto: bool = True,
+    scaleup: bool = True,
+    stride: int = 32,
+) -> Tuple[np.ndarray, float, Tuple[float, float]]:
     """
+    画像をリサイズしてパディングする
     :param im        : 画像データ
     :param new_shape : リサイズ後の画像サイズ
-    :param color     : パディングするときの色 
+    :param color     : パディングするときの色
     :param auto      : 自動でパディングするかどうか
-    :param scaleup   : スケールアップするかどうか 
+    :param scaleup   : スケールアップするかどうか
     :param stride    : ストライドの大きさ
 
     :return im       : パディングされた画像データ

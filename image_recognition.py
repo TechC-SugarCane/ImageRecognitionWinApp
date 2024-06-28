@@ -1,3 +1,5 @@
+from typing import Literal
+
 import customtkinter
 import cv2
 from PIL import Image, ImageOps, ImageTk  # 画像データ用
@@ -6,7 +8,20 @@ from function.infer import Model
 
 
 class ImageRecognition(customtkinter.CTkFrame):
-    def __init__(self, master, model_type, model_name, camera_index):
+    def __init__(
+        self,
+        master: customtkinter.CTkFrame,
+        model_type: Literal["Yolo v7", "Yolo NAS"],
+        model_name: Literal["sugarcane", "pineapple"],
+        camera_index: int | str,
+    ) -> None:
+        """
+        画像描画用のクラス
+        :param master       : 親クラス
+        :param model_type   : 使用するモデルのバージョン
+        :param model_name   : 使用するモデルの名前
+        :param camera_index : 使用するカメラのインデックス or 動画のパス
+        """
         super().__init__(master=master)
 
         window_width = self.winfo_width()
@@ -15,13 +30,11 @@ class ImageRecognition(customtkinter.CTkFrame):
         canvas_width = window_width // 2
         canvas_height = window_height
 
-        self.infer_image_canvas = customtkinter.CTkCanvas(
-            master=self, width=canvas_width, height=canvas_height
-        )  # type: ignore
+        self.infer_image_canvas = customtkinter.CTkCanvas(master=self, width=canvas_width, height=canvas_height)  # type: ignore
         self.infer_image_canvas.pack(side="top", expand=True, fill="both")
 
         # TODO ここで二つのカメラの映像
-        self.capture = cv2.VideoCapture(camera_index) # type: ignore
+        self.capture = cv2.VideoCapture(camera_index)  # type: ignore
 
         self.display_id = ""
 
@@ -29,23 +42,21 @@ class ImageRecognition(customtkinter.CTkFrame):
             model_type=model_type,
             model_name=model_name,
             labels=[model_name, "weed"],  # ここでラベルを設定
-            providers=["CUDAExecutionProvider", "CPUExecutionProvider"],
         )
-
-        print(self.model)
 
         self.fps_label = customtkinter.CTkLabel(master=self, text="")
         self.fps_label.pack()
 
-    def display_image(self):
+    def display_image(self) -> None:
+        """画像を描画する"""
         is_success, frame = self.capture.read()
 
-        infer_frame, fps = self.model.infer(frame=frame) # type: ignore
+        infer_frame, fps = self.model.infer(frame=frame)  # type: ignore
 
         self.fps_label.configure(text=fps)
         self.fps_label.update()
 
-        cv_image = cv2.cvtColor(src=infer_frame, code=cv2.COLOR_BGR2RGB) # type: ignore
+        cv_image = cv2.cvtColor(src=infer_frame, code=cv2.COLOR_BGR2RGB)  # type: ignore
         pil_image = Image.fromarray(obj=cv_image)
 
         canvas_width = self.infer_image_canvas.winfo_width()
@@ -63,12 +74,12 @@ class ImageRecognition(customtkinter.CTkFrame):
 
         self.display_id = self.after(ms=10, func=self.display_image)
 
-    def display_stop(self):
+    def display_stop(self) -> None:
         """描画を一時停止する"""
         self.after_cancel(id=self.display_id)
         self.display_id = ""
 
-    def display_restart(self):
+    def display_restart(self) -> None:
         """描画を再開する"""
         if not self.display_id:
             self.display_image()
