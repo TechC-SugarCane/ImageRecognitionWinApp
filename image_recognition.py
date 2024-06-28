@@ -1,3 +1,4 @@
+import argparse
 from typing import Literal
 
 import customtkinter
@@ -11,6 +12,7 @@ class ImageRecognition(customtkinter.CTkFrame):
     def __init__(
         self,
         master: customtkinter.CTkFrame,
+        is_serial: bool,
         model_type: Literal["Yolo v7", "Yolo NAS"],
         model_name: Literal["sugarcane", "pineapple"],
         camera_index: int | str,
@@ -18,11 +20,14 @@ class ImageRecognition(customtkinter.CTkFrame):
         """
         画像描画用のクラス
         :param master       : 親クラス
+        :param is_serial    : シリアル通信モードかどうか
         :param model_type   : 使用するモデルのバージョン
         :param model_name   : 使用するモデルの名前
         :param camera_index : 使用するカメラのインデックス or 動画のパス
         """
         super().__init__(master=master)
+
+        self.is_serial = is_serial
 
         window_width = self.winfo_width()
         window_height = self.winfo_height()
@@ -51,7 +56,7 @@ class ImageRecognition(customtkinter.CTkFrame):
         """画像を描画する"""
         is_success, frame = self.capture.read()
 
-        infer_frame, fps = self.model.infer(frame=frame)  # type: ignore
+        infer_frame, fps = self.model.infer(self.is_serial, frame)  # type: ignore
 
         self.fps_label.configure(text=fps)
         self.fps_label.update()

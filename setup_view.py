@@ -8,10 +8,16 @@ from view_process import ViewProcess
 
 
 class Setup(customtkinter.CTk):
-    def __init__(self, args: argparse.Namespace) -> None:
+    def __init__(self, is_test: bool, is_serial: bool) -> None:
+        """
+        画面のセットアップを行う
+        :param is_test         : テストモードかどうか
+        :param is_serial       : シリアル通信モードかどうか
+        """
         super().__init__()
 
-        self.args = args
+        self.is_test = is_test
+        self.is_serial = is_serial
 
         # ウィンドウサイズ（幅x高さ）
         self.geometry(geometry_string="1000x800")
@@ -42,24 +48,29 @@ class Setup(customtkinter.CTk):
 
             camera_index1 = 0  # 左のカメラ
             camera_index2 = 1  # 右のカメラ
-            if self.args.test:
-                camera_index1 = 'video/multi_data1.mp4'
-                camera_index2 = 'video/multi_data2.mp4'
 
-            # 二つのViewProcessインスタンスを作成
+            # テストモードの場合はカメラではなく動画を読み込む
+            if self.is_test:
+                camera_index1 = "video/multi_data1.mp4"
+                camera_index2 = "video/multi_data2.mp4"
+
+            # 左のカメラ設定
             self.view_process1 = ViewProcess(
                 master=self,
+                is_serial=self.is_serial,
                 inference_model_value=inference_model_value,
                 crops_value=crops_value,
-                camera_index=camera_index1, # ここで読み込ませる動画の設定を行う
+                camera_index=camera_index1,  # ここで読み込ませる動画の設定を行う
             )
             self.view_process1.pack(side="left", expand=True, fill="both")
 
+            # 右のカメラ設定
             self.view_process2 = ViewProcess(
                 master=self,
+                is_serial=self.is_serial,
                 inference_model_value=inference_model_value,
                 crops_value=crops_value,
-                camera_index=camera_index2, # videoフォルダーの下にある動画に置き換えてください
+                camera_index=camera_index2,  # ここで読み込ませる動画の設定を行う
             )
             self.view_process2.pack(side="right", expand=True, fill="both")
 
@@ -94,7 +105,7 @@ if __name__ == "__main__":
     parser.add_argument("-s", "--serial", action="store_true", help="シリアル通信モード")
     args = parser.parse_args()  # args.test, args.serial で引数にアクセス可能
 
-    app = Setup(args)
+    app = Setup(is_test=args.test, is_serial=args.serial)
     app.title(string="画像認識")
 
     app.mainloop()
