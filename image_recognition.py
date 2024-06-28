@@ -1,4 +1,3 @@
-import argparse
 from typing import Literal
 
 import customtkinter
