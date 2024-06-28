@@ -46,33 +46,33 @@ class Setup(customtkinter.CTk):
             self.inference_model_frame.destroy()
             self.execute_button.destroy()
 
-            camera_index1 = 0  # 左のカメラ
-            camera_index2 = 1  # 右のカメラ
+            left_camera_index = 0
+            right_camera_index = 1
 
             # テストモードの場合はカメラではなく動画を読み込む
             if self.is_test:
-                camera_index1 = "video/multi_data1.mp4"
-                camera_index2 = "video/multi_data2.mp4"
+                left_camera_index = "video/multi_data1.mp4"
+                right_camera_index = "video/multi_data2.mp4"
 
-            # 左のカメラ設定
-            self.view_process1 = ViewProcess(
+            # 左の画面設定
+            self.left_view_process = ViewProcess(
                 master=self,
                 is_serial=self.is_serial,
                 inference_model_value=inference_model_value,
                 crops_value=crops_value,
-                camera_index=camera_index1,  # ここで読み込ませる動画の設定を行う
+                camera_index=left_camera_index,
             )
-            self.view_process1.pack(side="left", expand=True, fill="both")
+            self.left_view_process.pack(side="left", expand=True, fill="both")
 
-            # 右のカメラ設定
-            self.view_process2 = ViewProcess(
+            # 右の画面設定
+            self.right_view_process = ViewProcess(
                 master=self,
                 is_serial=self.is_serial,
                 inference_model_value=inference_model_value,
                 crops_value=crops_value,
-                camera_index=camera_index2,  # ここで読み込ませる動画の設定を行う
+                camera_index=right_camera_index,
             )
-            self.view_process2.pack(side="right", expand=True, fill="both")
+            self.right_view_process.pack(side="right", expand=True, fill="both")
 
         else:
             print("両方選択されていない")
