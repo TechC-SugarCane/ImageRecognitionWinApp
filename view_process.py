@@ -9,6 +9,7 @@ class ViewProcess(customtkinter.CTkFrame):
     def __init__(
         self,
         master: customtkinter.CTkFrame,
+        is_serial: bool,
         inference_model_value: Literal["Yolo v7", "Yolo NAS"],
         crops_value: Literal["sugarcane", "pineapple"],
         camera_index: int | str,
@@ -16,6 +17,7 @@ class ViewProcess(customtkinter.CTkFrame):
         """
         描画処理を行う
         :param master                : 親クラス
+        :param is_serial             : シリアル通信モードかどうか
         :param inference_model_value : 使用するモデルのバージョン
         :param crops_value           : 推論する作物の名前
         :param camera_index          : 使用するカメラのインデックス or 動画のパス
@@ -23,7 +25,11 @@ class ViewProcess(customtkinter.CTkFrame):
         super().__init__(master=master)
 
         self.image_recognition = ImageRecognition(
-            master=self, model_type=inference_model_value, model_name=crops_value, camera_index=camera_index
+            master=self,
+            is_serial=is_serial,
+            model_type=inference_model_value,
+            model_name=crops_value,
+            camera_index=camera_index,
         )
         self.image_recognition.pack(side="top", fill="both", expand="True")
 

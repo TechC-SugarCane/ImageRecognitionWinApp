@@ -52,13 +52,14 @@ class Model:
         # ランダムでバウンディングボックスの色を決める
         self.colors = {name: [random.randint(0, 255) for _ in range(3)] for i, name in enumerate(self.labels)}
 
-    def infer(self, frame: MatLike) -> Tuple[MatLike, int]:
+    def infer(self, is_serial: bool, frame: MatLike) -> Tuple[MatLike, int]:
         """
         入力された画像を選択されたモデルを使用して推論を行う
-        :param frame: 入力された画像データまたは動画データ
+        :param is_serial : シリアル通信モードかどうか
+        :param frame     : 入力された画像データまたは動画データ
 
-        :return frame: バウンディングボックスが描画されているフレームデータ
-        :return fps  : フレームレート
+        :return frame    : バウンディングボックスが描画されているフレームデータ
+        :return fps      : フレームレート
         """
 
         # モデルのバージョンごとにそれぞれ推論処理を行う
@@ -81,7 +82,7 @@ class Model:
             outputs = self.model.run(self.outname, inp)[0]
 
             # バウンディングボックスを入力されたフレームに描画する
-            frame = draw(frame, outputs, ratio, dwdh, self.labels, self.colors)
+            frame = draw(is_serial, frame, outputs, ratio, dwdh, self.labels, self.colors)
 
             # 時間の計測を終了 fps の計算をする
             end_time = time.perf_counter()

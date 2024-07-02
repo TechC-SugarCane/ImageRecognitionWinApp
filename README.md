@@ -10,7 +10,9 @@
 
 ## TODO
 
-- [ ] テスト用動画からの推論方法について記述
+- [x] テスト用動画からの推論方法について記述
+- [ ] ドキュメントの作成
+- [ ] ユーザーフローの画像のリンク切れを修正
 
 ## 画像
 
@@ -93,6 +95,12 @@ pip install -r requirements-gpu.txt
 
 ```bash
 python setup_view.py
+
+# テスト用の動画を使って推論を行う場合
+python setup_view.py --test
+
+# serial通信を使って、ノズルから噴出させる場合
+python setup_view.py --serial
 ```
 
 ### 3. アプリの操作
