@@ -8,6 +8,7 @@ from .nozzle import nozzle
 
 
 def draw(
+    is_serial: bool,
     frame: MatLike,
     outputs: np.ndarray,
     ratio: float,
@@ -17,6 +18,7 @@ def draw(
 ) -> MatLike:
     """
     推論した結果をフレームに描画させる
+    :param is_serial     : シリアル通信モードかどうか
     :param frame   		: 入力された画像データまたは動画データ
     :param outputs 		: 推論されたデータ
     :param ratio 		: リサイズ後の画像サイズとリサイズ前の画像サイズの比率
@@ -39,10 +41,9 @@ def draw(
         box /= ratio
         box = box.round().astype(np.int32).tolist()
 
-        # 雑草のラベルのデータだったときノズルを噴出するプログラムを実装させる
-        # シリアル通信に関する処理を実装するときにコメントアウトする
-        # if name == "weed":
-        # 	nozzle(frame, box)
+        # シリアル通信モードの場合は、雑草のラベルのデータだったときノズルを噴出する
+        if is_serial and name == "weed":
+            nozzle(frame, box)
 
         cls_id = int(cls_id)
         score = round(float(score), 3)
