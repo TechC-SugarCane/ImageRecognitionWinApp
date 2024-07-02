@@ -7,5 +7,7 @@ dist
 tkinter_sample.spec
 __pycache__
 *.onnx
-
+video
+!video/multi_data1.mp4
+!video/multi_data2.mp4
 *.pth
