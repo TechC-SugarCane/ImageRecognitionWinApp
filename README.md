@@ -115,10 +115,10 @@ python setup_view.py --serial
 setup_view.pyをexe化して簡単にアプリを起動できるようにすることができます。
 
 ```bash
-pyinstaller --onefile --noconsole setup_view.py
+# --noconsoleというオプションは、エラーが出てもわからないため基本おすすめしません
+pyinstaller --onefile setup_view.py
 
 # --onefile: 1つのexeファイルにまとめる
-# --noconsole: コンソールを表示しない
 ```
 
 ビルドが完了すると、`dist/`にexeファイルが生成されます。ただし、モデルのパスの関係上`dist/`で実行するとエラーが出るため、exeファイルはルートディレクトリに移動させてください。<br>
