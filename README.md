@@ -110,6 +110,25 @@ python setup_view.py --serial
 ※カメラを二台使用する場合は、右の開始ボタンも押してください
 3. 推論を停止したい場合は、停止ボタンを押してください
 
+## スクリプトをexe化する
+
+setup_view.pyをexe化して簡単にアプリを起動できるようにすることができます。
+
+```bash
+pyinstaller --onefile --noconsole setup_view.py
+
+# --onefile: 1つのexeファイルにまとめる
+# --noconsole: コンソールを表示しない
+```
+
+ビルドが完了すると、`dist/`にexeファイルが生成されます。ただし、モデルのパスの関係上`dist/`で実行するとエラーが出るため、exeファイルはルートディレクトリに移動させてください。<br>
+また、exeファイルをコンソール上から実行すれば、通常通り引数を渡すことができます。
+
+```bash
+# 例
+./setup_view.exe --test
+```
+
 ## コントリビューター向けガイドライン
 
 コントリビューター向けのガイドラインについては、こちらの[CONTRIBUTING.md](https://github.com/TechC-SugarCane/.github/blob/main/CONTRIBUTING.md)を参照してください。
