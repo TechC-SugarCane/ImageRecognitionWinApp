@@ -1,16 +1,16 @@
-from typing import Optional
 import math
+from typing import Optional
 
 from cv2.typing import MatLike
 import serial
 
 
-def nozzle(
+def calc_nozzle_byte_idx(
     frame: MatLike,
     weed_bbox: list[int, int, int, int],
 ) -> Optional[bytes]:
     """
-    ノズルを噴射させるための通信を行う
+    雑草のバウンディングボックスデータからノズルを制御するためのバイトデータを生成する
     :param frame: 入力された画像、動画フレーム
     :param box [x0, y0, x1, y1]: 雑草のバウンディングボックスデータ
 

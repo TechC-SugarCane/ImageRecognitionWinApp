@@ -4,7 +4,7 @@ import cv2
 from cv2.typing import MatLike
 import numpy as np
 
-from .nozzle import execute_nozzle, nozzle
+from .nozzle import calc_nozzle_byte_idx, execute_nozzle
 
 
 def draw(
@@ -43,7 +43,7 @@ def draw(
 
         # シリアル通信モードの場合は、雑草のラベルのデータだったときノズルを噴出する
         if is_serial and name == "weed":
-            weedbox = nozzle(frame, box)
+            weedbox = calc_nozzle_byte_idx(frame, box)
             if weedbox is not None:
                 execute_nozzle(weedbox)
 
