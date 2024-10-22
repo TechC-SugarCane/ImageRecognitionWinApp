@@ -4,7 +4,7 @@ import cv2
 from cv2.typing import MatLike
 import numpy as np
 
-from .nozzle import nozzle
+from .nozzle import execute_nozzle, nozzle
 
 
 def draw(
@@ -44,6 +44,7 @@ def draw(
         # シリアル通信モードの場合は、雑草のラベルのデータだったときノズルを噴出する
         if is_serial and name == "weed":
             nozzle(frame, box)
+            execute_nozzle(frame, box)
 
         cls_id = int(cls_id)
         score = round(float(score), 3)
