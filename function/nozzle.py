@@ -14,28 +14,30 @@ def nozzle(frame, box):
     x = box[0] + tx
     ty = box[1] + y  # 雑草　座標　中心？
 
-    # 現在のフレームのサイズを取得する
+    # 現在の画面サイズを取得する
     h, w, c = frame.shape
     w16 = w // 16
 
-    # 雑草の位置を認識する
-    weedbox = ty // w16
+    # 雑草の中央座標が0~16の範囲に収まるように変換
+    weedbox = x // w16
 
     # 発射部分
-    if ty <= 300 and ty <= 280:
+    if 280 <= ty <= 300:
+        frontbit = 0b00000000
+        backbit = 0b00000000
         # 1バイト*2＝8ビット*2
-        # 前半 1バイト目
+        # 前半 1バイト目  1~8個目のノズルを制御
         if weedbox <= 8:
-            # 移動する分のビット 左シフト？
+            # 移動する分のビットシフト
             bit = weedbox - 1
-            frontbit = 0x10000000 >> bit
+            frontbit = 0b10000000 >> bit
 
-        # 後半 2バイト目
+        # 後半 2バイト目  9~16個目のノズルを制御
         else:
             bit = weedbox - 9
-            backbit = 0x10000000 >> bit
+            backbit = 0b10000000 >> bit
 
-        # リストにする 数値→バイナリ
+        # 制御したいノズルのビットだけ立てる
         weedbyte = bytes([frontbit, backbit])
 
         # 送信部分
