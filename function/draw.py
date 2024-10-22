@@ -43,9 +43,9 @@ def draw(
 
         # シリアル通信モードの場合は、雑草のラベルのデータだったときノズルを噴出する
         if is_serial and name == "weed":
-            weedbox = calc_nozzle_byte_idx(frame, box)
-            if weedbox is not None:
-                execute_nozzle(weedbox)
+            nozzle_control_bytes = calc_nozzle_byte_idx(frame, box)
+            if nozzle_control_bytes is not None:
+                execute_nozzle(nozzle_control_bytes)
 
         cls_id = int(cls_id)
         score = round(float(score), 3)

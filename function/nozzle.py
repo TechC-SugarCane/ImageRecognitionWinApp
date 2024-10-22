@@ -47,23 +47,23 @@ def calc_nozzle_byte_idx(
             backbit = 0b10000000 >> bit
 
         # 制御したいノズルのビットだけ立てる
-        weedbyte = bytes([frontbit, backbit])
+        nozzle_control_bytes = bytes([frontbit, backbit])
 
-        return weedbyte
+        return nozzle_control_bytes
 
     return None
 
 
 def execute_nozzle(
-    weedbyte: bytes,
+    nozzle_control_bytes: bytes,
 ) -> None:
     """
     ノズルを噴射させるための通信を行う
 
-    :param weedbyte: ノズルを制御するためのバイトデータ
+    :param nozzle_control_bytes: ノズルを制御するためのバイトデータ
     """
 
     # 送信部分
     ser = serial.Serial("COM4", 115200, timeout=None)
-    ser.write(weedbyte)
+    ser.write(nozzle_control_bytes)
     ser.close()
