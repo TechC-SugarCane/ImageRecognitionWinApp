@@ -1,11 +1,17 @@
+from typing import Tuple
+
+from cv2.typing import MatLike
 import serial
 
 
-def nozzle(frame, box):
+def nozzle(
+    frame: MatLike,
+    box: Tuple[int, int, int, int],
+) -> None:
     """
     ノズルを噴射させるための通信を行う
     :param frame: 入力された画像、動画フレーム
-    :param box  : 雑草のバウンディングボックスデータ
+    :param box [x0, y0, x1, y1]: 雑草のバウンディングボックスデータ
     """
 
     # 雑草と認識されているバウンディングボックスの中心座標を求める
