@@ -1,12 +1,10 @@
-from typing import Tuple
-
 from cv2.typing import MatLike
 import serial
 
 
 def nozzle(
     frame: MatLike,
-    weed_bbox: Tuple[int, int, int, int],
+    weed_bbox: list[int, int, int, int],
 ) -> None:
     """
     ノズルを噴射させるための通信を行う
