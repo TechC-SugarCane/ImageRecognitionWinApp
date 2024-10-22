@@ -25,7 +25,7 @@ def nozzle(
     w16 = w // 16
 
     # 雑草の中央座標が0~16の範囲に収まるように変換
-    weedbox = bbox_center_x // w16
+    nozzle_index = bbox_center_x // w16
 
     # 発射部分
     if 280 <= bbox_center_y <= 300:
@@ -33,14 +33,14 @@ def nozzle(
         backbit = 0b00000000
         # 1バイト*2＝8ビット*2
         # 前半 1バイト目  1~8個目のノズルを制御
-        if weedbox <= 8:
+        if nozzle_index <= 8:
             # 移動する分のビットシフト
-            bit = weedbox - 1
+            bit = nozzle_index - 1
             frontbit = 0b10000000 >> bit
 
         # 後半 2バイト目  9~16個目のノズルを制御
         else:
-            bit = weedbox - 9
+            bit = nozzle_index - 9
             backbit = 0b10000000 >> bit
 
         # 制御したいノズルのビットだけ立てる
