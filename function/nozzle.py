@@ -6,7 +6,7 @@ import serial
 
 def nozzle(
     frame: MatLike,
-    box: Tuple[int, int, int, int],
+    weed_bbox: Tuple[int, int, int, int],
 ) -> None:
     """
     ノズルを噴射させるための通信を行う
@@ -15,20 +15,20 @@ def nozzle(
     """
 
     # 雑草と認識されているバウンディングボックスの中心座標を求める
-    tx = (box[0] - box[2]) * 0.5
-    y = (box[1] - box[3]) * 0.5
-    x = box[0] + tx
-    ty = box[1] + y  # 雑草　座標　中心？
+    bbox_width = (weed_bbox[2] - weed_bbox[0])
+    bbox_height = (weed_bbox[3] - weed_bbox[1])
+    bbox_center_x = weed_bbox[0] + bbox_width * 0.5
+    bbox_center_y = weed_bbox[1] + bbox_height * 0.5
 
     # 現在の画面サイズを取得する
     h, w, c = frame.shape
     w16 = w // 16
 
     # 雑草の中央座標が0~16の範囲に収まるように変換
-    weedbox = x // w16
+    weedbox = bbox_center_x // w16
 
     # 発射部分
-    if 280 <= ty <= 300:
+    if 280 <= bbox_center_y <= 300:
         frontbit = 0b00000000
         backbit = 0b00000000
         # 1バイト*2＝8ビット*2
