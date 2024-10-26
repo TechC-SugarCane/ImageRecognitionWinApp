@@ -1,44 +1,69 @@
+import math
+from typing import Optional
+
+from cv2.typing import MatLike
 import serial
 
 
-def nozzle(frame, box):
+def calc_nozzle_byte_idx(
+    frame: MatLike,
+    weed_bbox: list[int, int, int, int],
+) -> Optional[bytes]:
     """
-    ノズルを噴射させるための通信を行う
+    雑草のバウンディングボックスデータからノズルを制御するためのバイトデータを生成する
     :param frame: 入力された画像、動画フレーム
-    :param box  : 雑草のバウンディングボックスデータ
+    :param box [x0, y0, x1, y1]: 雑草のバウンディングボックスデータ
+
+    :return weedbyte: ノズルを制御するためのバイトデータ
     """
 
     # 雑草と認識されているバウンディングボックスの中心座標を求める
-    tx = (box[0] - box[2]) * 0.5
-    y = (box[1] - box[3]) * 0.5
-    x = box[0] + tx
-    ty = box[1] + y  # 雑草　座標　中心？
+    bbox_width = weed_bbox[2] - weed_bbox[0]
+    bbox_height = weed_bbox[3] - weed_bbox[1]
+    bbox_center_x = weed_bbox[0] + bbox_width * 0.5
+    bbox_center_y = weed_bbox[1] + bbox_height * 0.5
 
-    # 現在のフレームのサイズを取得する
+    # 現在の画面サイズを取得する
     h, w, c = frame.shape
     w16 = w // 16
 
-    # 雑草の位置を認識する
-    weedbox = ty // w16
+    # 雑草の中央座標が0~16の範囲に収まるように変換
+    nozzle_index = int(bbox_center_x // w16)
 
     # 発射部分
-    if ty <= 300 and ty <= 280:
+    if 280 <= bbox_center_y <= 300:
+        frontbit = 0b00000000
+        backbit = 0b00000000
         # 1バイト*2＝8ビット*2
-        # 前半 1バイト目
-        if weedbox <= 8:
-            # 移動する分のビット 左シフト？
-            bit = weedbox - 1
-            frontbit = 0x10000000 >> bit
+        # 前半 1バイト目  1~8個目のノズルを制御
+        if nozzle_index <= 7:
+            # 移動する分のビットシフト
+            bit = nozzle_index
+            frontbit = 0b10000000 >> bit
 
-        # 後半 2バイト目
+        # 後半 2バイト目  9~16個目のノズルを制御
         else:
-            bit = weedbox - 9
-            backbit = 0x10000000 >> bit
+            bit = nozzle_index - 8
+            backbit = 0b10000000 >> bit
 
-        # リストにする 数値→バイナリ
-        weedbyte = bytes([frontbit, backbit])
+        # 制御したいノズルのビットだけ立てる
+        nozzle_control_bytes = bytes([frontbit, backbit])
 
-        # 送信部分
-        ser = serial.Serial("COM4", 115200, timeout=None)
-        ser.write(weedbyte)
-        ser.close()
+        return nozzle_control_bytes
+
+    return None
+
+
+def execute_nozzle(
+    nozzle_control_bytes: bytes,
+) -> None:
+    """
+    ノズルを噴射させるための通信を行う
+
+    :param nozzle_control_bytes: ノズルを制御するためのバイトデータ
+    """
+
+    # 送信部分
+    ser = serial.Serial("COM4", 115200, timeout=None)
+    ser.write(nozzle_control_bytes)
+    ser.close()
