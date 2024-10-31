@@ -53,6 +53,7 @@ class Model:
 
             # モデルの読み込み
             self.model = self.load_model(f"./model/{self.model_name}_v10.onnx")
+            print(self.model._fallback_providers)
 
         self.outname = [self.model.get_outputs()[0].name]
         self.inname = [i.name for i in self.model.get_inputs()]
@@ -85,14 +86,12 @@ class Model:
         start_time = time.perf_counter()
 
         copy_frame = frame.copy()
+        ratio = 1
+        dwdh = (0, 0)
 
-        # コピーされたフレームを処理して推論用の型に変換する (type: numpy -> type: tensor)
-        copy_frame, ratio, dwdh = letterbox(copy_frame, auto=False)
-        copy_frame = copy_frame.transpose((2, 0, 1))
-        copy_frame = np.expand_dims(copy_frame, 0)
-        copy_frame = np.ascontiguousarray(copy_frame)
-        copy_frame = copy_frame.astype(np.float32)
-        copy_frame /= 255
+        # preprocess
+        if self.model_type == "YOLOv7":
+            copy_frame, ratio, dwdh = self.pre_process_yolov7(copy_frame)
 
         # 推論処理の実装
         inp = {self.inname[0]: copy_frame}
@@ -129,6 +128,26 @@ class Model:
         fps = int(1 / (end_time - start_time))
 
         return frame, fps
+
+    def pre_process_yolov7(self, frame: np.ndarray) -> Tuple[np.ndarray, float, Tuple[float, float]]:
+        """
+        YOLO v7 の前処理
+
+        :param frame : 入力画像データ
+
+        :return processed_frame : 前処理後の画像データ
+        :return ratio           : リサイズ後の画像サイズとリサイズ前の画像サイズの比率
+        :return (dw, dh)        : パディングした分の画像サイズ
+        """
+        # コピーされたフレームを処理して推論用の型に変換する (type: numpy -> type: tensor)
+        frame, ratio, dwdh = letterbox(frame, auto=False)
+        frame = frame.transpose((2, 0, 1))
+        frame = np.expand_dims(frame, 0)
+        frame = np.ascontiguousarray(frame)
+        frame = frame.astype(np.float32)
+        frame /= 255
+        return frame, ratio, dwdh
+
 
     def post_process_yolov7(self, output: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
         """
