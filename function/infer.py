@@ -97,3 +97,26 @@ class Model:
             fps = int(1 / (end_time - start_time))
 
             return frame, fps
+
+
+    def post_process_yolov10(self, output: np.ndarray) -> np.ndarray:
+        """
+        YOLO v10 の後処理
+
+        :param output : 推論結果
+
+        :return processed_outputs : 後処理後の推論結果. (x0, y0, x1, y1, score, class_id) の形式
+        """
+        output = output.squeeze()
+        boxes = output[:, :-2]
+        confidences = output[:, -2]
+        class_ids = output[:, -1].astype(int)
+
+        mask = confidences > self.yolov10_cfg["conf_thres"]
+        boxes = boxes[mask, :]
+        confidences = confidences[mask]
+        class_ids = class_ids[mask]
+
+        processed_outputs = np.concatenate([boxes, confidences[:, None], class_ids[:, None]], axis=1)
+
+        return processed_outputs
