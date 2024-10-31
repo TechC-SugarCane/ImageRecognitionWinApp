@@ -1,3 +1,4 @@
+import os
 import random
 import time
 from typing import Literal, Tuple
@@ -23,7 +24,7 @@ def load_yaml_config(file_path: str) -> dict:
 class Model:
     def __init__(
         self,
-        model_type: Literal["Yolo v7", "Yolo NAS"],
+        model_type: Literal["Yolo v7", "Yolo v10"],
         model_name: Literal["sugarcane", "pineapple"],
         labels: list[Literal["sugarcane", "pineapple", "weed"]],
     ) -> None:
@@ -45,20 +46,28 @@ class Model:
             print(f"Use YOLO v7 model. model name: {self.model_name}")
 
             # モデルの読み込み
-            self.model = ort.InferenceSession(f"./model/{self.model_name}_v7.onnx", providers=PROVIDERS)
+            self.model = self.load_model(f"./model/{self.model_name}_v7.onnx")
+        elif model_type == "Yolo v10":
+            print(f"Use YOLO v10 model. model name: {self.model_name}")
 
-            self.outname = [self.model.get_outputs()[0].name]
-            self.inname = [i.name for i in self.model.get_inputs()]
+            # モデルの読み込み
+            self.model = self.load_model(f"./model/{self.model_name}_v10.onnx")
 
-        # elif model_type == "Yolo NAS":
-        #     print(f"Use YOLO NAS model. model name: {self.model_name}")
-        #     self.model = ort.InferenceSession(f"./model/{model_name}_nas.onnx", providers=providers)
-
-        #     self.outname = [self.model.get_outputs()[0].name]
-        #     self.inname = [i.name for i in self.model.get_inputs()]
+        self.outname = [self.model.get_outputs()[0].name]
+        self.inname = [i.name for i in self.model.get_inputs()]
 
         # ランダムでバウンディングボックスの色を決める
         self.colors = {name: [random.randint(0, 255) for _ in range(3)] for i, name in enumerate(self.labels)}
+
+    def load_model(self, model_path: str) -> ort.InferenceSession:
+        """
+        モデルを読み込む
+        :param model_path : モデルのパス
+        """
+        if not os.path.exists(model_path):
+            raise FileNotFoundError(f"Model file not found: {model_path}")
+        return ort.InferenceSession(model_path, providers=PROVIDERS)
+
 
     def infer(self, is_serial: bool, frame: MatLike) -> Tuple[MatLike, int]:
         """
@@ -71,32 +80,34 @@ class Model:
         """
 
         # モデルのバージョンごとにそれぞれ推論処理を行う
-        if self.model_type == "Yolo v7":
-            # 時間の計測を開始
-            start_time = time.perf_counter()
+        # 時間の計測を開始
+        start_time = time.perf_counter()
 
-            copy_frame = frame.copy()
+        copy_frame = frame.copy()
 
-            # コピーされたフレームを処理して推論用の型に変換する (type: numpy -> type: tensor)
-            copy_frame, ratio, dwdh = letterbox(copy_frame, auto=False)
-            copy_frame = copy_frame.transpose((2, 0, 1))
-            copy_frame = np.expand_dims(copy_frame, 0)
-            copy_frame = np.ascontiguousarray(copy_frame)
-            copy_frame = copy_frame.astype(np.float32)
-            copy_frame /= 255
+        # コピーされたフレームを処理して推論用の型に変換する (type: numpy -> type: tensor)
+        copy_frame, ratio, dwdh = letterbox(copy_frame, auto=False)
+        copy_frame = copy_frame.transpose((2, 0, 1))
+        copy_frame = np.expand_dims(copy_frame, 0)
+        copy_frame = np.ascontiguousarray(copy_frame)
+        copy_frame = copy_frame.astype(np.float32)
+        copy_frame /= 255
 
-            # 推論処理の実装
-            inp = {self.inname[0]: copy_frame}
-            outputs = self.model.run(self.outname, inp)[0]
+        # 推論処理の実装
+        inp = {self.inname[0]: copy_frame}
+        outputs = self.model.run(self.outname, inp)[0]
 
-            # バウンディングボックスを入力されたフレームに描画する
-            frame = draw(is_serial, frame, outputs, ratio, dwdh, self.labels, self.colors)
+        if self.model_type == "Yolo v10":
+            outputs = self.post_process_yolov10(outputs)
 
-            # 時間の計測を終了 fps の計算をする
-            end_time = time.perf_counter()
-            fps = int(1 / (end_time - start_time))
+        # バウンディングボックスを入力されたフレームに描画する
+        frame = draw(is_serial, frame, outputs, ratio, dwdh, self.labels, self.colors)
 
-            return frame, fps
+        # 時間の計測を終了 fps の計算をする
+        end_time = time.perf_counter()
+        fps = int(1 / (end_time - start_time))
+
+        return frame, fps
 
 
     def post_process_yolov10(self, output: np.ndarray) -> np.ndarray:
