@@ -19,6 +19,7 @@ pillow==10.3.0
 protobuf==5.27.2
 pyreadline3==3.4.1
 pyserial==3.5
+PyYAML==6.0.2
 sympy==1.12.1
 tbb==2021.13.0
 torch==2.3.1
