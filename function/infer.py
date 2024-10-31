@@ -133,7 +133,7 @@ class Model:
 
         return frame, fps
 
-    def pre_process_yolov7(self, frame: np.ndarray) -> Tuple[np.ndarray, float, Tuple[float, float]]:
+    def pre_process_yolov7(self, frame: MatLike) -> Tuple[MatLike, float, Tuple[float, float]]:
         """
         YOLO v7 の前処理
 
