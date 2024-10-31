@@ -12,7 +12,7 @@ class ImageRecognition(customtkinter.CTkFrame):
         self,
         master: customtkinter.CTkFrame,
         is_serial: bool,
-        model_type: Literal["Yolo v7", "Yolo v10"],
+        model_type: Literal["YOLOv7", "YOLOv10"],
         model_name: Literal["sugarcane", "pineapple"],
         camera_index: int | str,
     ) -> None:

@@ -24,7 +24,7 @@ def load_yaml_config(file_path: str) -> dict:
 class Model:
     def __init__(
         self,
-        model_type: Literal["Yolo v7", "Yolo v10"],
+        model_type: Literal["YOLOv7", "YOLOv10"],
         model_name: Literal["sugarcane", "pineapple"],
         labels: list[Literal["sugarcane", "pineapple", "weed"]],
     ) -> None:
@@ -42,12 +42,12 @@ class Model:
         self.labels = labels
 
         # 選択されたモデルのバージョンをチェック
-        if model_type == "Yolo v7":
+        if model_type == "YOLOv7":
             print(f"Use YOLO v7 model. model name: {self.model_name}")
 
             # モデルの読み込み
             self.model = self.load_model(f"./model/{self.model_name}_v7.onnx")
-        elif model_type == "Yolo v10":
+        elif model_type == "YOLOv10":
             print(f"Use YOLO v10 model. model name: {self.model_name}")
 
             # モデルの読み込み
