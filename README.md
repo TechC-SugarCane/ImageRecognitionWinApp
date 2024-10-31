@@ -4,7 +4,7 @@
 
 推論には、[こちら](https://github.com/TechC-SugarCane/ObjectDetection)のリポジトリで作成したモデルを使って行います。
 
-モデルは、YOLO v7とNASを使用しています。
+モデルは、YOLOv7とYOLOv10を使用しています。
 
 また、GUIアプリのフレームワークには、CustomTkinterというPythonでGUIアプリが作れるものを使っています。
 
