@@ -17,14 +17,14 @@ class InferenceModelFrame(customtkinter.CTkFrame):
         )
         yolov7_rbtn.grid(row=0, column=0, padx=10, pady=10)
 
-        yolov_nas_rbtn = customtkinter.CTkRadioButton(
+        yolov10_rbtn = customtkinter.CTkRadioButton(
             master=self,
             text="YOLOv10",
             variable=self.selected_rbtn,
             value="YOLOv10",
             command=self.get_selected_rbtn_value,
         )
-        yolov_nas_rbtn.grid(row=2, column=0, padx=10, pady=10)
+        yolov10_rbtn.grid(row=2, column=0, padx=10, pady=10)
 
     def get_selected_rbtn_value(self) -> str:
         """選択された推論モデルを取得"""
