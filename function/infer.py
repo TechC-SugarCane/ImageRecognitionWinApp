@@ -57,7 +57,12 @@ class Model:
             print(self.model._fallback_providers)
 
         self.outname = [self.model.get_outputs()[0].name]
-        self.inname = [i.name for i in self.model.get_inputs()]
+        model_inputs = self.model.get_inputs()
+        self.inname = [i.name for i in model_inputs]
+
+        input_shape = model_inputs[0].shape
+        self.input_width = input_shape[2]
+        self.input_height = input_shape[3]
 
         # ランダムでバウンディングボックスの色を決める
         self.colors = {name: [random.randint(0, 255) for _ in range(3)] for i, name in enumerate(self.labels)}
@@ -204,4 +209,21 @@ class Model:
         confidences = confidences[mask]
         class_ids = class_ids[mask]
 
+        boxes = self.rescale_boxes(boxes)
+
         return boxes, confidences, class_ids
+
+    def rescale_boxes(self, boxes: np.ndarray) -> np.ndarray:
+        """
+        バウンディングボックスをリスケールする
+
+        :param boxes : バウンディングボックスの座標
+
+        :return rescaled_boxes : リスケール後のバウンディングボックスの座標
+        """
+        rescaled_boxes = boxes.copy()
+        input_shape = np.array([self.input_width, self.input_height, self.input_width, self.input_height])
+        rescaled_boxes = np.divide(rescaled_boxes, input_shape)
+        rescaled_boxes *= np.array([self.img_width, self.img_height, self.img_width, self.img_height])
+
+        return rescaled_boxes
