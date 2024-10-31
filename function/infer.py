@@ -120,8 +120,10 @@ class Model:
             label_name = self.labels[class_id]
             score = round(float(confidence), 3)
 
-            box -= np.array(dwdh * 2)
-            box /= ratio
+            if self.model_type == "YOLOv7":
+                box -= np.array(dwdh * 2)
+                box /= ratio
+
             box = box.round().astype(np.int32).tolist()
 
             # シリアル通信モードの場合は、雑草のラベルのデータだったときノズルを噴出する
