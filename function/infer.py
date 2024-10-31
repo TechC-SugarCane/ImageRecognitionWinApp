@@ -6,12 +6,18 @@ from cv2.typing import MatLike
 import numpy as np
 import onnxruntime as ort
 import torch  # これ消すとエラー出る. onnxruntime側で必要みたい
+import yaml
 
 from function.draw import draw
 from function.letterbox import letterbox
 
 # onnxでモデルを読み込んだ時のプロバイダー
 PROVIDERS = ["CUDAExecutionProvider", "CPUExecutionProvider"]
+
+def load_yaml_config(file_path: str) -> dict:
+    with open(file_path, "r") as file:
+        config = yaml.safe_load(file)
+    return config
 
 
 class Model:
@@ -27,6 +33,8 @@ class Model:
         :param model_name : 使用するモデルの名前
         :param labels     : ラベルの名前を格納したリスト
         """
+
+        self.yolov10_cfg = load_yaml_config("./cfg/yolov10.yml")
 
         self.model_type = model_type
         self.model_name = model_name
