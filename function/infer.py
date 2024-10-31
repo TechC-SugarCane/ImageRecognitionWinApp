@@ -54,7 +54,6 @@ class Model:
 
             # モデルの読み込み
             self.model = self.load_model(f"./model/{self.model_name}_v10.onnx")
-            print(self.model._fallback_providers)
 
         self.outname = [self.model.get_outputs()[0].name]
         model_inputs = self.model.get_inputs()
