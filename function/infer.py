@@ -3,6 +3,7 @@ import random
 import time
 from typing import Literal, Tuple
 
+import cv2
 from cv2.typing import MatLike
 import numpy as np
 import onnxruntime as ort
@@ -93,6 +94,9 @@ class Model:
         if self.model_type == "YOLOv7":
             copy_frame, ratio, dwdh = self.pre_process_yolov7(copy_frame)
 
+        if self.model_type == "YOLOv10":
+            copy_frame = self.pre_process_yolov10(copy_frame)
+
         # 推論処理の実装
         inp = {self.inname[0]: copy_frame}
         outputs = self.model.run(self.outname, inp)[0]
@@ -158,6 +162,29 @@ class Model:
         :return processed_outputs : 後処理後の推論結果. (boxes(x0, y0, x1, y1), confidences, class_ids)
         """
         return output[:, 1:5], output[:, 6], output[:, 5].astype(int)
+
+
+    def pre_process_yolov10(self, frame: MatLike) -> np.ndarray:
+        """
+        YOLO v10 の前処理
+
+        :param frame : 入力画像データ
+
+        :return processed_tensor : 前処理後の画像データ
+        """
+        self.img_height, self.img_width = frame.shape[:2]
+
+        processed_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+        # Resize input image
+        processed_frame = cv2.resize(processed_frame, (self.input_width, self.input_height))
+
+        # Scale input pixel values to 0 to 1
+        processed_frame = processed_frame / 255.0
+        processed_frame = processed_frame.transpose(2, 0, 1)
+        processed_tensor = processed_frame[np.newaxis, :, :, :].astype(np.float32)
+
+        return processed_tensor
 
     def post_process_yolov10(self, output: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
         """
