@@ -138,7 +138,7 @@ class Model:
 
         :return processed_outputs : 後処理後の推論結果. (boxes(x0, y0, x1, y1), confidences, class_ids)
         """
-        return output[:, 1:5], output[:, 5], output[:, 6].astype(int)
+        return output[:, 1:5], output[:, 6], output[:, 5].astype(int)
 
     def post_process_yolov10(self, output: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
         """
