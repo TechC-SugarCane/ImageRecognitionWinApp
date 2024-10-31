@@ -11,6 +11,7 @@ import yaml
 
 from function.draw import draw
 from function.letterbox import letterbox
+from function.nozzle import nozzle
 
 # onnxでモデルを読み込んだ時のプロバイダー
 PROVIDERS = ["CUDAExecutionProvider", "CPUExecutionProvider"]
@@ -97,11 +98,31 @@ class Model:
         inp = {self.inname[0]: copy_frame}
         outputs = self.model.run(self.outname, inp)[0]
 
-        if self.model_type == "YOLOv10":
-            outputs = self.post_process_yolov10(outputs)
+        boxes, confidences, class_ids = None, None, None
 
-        # バウンディングボックスを入力されたフレームに描画する
-        frame = draw(is_serial, frame, outputs, ratio, dwdh, self.labels, self.colors)
+        if self.model_type == "YOLOv7":
+            boxes, confidences, class_ids = self.post_process_yolov7(outputs)
+
+        if self.model_type == "YOLOv10":
+            boxes, confidences, class_ids = self.post_process_yolov10(outputs)
+
+        if boxes is None or confidences is None or class_ids is None:
+            raise ValueError("The values of boxes, confidences, and class_ids must not be None.")
+
+        for box, confidence, class_id in zip(boxes, confidences, class_ids, strict=True):
+            label_name = self.labels[class_id]
+            score = round(float(confidence), 3)
+
+            box -= np.array(dwdh * 2)
+            box /= ratio
+            box = box.round().astype(np.int32).tolist()
+
+            # シリアル通信モードの場合は、雑草のラベルのデータだったときノズルを噴出する
+            if is_serial and label_name == "weed":
+                nozzle(frame, box)
+
+            # 元フレームに上書きする形でバウンディングボックスを描画
+            frame = draw(frame, label_name, score, box, self.colors)
 
         # 時間の計測を終了 fps の計算をする
         end_time = time.perf_counter()
@@ -109,14 +130,23 @@ class Model:
 
         return frame, fps
 
+    def post_process_yolov7(self, output: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+        """
+        YOLO v7 の後処理
 
-    def post_process_yolov10(self, output: np.ndarray) -> np.ndarray:
+        :param output : 推論結果. (batch_id, x0, y0, x1, y1, cls_id, score)
+
+        :return processed_outputs : 後処理後の推論結果. (boxes(x0, y0, x1, y1), confidences, class_ids)
+        """
+        return output[:, 1:5], output[:, 5], output[:, 6].astype(int)
+
+    def post_process_yolov10(self, output: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
         """
         YOLO v10 の後処理
 
         :param output : 推論結果
 
-        :return processed_outputs : 後処理後の推論結果. (x0, y0, x1, y1, score, class_id) の形式
+        :return processed_outputs : 後処理後の推論結果. (boxes(x0, y0, x1, y1), confidences, class_ids)
         """
         output = output.squeeze()
         boxes = output[:, :-2]
@@ -128,6 +158,4 @@ class Model:
         confidences = confidences[mask]
         class_ids = class_ids[mask]
 
-        processed_outputs = np.concatenate([boxes, confidences[:, None], class_ids[:, None]], axis=1)
-
-        return processed_outputs
+        return boxes, confidences, class_ids
