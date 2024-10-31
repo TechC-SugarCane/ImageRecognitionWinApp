@@ -1,0 +1,3 @@
+# predict settings
+conf_thres: 0.25
+device: 0
