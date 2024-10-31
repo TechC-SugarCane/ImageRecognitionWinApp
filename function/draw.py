@@ -20,7 +20,7 @@ def draw(
     """
     color = colors[label_name]
     label_name += " " + str(score)
-    cv2.rectangle(frame, box[:2], box[2:], color, 2)
-    cv2.putText(frame, label_name, (box[0], box[1] - 2), cv2.FONT_HERSHEY_SIMPLEX, 0.75, [225, 255, 255], thickness=2)
+    cv2.rectangle(frame, box[:2], box[2:], color, 5)
+    cv2.putText(frame, label_name, (box[0], box[1] - 2), cv2.FONT_HERSHEY_SIMPLEX, 1.2, [225, 255, 255], thickness=2)
 
     return frame
