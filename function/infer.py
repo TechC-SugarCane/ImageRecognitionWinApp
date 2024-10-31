@@ -97,7 +97,7 @@ class Model:
         inp = {self.inname[0]: copy_frame}
         outputs = self.model.run(self.outname, inp)[0]
 
-        if self.model_type == "Yolo v10":
+        if self.model_type == "YOLOv10":
             outputs = self.post_process_yolov10(outputs)
 
         # バウンディングボックスを入力されたフレームに描画する
