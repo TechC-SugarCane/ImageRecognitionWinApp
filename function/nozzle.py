@@ -1,17 +1,15 @@
-import math
 from typing import Optional
 
-from cv2.typing import MatLike
 import serial
 
 
 def calc_nozzle_byte_idx(
-    frame: MatLike,
+    image_shape: tuple[int, int, int],
     weed_bbox: list[int, int, int, int],
 ) -> Optional[bytes]:
     """
     雑草のバウンディングボックスデータからノズルを制御するためのバイトデータを生成する
-    :param frame: 入力された画像、動画フレーム
+    :param image_shape [h, w, c]: 画像のサイズ
     :param box [x0, y0, x1, y1]: 雑草のバウンディングボックスデータ
 
     :return weedbyte: ノズルを制御するためのバイトデータ
@@ -24,7 +22,7 @@ def calc_nozzle_byte_idx(
     bbox_center_y = weed_bbox[1] + bbox_height * 0.5
 
     # 現在の画面サイズを取得する
-    h, w, c = frame.shape
+    h, w, c = image_shape
     w16 = w // 16
 
     # 雑草の中央座標が0~16の範囲に収まるように変換
