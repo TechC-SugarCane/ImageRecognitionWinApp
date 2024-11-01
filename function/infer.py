@@ -12,7 +12,7 @@ import yaml
 
 from function.draw import draw
 from function.letterbox import letterbox
-from function.nozzle import nozzle
+from function.nozzle import calc_nozzle_byte_idx, execute_nozzle
 
 # onnxでモデルを読み込んだ時のプロバイダー
 PROVIDERS = ["CUDAExecutionProvider", "CPUExecutionProvider"]
@@ -128,7 +128,9 @@ class Model:
 
             # シリアル通信モードの場合は、雑草のラベルのデータだったときノズルを噴出する
             if is_serial and label_name == "weed":
-                nozzle(frame, box)
+                nozzle_control_bytes = calc_nozzle_byte_idx(frame, box)
+                if nozzle_control_bytes is not None:
+                    execute_nozzle(nozzle_control_bytes)
 
             # 元フレームに上書きする形でバウンディングボックスを描画
             frame = draw(frame, label_name, score, box, self.colors)
