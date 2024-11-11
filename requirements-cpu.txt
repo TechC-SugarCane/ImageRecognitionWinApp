@@ -27,6 +27,7 @@ pyinstaller==6.11.0
 pyinstaller-hooks-contrib==2024.9
 pyreadline3==3.4.1
 pyserial==3.5
+PyYAML==6.0.2
 pytest==8.3.3
 pytest-mock==3.14.0
 pywin32-ctypes==0.2.3

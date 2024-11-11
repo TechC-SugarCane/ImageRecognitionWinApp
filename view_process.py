@@ -10,7 +10,7 @@ class ViewProcess(customtkinter.CTkFrame):
         self,
         master: customtkinter.CTkFrame,
         is_serial: bool,
-        inference_model_value: Literal["Yolo v7", "Yolo NAS"],
+        inference_model_value: Literal["YOLOv7", "YOLOv10"],
         crops_value: Literal["sugarcane", "pineapple"],
         camera_index: int | str,
     ) -> None:
