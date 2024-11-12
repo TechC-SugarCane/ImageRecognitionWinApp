@@ -54,7 +54,12 @@ cd ImageRecognitionWinApp
 ### 3. Pythonの環境構築
 
 ```bash
+# Windows
 pyenv install
+
+# Macの場合はちょっと特殊
+brew install tcl-tk
+PYTHON_CONFIGURE_OPTS="--with-tcltk-includes='-I/usr/local/opt/tcl-tk/include' --with-tcltk-libs='-L/usr/local/opt/tcl-tk/lib -ltcl8.6 -ltk8.6'" pyenv install
 ```
 
 ### 4. 仮想環境を作成
