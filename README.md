@@ -57,9 +57,20 @@ cd ImageRecognitionWinApp
 # Windows
 pyenv install
 
+
 # Macの場合はちょっと特殊
 brew install tcl-tk
-PYTHON_CONFIGURE_OPTS="--with-tcltk-includes='-I/usr/local/opt/tcl-tk/include' --with-tcltk-libs='-L/usr/local/opt/tcl-tk/lib -ltcl8.6 -ltk8.6'" pyenv install
+
+echo 'tkinterPath="/opt/homebrew/opt/tcl-tk"' >> ~/.zshrc
+echo 'export PATH="$tkinterPath/bin:$PATH"' >> ~/.zshrc
+echo 'export LDFLAGS="-L$tkinterPath/lib"' >> ~/.zshrc
+echo 'export CPPFLAGS="-I$tkinterPath/include"' >> ~/.zshrc
+echo 'export PKG_CONFIG_PATH="$tkinterPath/lib/pkgconfig"' >> ~/.zshrc
+
+source ~/.zshrc
+pyenv install
+# shellの再起動
+exec $SHELL -l
 ```
 
 ### 4. 仮想環境を作成
