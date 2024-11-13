@@ -45,6 +45,7 @@ class Setup(customtkinter.CTk):
             self.crops_frame.destroy()
             self.inference_model_frame.destroy()
             self.execute_button.destroy()
+            self.option_frame.destroy()
 
             left_camera_index = 0
             right_camera_index = 1
