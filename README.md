@@ -2,9 +2,10 @@
 
 カメラ映像から入力される動画(画像)を、「サトウキビ」「パイナップル」「雑草」に分類し、バウンディングボックスを表示させます。
 
-推論には、[こちら](https://github.com/TechC-SugarCane/ObjectDetection)のリポジトリで作成したモデルを使って行います。
+推論には、下記リポジトリで作成したモデルを使って行います。
 
-モデルは、YOLOv7とYOLOv10を使用しています。
+- [YOLOv7](https://github.com/TechC-SugarCane/ObjectDetection)
+- [YOLOv10](https://github.com/TechC-SugarCane/train-YOLOv10)
 
 また、GUIアプリのフレームワークには、CustomTkinterというPythonでGUIアプリが作れるものを使っています。
 
@@ -103,9 +104,7 @@ pip install -r requirements-gpu.txt
 
 ### 1. モデルのダウンロード
 
-[こちら](./model/model.md)に従い、すべてのモデルをダウンロードしてください。
-
-その後、`model`ディレクトリにダウンロードしたモデルを配置してください。
+[models/README.md](./models/README.md)に従い、すべてのモデルをダウンロードしてください。
 
 ### 2. アプリの起動
 
