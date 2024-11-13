@@ -2,7 +2,7 @@ import argparse
 
 import customtkinter
 
-from frames import CropsFrame, InferenceModelFrame
+from frames import CropsFrame, InferenceModelFrame, OptionFrame
 from view_process import ViewProcess
 
 
@@ -29,6 +29,10 @@ class Setup(customtkinter.CTk):
         self.inference_model_frame = InferenceModelFrame(self)
         self.inference_model_frame.pack(side="left", padx=40, pady=10, anchor="center")
 
+        # オプションのFrameを表示
+        self.option_frame = OptionFrame(self)
+        self.option_frame.pack(side="left", padx=40, pady=10, anchor="center")
+
         # 実行ボタン
         self.execute_button = customtkinter.CTkButton(master=self, text="実行", command=self.screen_transition)
         self.execute_button.pack(side="right", padx=10, pady=10, anchor="center")
@@ -37,6 +41,8 @@ class Setup(customtkinter.CTk):
         """画面遷移"""
         crops_value = self.crops_frame.get_selected_rbtn_value()
         inference_model_value = self.inference_model_frame.get_selected_rbtn_value()
+        is_serial = self.option_frame.get_is_serial()
+        is_test = self.option_frame.get_is_test()
 
         if crops_value != "" and inference_model_value != "":
             print("両方選択されている")

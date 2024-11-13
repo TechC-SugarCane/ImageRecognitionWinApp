@@ -64,3 +64,41 @@ class InferenceModelFrame(customtkinter.CTkFrame):
         inference_model = self.selected_rbtn.get()
         print("Selected inference model: ", inference_model)
         return inference_model
+
+
+class OptionFrame(customtkinter.CTkFrame):
+    def __init__(self, master: customtkinter.CTkFrame) -> None:
+        """オプションの選択画面"""
+        super().__init__(master=master)
+
+        self.is_serial = customtkinter.BooleanVar()
+
+        serial_mode_toggle = customtkinter.CTkSwitch(
+            master=self,
+            text="シリアル通信モード",
+            variable=self.is_serial,
+            command=self.get_is_serial,
+        )
+        serial_mode_toggle.grid(row=0, column=0, padx=10, pady=10)
+
+        self.is_test = customtkinter.BooleanVar()
+
+        test_mode_toggle = customtkinter.CTkSwitch(
+            master=self,
+            text="テストモード(動画)",
+            variable=self.is_test,
+            command=self.get_is_test,
+        )
+        test_mode_toggle.grid(row=1, column=0, padx=10, pady=10)
+
+    def get_is_serial(self) -> bool:
+        """選択されたシリアル通信のモードを取得"""
+        is_serial = self.is_serial.get()
+        print("Selected serial mode: ", is_serial)
+        return is_serial
+
+    def get_is_test(self) -> bool:
+        """選択されたテストモードのモードを取得"""
+        is_test = self.is_test.get()
+        print("Selected test mode: ", is_test)
+        return is_test
