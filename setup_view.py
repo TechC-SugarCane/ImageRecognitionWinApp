@@ -1,5 +1,3 @@
-import argparse
-
 import customtkinter
 
 from frames import CropsFrame, InferenceModelFrame, OptionFrame

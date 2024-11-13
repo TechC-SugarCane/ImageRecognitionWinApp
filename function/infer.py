@@ -17,6 +17,7 @@ from function.nozzle import calc_nozzle_byte_idx, execute_nozzle
 # onnxでモデルを読み込んだ時のプロバイダー
 PROVIDERS = ["CUDAExecutionProvider", "CPUExecutionProvider"]
 
+
 def load_yaml_config(file_path: str) -> dict:
     with open(file_path, "r") as file:
         config = yaml.safe_load(file)
@@ -74,7 +75,6 @@ class Model:
         if not os.path.exists(model_path):
             raise FileNotFoundError(f"Model file not found: {model_path}")
         return ort.InferenceSession(model_path, providers=PROVIDERS)
-
 
     def infer(self, is_serial: bool, frame: MatLike) -> Tuple[MatLike, int]:
         """
@@ -160,7 +160,6 @@ class Model:
         frame /= 255
         return frame, ratio, dwdh
 
-
     def post_process_yolov7(self, output: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
         """
         YOLO v7 の後処理
@@ -170,7 +169,6 @@ class Model:
         :return processed_outputs : 後処理後の推論結果. (boxes(x0, y0, x1, y1), confidences, class_ids)
         """
         return output[:, 1:5], output[:, 6], output[:, 5].astype(int)
-
 
     def pre_process_yolov10(self, frame: MatLike) -> np.ndarray:
         """

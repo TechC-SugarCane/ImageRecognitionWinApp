@@ -56,6 +56,7 @@ class InferenceModelFrame(customtkinter.CTkFrame):
         """選択された推論モデルを取得"""
         return self.selected_rbtn.get()
 
+
 class OptionFrame(customtkinter.CTkFrame):
     def __init__(self, master: customtkinter.CTkFrame) -> None:
         """オプションの選択画面"""
@@ -70,7 +71,6 @@ class OptionFrame(customtkinter.CTkFrame):
             variable=self.is_test,
         )
         test_mode_toggle.grid(row=0, column=0, padx=10, pady=10)
-
 
         serial_mode_toggle = customtkinter.CTkSwitch(
             master=self,
