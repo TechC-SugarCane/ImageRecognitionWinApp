@@ -2,8 +2,7 @@ import argparse
 
 import customtkinter
 
-from crops_frame import CropsFrame
-from inference_model_frame import InferenceModelFrame
+from frames import CropsFrame, InferenceModelFrame
 from view_process import ViewProcess
 
 
