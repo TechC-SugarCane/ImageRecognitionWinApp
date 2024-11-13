@@ -13,7 +13,6 @@ class CropsFrame(customtkinter.CTkFrame):
             text="パイナップル",
             variable=self.selected_rbtn,
             value="pineapple",
-            command=self.get_selected_rbtn_value,
         )
         pineapple_rbtn.grid(row=0, column=0, padx=10, pady=10)
 
@@ -22,16 +21,12 @@ class CropsFrame(customtkinter.CTkFrame):
             text="サトウキビ",
             variable=self.selected_rbtn,
             value="sugarcane",
-            command=self.get_selected_rbtn_value,
         )
         sugarcane_rbtn.grid(row=1, column=0, padx=10, pady=10)
 
     def get_selected_rbtn_value(self) -> str:
         """選択された作物を取得"""
-        crops = self.selected_rbtn.get()
-        print("Selected crops: ", crops)
-        return crops
-
+        return self.selected_rbtn.get()
 
 
 class InferenceModelFrame(customtkinter.CTkFrame):
@@ -46,7 +41,6 @@ class InferenceModelFrame(customtkinter.CTkFrame):
             text="YOLOv7",
             variable=self.selected_rbtn,
             value="YOLOv7",
-            command=self.get_selected_rbtn_value,
         )
         yolov7_rbtn.grid(row=0, column=0, padx=10, pady=10)
 
@@ -55,16 +49,12 @@ class InferenceModelFrame(customtkinter.CTkFrame):
             text="YOLOv10",
             variable=self.selected_rbtn,
             value="YOLOv10",
-            command=self.get_selected_rbtn_value,
         )
         yolov10_rbtn.grid(row=2, column=0, padx=10, pady=10)
 
     def get_selected_rbtn_value(self) -> str:
         """選択された推論モデルを取得"""
-        inference_model = self.selected_rbtn.get()
-        print("Selected inference model: ", inference_model)
-        return inference_model
-
+        return self.selected_rbtn.get()
 
 class OptionFrame(customtkinter.CTkFrame):
     def __init__(self, master: customtkinter.CTkFrame) -> None:
@@ -77,7 +67,6 @@ class OptionFrame(customtkinter.CTkFrame):
             master=self,
             text="シリアル通信モード",
             variable=self.is_serial,
-            command=self.get_is_serial,
         )
         serial_mode_toggle.grid(row=0, column=0, padx=10, pady=10)
 
@@ -87,18 +76,13 @@ class OptionFrame(customtkinter.CTkFrame):
             master=self,
             text="テストモード(動画)",
             variable=self.is_test,
-            command=self.get_is_test,
         )
         test_mode_toggle.grid(row=1, column=0, padx=10, pady=10)
 
     def get_is_serial(self) -> bool:
         """選択されたシリアル通信のモードを取得"""
-        is_serial = self.is_serial.get()
-        print("Selected serial mode: ", is_serial)
-        return is_serial
+        return self.is_serial.get()
 
     def get_is_test(self) -> bool:
         """選択されたテストモードのモードを取得"""
-        is_test = self.is_test.get()
-        print("Selected test mode: ", is_test)
-        return is_test
+        return self.is_test.get()
