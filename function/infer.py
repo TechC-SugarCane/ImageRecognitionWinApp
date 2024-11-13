@@ -48,12 +48,12 @@ class Model:
             print(f"Use YOLO v7 model. model name: {self.model_name}")
 
             # モデルの読み込み
-            self.model = self.load_model(f"./model/{self.model_name}_v7.onnx")
+            self.model = self.load_model(f"./models/{self.model_name}_v7.onnx")
         elif model_type == "YOLOv10":
             print(f"Use YOLO v10 model. model name: {self.model_name}")
 
             # モデルの読み込み
-            self.model = self.load_model(f"./model/{self.model_name}_v10.onnx")
+            self.model = self.load_model(f"./models/{self.model_name}_v10.onnx")
 
         self.outname = [self.model.get_outputs()[0].name]
         model_inputs = self.model.get_inputs()
