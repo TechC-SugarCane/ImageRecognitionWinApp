@@ -36,12 +36,12 @@ class Setup(customtkinter.CTk):
         """画面遷移"""
         crops_value = self.crops_frame.get_selected_rbtn_value()
         inference_model_value = self.inference_model_frame.get_selected_rbtn_value()
-        is_serial = self.option_frame.get_is_serial()
         is_test = self.option_frame.get_is_test()
+        is_serial = self.option_frame.get_is_serial()
         print("Selected crops: ", crops_value)
         print("Selected inference model: ", inference_model_value)
-        print("Is serial mode: ", is_serial)
         print("Is test mode: ", is_test)
+        print("Is serial mode: ", is_serial)
 
         if crops_value != "" and inference_model_value != "":
             print("両方選択されている")

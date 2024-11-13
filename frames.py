@@ -61,28 +61,28 @@ class OptionFrame(customtkinter.CTkFrame):
         """オプションの選択画面"""
         super().__init__(master=master)
 
-        self.is_serial = customtkinter.BooleanVar()
-
-        serial_mode_toggle = customtkinter.CTkSwitch(
-            master=self,
-            text="シリアル通信モード",
-            variable=self.is_serial,
-        )
-        serial_mode_toggle.grid(row=0, column=0, padx=10, pady=10)
-
         self.is_test = customtkinter.BooleanVar()
+        self.is_serial = customtkinter.BooleanVar()
 
         test_mode_toggle = customtkinter.CTkSwitch(
             master=self,
             text="テストモード(動画)",
             variable=self.is_test,
         )
-        test_mode_toggle.grid(row=1, column=0, padx=10, pady=10)
+        test_mode_toggle.grid(row=0, column=0, padx=10, pady=10)
 
-    def get_is_serial(self) -> bool:
-        """選択されたシリアル通信のモードを取得"""
-        return self.is_serial.get()
+
+        serial_mode_toggle = customtkinter.CTkSwitch(
+            master=self,
+            text="シリアル通信モード",
+            variable=self.is_serial,
+        )
+        serial_mode_toggle.grid(row=1, column=0, padx=10, pady=10)
 
     def get_is_test(self) -> bool:
         """選択されたテストモードのモードを取得"""
         return self.is_test.get()
+
+    def get_is_serial(self) -> bool:
+        """選択されたシリアル通信のモードを取得"""
+        return self.is_serial.get()
