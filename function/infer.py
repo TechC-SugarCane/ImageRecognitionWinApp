@@ -7,7 +7,6 @@ import cv2
 from cv2.typing import MatLike
 import numpy as np
 import onnxruntime as ort
-import torch  # これ消すとエラー出る. onnxruntime側で必要みたい
 import yaml
 
 from function.draw import draw
