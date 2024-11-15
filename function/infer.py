@@ -7,7 +7,6 @@ import cv2
 from cv2.typing import MatLike
 import numpy as np
 import onnxruntime as ort
-import torch  # これ消すとエラー出る. onnxruntime側で必要みたい
 import yaml
 
 from function.draw import draw
@@ -16,6 +15,7 @@ from function.nozzle import calc_nozzle_byte_idx, execute_nozzle
 
 # onnxでモデルを読み込んだ時のプロバイダー
 PROVIDERS = ["CUDAExecutionProvider", "CPUExecutionProvider"]
+
 
 def load_yaml_config(file_path: str) -> dict:
     with open(file_path, "r") as file:
@@ -48,12 +48,12 @@ class Model:
             print(f"Use YOLO v7 model. model name: {self.model_name}")
 
             # モデルの読み込み
-            self.model = self.load_model(f"./model/{self.model_name}_v7.onnx")
+            self.model = self.load_model(f"./models/{self.model_name}_v7.onnx")
         elif model_type == "YOLOv10":
             print(f"Use YOLO v10 model. model name: {self.model_name}")
 
             # モデルの読み込み
-            self.model = self.load_model(f"./model/{self.model_name}_v10.onnx")
+            self.model = self.load_model(f"./models/{self.model_name}_v10.onnx")
 
         self.outname = [self.model.get_outputs()[0].name]
         model_inputs = self.model.get_inputs()
@@ -74,7 +74,6 @@ class Model:
         if not os.path.exists(model_path):
             raise FileNotFoundError(f"Model file not found: {model_path}")
         return ort.InferenceSession(model_path, providers=PROVIDERS)
-
 
     def infer(self, is_serial: bool, frame: MatLike) -> Tuple[MatLike, int]:
         """
@@ -160,7 +159,6 @@ class Model:
         frame /= 255
         return frame, ratio, dwdh
 
-
     def post_process_yolov7(self, output: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
         """
         YOLO v7 の後処理
@@ -170,7 +168,6 @@ class Model:
         :return processed_outputs : 後処理後の推論結果. (boxes(x0, y0, x1, y1), confidences, class_ids)
         """
         return output[:, 1:5], output[:, 6], output[:, 5].astype(int)
-
 
     def pre_process_yolov10(self, frame: MatLike) -> np.ndarray:
         """
