@@ -137,3 +137,30 @@ pyinstaller --onefile setup_view.py
 ## コントリビューター向けガイドライン
 
 コントリビューター向けのガイドラインについては、こちらの[CONTRIBUTING.md](https://github.com/TechC-SugarCane/.github/blob/main/CONTRIBUTING.md)を参照してください。
+
+### PRを出す時
+
+Pythonファイルが含まれた実装PRは[lintのCI](./.github/workflows/lint.yml)が走るようになっています。
+
+PRを出す前に、下記コマンドでlintを実行し、エラーが出たら修正してください。
+
+#### linter
+
+```bash
+# lint
+ruff check .
+# lintの修正コマンド
+ruff check . --fix
+```
+
+#### formatter
+
+```bash
+ruff format .
+```
+
+#### type check
+
+```bash
+mypy --ignore-missing-imports --explicit-package-bases .
+```
