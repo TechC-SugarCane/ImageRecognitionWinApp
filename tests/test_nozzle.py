@@ -3,11 +3,10 @@ import sys
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../function"))
 
-from nozzle import execute_nozzle, calc_nozzle_byte_idx
-import numpy as np
+from nozzle import calc_nozzle_byte_idx, execute_nozzle
 import pytest
 
-# FRAMEをtupleにs
+# 疑似フレームのサイズ
 FRAME_SIZE = (640, 640, 3)
 
 

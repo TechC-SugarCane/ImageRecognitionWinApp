@@ -3,6 +3,7 @@ from typing import Optional
 import serial
 import serial.tools.list_ports
 
+
 def find_serial_port(vid: str, pid: str) -> Optional[str]:
     """
     デバイスのVIDとPIDを使用してシリアルポートを検出する
@@ -16,6 +17,7 @@ def find_serial_port(vid: str, pid: str) -> Optional[str]:
         if port.vid == int(vid, 16) and port.pid == int(pid, 16):
             return port.device
     return None
+
 
 def calc_nozzle_byte_idx(
     image_shape: tuple[int, int, int],
