@@ -11,7 +11,6 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
 
@@ -28,7 +27,7 @@ jobs:
       - name: Run Ruff
         run: |
             ruff check --output-format=github .
-            ruff format . --check --diff
+            ruff format . --check --diff --output-format=github
 
       - uses: AustinScola/mypy-cache-github-action@v1
         name: Cache mypy cache
