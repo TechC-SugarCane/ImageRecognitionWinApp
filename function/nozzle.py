@@ -1,11 +1,25 @@
 from typing import Optional
 
 import serial
+import serial.tools.list_ports
 
+def find_serial_port(vid: str, pid: str) -> Optional[str]:
+    """
+    デバイスのVIDとPIDを使用してシリアルポートを検出する
+    :param vid: デバイスのVID
+    :param pid: デバイスのPID
+
+    :return: 検出されたシリアルポートの名前
+    """
+    ports = serial.tools.list_ports.comports()
+    for port in ports:
+        if port.vid == int(vid, 16) and port.pid == int(pid, 16):
+            return port.device
+    return None
 
 def calc_nozzle_byte_idx(
     image_shape: tuple[int, int, int],
-    weed_bbox: list[int, int, int, int],
+    weed_bbox: list[int],
 ) -> Optional[bytes]:
     """
     雑草のバウンディングボックスデータからノズルを制御するためのバイトデータを生成する
@@ -61,7 +75,14 @@ def execute_nozzle(
     :param nozzle_control_bytes: ノズルを制御するためのバイトデータ
     """
 
+    # 自動でシリアルポートを認識して接続する
+    vid = "0x0483"
+    pid = "0x5740"
+    port = find_serial_port(vid, pid)
+    if port is None:
+        raise Exception("No serial port found for the given VID and PID")
+
     # 送信部分
-    ser = serial.Serial("COM4", 115200, timeout=None)
+    ser = serial.Serial(port, 115200, timeout=None)
     ser.write(nozzle_control_bytes)
     ser.close()
