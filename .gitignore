@@ -11,3 +11,7 @@ video
 !video/multi_data1.mp4
 !video/multi_data2.mp4
 *.pth
+
+.ruff_cache
+.pytest_cache
+.mypy_cache
