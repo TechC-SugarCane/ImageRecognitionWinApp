@@ -86,3 +86,24 @@ class OptionFrame(customtkinter.CTkFrame):
     def get_is_serial(self) -> bool:
         """選択されたシリアル通信のモードを取得"""
         return self.is_serial.get()
+
+
+class ModelSelectionFrame(customtkinter.CTkFrame):
+    def __init__(self, master: customtkinter.CTkFrame) -> None:
+        """モデルの選択画面"""
+        super().__init__(master=master)
+
+        self.optionmenu_var = customtkinter.StringVar(value="option 2")
+        optionmenu = customtkinter.CTkOptionMenu(
+            self, values=["option 1", "option 2"], command=self.optionmenu_callback, variable=self.optionmenu_var
+        )
+
+        optionmenu.grid(row=0, column=0, padx=10, pady=10)
+
+
+    def optionmenu_callback(self, choice):
+        print("optionmenu dropdown clicked:", choice)
+
+    def get_model_selection(self) -> str:
+        """選択されたモデルを取得"""
+        return self.optionmenu_var.get()

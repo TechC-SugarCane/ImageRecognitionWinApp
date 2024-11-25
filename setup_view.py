@@ -1,6 +1,6 @@
 import customtkinter
 
-from frames import CropsFrame, InferenceModelFrame, OptionFrame
+from frames import CropsFrame, InferenceModelFrame, ModelSelectionFrame, OptionFrame
 from view_process import ViewProcess
 
 
@@ -26,6 +26,9 @@ class Setup(customtkinter.CTk):
         self.option_frame = OptionFrame(self)
         self.option_frame.pack(side="left", padx=40, pady=10, anchor="center")
 
+        self.model_selection_frame = ModelSelectionFrame(self)
+        self.model_selection_frame.pack(side="left", padx=40, pady=10, anchor="center")
+
         # 実行ボタン
         self.execute_button = customtkinter.CTkButton(master=self, text="実行", command=self.screen_transition)
         self.execute_button.pack(side="right", padx=10, pady=10, anchor="center")
@@ -36,10 +39,12 @@ class Setup(customtkinter.CTk):
         inference_model_value = self.inference_model_frame.get_selected_rbtn_value()
         is_test = self.option_frame.get_is_test()
         is_serial = self.option_frame.get_is_serial()
+        model = self.model_selection_frame.get_model_selection()
         print("Selected crops: ", crops_value)
         print("Selected inference model: ", inference_model_value)
         print("Is test mode: ", is_test)
         print("Is serial mode: ", is_serial)
+        print("Selected model: ", model)
 
         if crops_value != "" and inference_model_value != "":
             print("両方選択されている")
