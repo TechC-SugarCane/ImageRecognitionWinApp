@@ -90,8 +90,8 @@ class Model:
         start_time = time.perf_counter()
 
         copy_frame = frame.copy()
-        ratio = 1.
-        dwdh = (0., 0.)
+        ratio = 1.0
+        dwdh = (0.0, 0.0)
 
         # preprocess
         if self.model_type == "YOLOv7":
