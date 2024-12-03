@@ -90,8 +90,8 @@ class Model:
         start_time = time.perf_counter()
 
         copy_frame = frame.copy()
-        ratio = 1
-        dwdh = (0, 0)
+        ratio = 1.0
+        dwdh = (0.0, 0.0)
 
         # preprocess
         if self.model_type == "YOLOv7":
@@ -156,7 +156,7 @@ class Model:
         frame = np.expand_dims(frame, 0)
         frame = np.ascontiguousarray(frame)
         frame = frame.astype(np.float32)
-        frame /= 255
+        frame /= 255  # type: ignore
         return frame, ratio, dwdh
 
     def post_process_yolov7(self, output: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
