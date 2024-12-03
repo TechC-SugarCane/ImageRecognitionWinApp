@@ -42,12 +42,12 @@ def letterbox(
     if auto:  # minimum rectangle
         dw, dh = np.mod(dw, stride), np.mod(dh, stride)  # wh padding
 
-    dw /= 2  # divide padding into 2 sides
-    dh /= 2
+    half_dw = dw / 2  # divide padding into 2 sides
+    half_dh = dh / 2
 
     if shape[::-1] != new_unpad:  # resize
         im = cv2.resize(im, new_unpad, interpolation=cv2.INTER_LINEAR)
-    top, bottom = int(round(dh - 0.1)), int(round(dh + 0.1))
-    left, right = int(round(dw - 0.1)), int(round(dw + 0.1))
+    top, bottom = int(round(half_dh - 0.1)), int(round(half_dh + 0.1))
+    left, right = int(round(half_dw - 0.1)), int(round(half_dw + 0.1))
     im = cv2.copyMakeBorder(im, top, bottom, left, right, cv2.BORDER_CONSTANT, value=color)  # add border
-    return im, r, (dw, dh)
+    return im, r, (half_dw, half_dh)

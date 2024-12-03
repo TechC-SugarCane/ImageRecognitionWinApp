@@ -49,8 +49,8 @@ class Setup(customtkinter.CTk):
             self.execute_button.destroy()
             self.option_frame.destroy()
 
-            left_camera_index = 0
-            right_camera_index = 1
+            left_camera_index: str | int = 0
+            right_camera_index: str | int = 1
 
             # テストモードの場合はカメラではなく動画を読み込む
             if is_test:

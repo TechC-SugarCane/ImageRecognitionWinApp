@@ -1,3 +1,5 @@
+from typing import Literal
+
 import customtkinter
 
 
@@ -24,7 +26,7 @@ class CropsFrame(customtkinter.CTkFrame):
         )
         sugarcane_rbtn.grid(row=1, column=0, padx=10, pady=10)
 
-    def get_selected_rbtn_value(self) -> str:
+    def get_selected_rbtn_value(self) -> Literal["pineapple", "sugarcane"]:
         """選択された作物を取得"""
         return self.selected_rbtn.get()
 
@@ -52,7 +54,7 @@ class InferenceModelFrame(customtkinter.CTkFrame):
         )
         yolov10_rbtn.grid(row=2, column=0, padx=10, pady=10)
 
-    def get_selected_rbtn_value(self) -> str:
+    def get_selected_rbtn_value(self) -> Literal["YOLOv7", "YOLOv10"]:
         """選択された推論モデルを取得"""
         return self.selected_rbtn.get()
 

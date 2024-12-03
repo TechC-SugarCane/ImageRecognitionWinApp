@@ -20,7 +20,7 @@ def find_serial_port(vid: str, pid: str) -> Optional[str]:
 
 
 def calc_nozzle_byte_idx(
-    image_shape: tuple[int, int, int],
+    image_shape: tuple[int, ...],
     weed_bbox: list[int],
 ) -> Optional[bytes]:
     """
