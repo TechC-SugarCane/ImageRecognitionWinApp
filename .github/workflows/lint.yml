@@ -27,7 +27,7 @@ jobs:
       - name: Run Ruff
         run: |
             ruff check --output-format=github .
-            ruff format . --check --diff --output-format=github
+            ruff format . --check --diff
 
       - uses: AustinScola/mypy-cache-github-action@v1
         name: Cache mypy cache
