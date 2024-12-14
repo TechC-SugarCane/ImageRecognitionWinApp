@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Literal
 
 import customtkinter
@@ -42,6 +43,18 @@ class ImageRecognition(customtkinter.CTkFrame):
 
         # TODO ここで二つのカメラの映像
         self.capture = cv2.VideoCapture(camera_index)  # type: ignore
+
+        if not is_test:
+            # 保存用の動画ファイル設定
+            w = int(self.capture.get(cv2.CAP_PROP_FRAME_WIDTH))
+            h = int(self.capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
+            fps = int(self.capture.get(cv2.CAP_PROP_FPS))
+            fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+            now = datetime.now().strftime("%Y%m%d_%H%M%S")
+            save_video_path = f"video/{now}.mp4"
+            save_infer_video_path = f"video/{now}_infer.mp4"
+            self.save_video = cv2.VideoWriter(save_video_path, fourcc, fps, (w, h))
+            self.save_infer_video = cv2.VideoWriter(save_infer_video_path, fourcc, fps, (w, h))
 
         self.display_id = ""
 
