@@ -12,6 +12,7 @@ class ImageRecognition(customtkinter.CTkFrame):
         self,
         master: customtkinter.CTkFrame,
         is_serial: bool,
+        is_test: bool,
         model_type: Literal["YOLOv7", "YOLOv10"],
         model_name: Literal["sugarcane", "pineapple"],
         camera_index: int | str,
@@ -20,6 +21,7 @@ class ImageRecognition(customtkinter.CTkFrame):
         画像描画用のクラス
         :param master       : 親クラス
         :param is_serial    : シリアル通信モードかどうか
+        :param is_test      : テストモードかどうか
         :param model_type   : 使用するモデルのバージョン
         :param model_name   : 使用するモデルの名前
         :param camera_index : 使用するカメラのインデックス or 動画のパス
@@ -27,6 +29,7 @@ class ImageRecognition(customtkinter.CTkFrame):
         super().__init__(master=master)
 
         self.is_serial = is_serial
+        self.is_test = is_test
 
         window_width = self.winfo_width()
         window_height = self.winfo_height()
