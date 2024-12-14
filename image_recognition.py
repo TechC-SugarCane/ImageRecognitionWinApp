@@ -73,6 +73,10 @@ class ImageRecognition(customtkinter.CTkFrame):
 
         infer_frame, fps = self.model.infer(self.is_serial, frame)  # type: ignore
 
+        if not self.is_test:
+            self.save_video.write(frame)
+            self.save_infer_video.write(infer_frame)
+
         self.fps_label.configure(text=fps)
         self.fps_label.update()
 
