@@ -107,3 +107,11 @@ class ImageRecognition(customtkinter.CTkFrame):
         """描画を再開する"""
         if not self.display_id:
             self.display_image()
+
+    def destroy(self) -> None:
+        """ウィンドウを閉じる"""
+        self.capture.release()
+        if not self.is_test:
+            self.save_video.release()
+            self.save_infer_video.release()
+        super().destroy()
