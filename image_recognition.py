@@ -50,7 +50,7 @@ class ImageRecognition(customtkinter.CTkFrame):
             h = int(self.capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
             # 大体決め打ちで10fps, 石垣島PCで推論する時のfpsと合わせる
             fps = 10.0
-            fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+            fourcc = cv2.VideoWriter_fourcc(*"mp4v")  # type: ignore
             now = datetime.now().strftime("%Y%m%d_%H%M%S")
             save_video_path = f"video/{now}.mp4"
             save_infer_video_path = f"video/{now}_infer.mp4"
