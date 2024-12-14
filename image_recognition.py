@@ -48,7 +48,7 @@ class ImageRecognition(customtkinter.CTkFrame):
             # 保存用の動画ファイル設定
             w = int(self.capture.get(cv2.CAP_PROP_FRAME_WIDTH))
             h = int(self.capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
-            fps = int(self.capture.get(cv2.CAP_PROP_FPS))
+            fps = 10.
             fourcc = cv2.VideoWriter_fourcc(*"mp4v")
             now = datetime.now().strftime("%Y%m%d_%H%M%S")
             save_video_path = f"video/{now}.mp4"
@@ -71,10 +71,12 @@ class ImageRecognition(customtkinter.CTkFrame):
         """画像を描画する"""
         is_success, frame = self.capture.read()
 
+        if not self.is_test:
+            self.save_video.write(frame)
+
         infer_frame, fps = self.model.infer(self.is_serial, frame)  # type: ignore
 
         if not self.is_test:
-            self.save_video.write(frame)
             self.save_infer_video.write(infer_frame)
 
         self.fps_label.configure(text=fps)
