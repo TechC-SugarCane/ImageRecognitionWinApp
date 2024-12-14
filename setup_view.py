@@ -54,8 +54,8 @@ class Setup(customtkinter.CTk):
 
             # テストモードの場合はカメラではなく動画を読み込む
             if is_test:
-                left_camera_index = "video/multi_data1.mp4"
-                right_camera_index = "video/multi_data2.mp4"
+                left_camera_index = "video/tests/multi_data1.mp4"
+                right_camera_index = "video/tests/multi_data2.mp4"
 
             # 左の画面設定
             self.left_view_process = ViewProcess(
