@@ -48,6 +48,7 @@ class ImageRecognition(customtkinter.CTkFrame):
             # 保存用の動画ファイル設定
             w = int(self.capture.get(cv2.CAP_PROP_FRAME_WIDTH))
             h = int(self.capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
+            # 大体決め打ちで10fps, 石垣島PCで推論する時のfpsと合わせる
             fps = 10.
             fourcc = cv2.VideoWriter_fourcc(*"mp4v")
             now = datetime.now().strftime("%Y%m%d_%H%M%S")
