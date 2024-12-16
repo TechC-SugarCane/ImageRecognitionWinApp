@@ -1,7 +1,7 @@
 import customtkinter
 
-from function.const.crop import CropType
-from function.const.model import ModelType
+from function.const.crop import CROP_NAME_LIST, CropType
+from function.const.model import MODEL_NAME_LIST, ModelType
 
 
 class CropsFrame(customtkinter.CTkFrame):
@@ -11,7 +11,7 @@ class CropsFrame(customtkinter.CTkFrame):
 
         self.selected_rbtn = customtkinter.StringVar()
 
-        self.set_crop_rbtn(list(CropType.__args__))  # type: ignore
+        self.set_crop_rbtn(CROP_NAME_LIST)
 
     def get_selected_rbtn_value(self) -> CropType:
         """選択された作物を取得"""
@@ -37,7 +37,7 @@ class InferenceModelFrame(customtkinter.CTkFrame):
 
         self.selected_rbtn = customtkinter.StringVar()
 
-        self.set_model_rbtn(list(ModelType.__args__))  # type: ignore
+        self.set_model_rbtn(MODEL_NAME_LIST)
 
     def get_selected_rbtn_value(self) -> ModelType:
         """選択された推論モデルを取得"""
