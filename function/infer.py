@@ -9,6 +9,8 @@ import numpy as np
 import onnxruntime as ort
 import yaml
 
+from function.const.model import ModelType
+from function.const.crop import CropType, LabelName
 from function.draw import draw
 from function.letterbox import letterbox
 from function.nozzle import calc_nozzle_byte_idx, execute_nozzle
@@ -26,9 +28,9 @@ def load_yaml_config(file_path: str) -> dict:
 class Model:
     def __init__(
         self,
-        model_type: Literal["YOLOv7", "YOLOv10"],
-        model_name: Literal["sugarcane", "pineapple"],
-        labels: list[Literal["sugarcane", "pineapple", "weed"]],
+        model_type: ModelType,
+        model_name: CropType,
+        labels: list[LabelName],
     ) -> None:
         """
         モデルの読み込み、基礎設定を行う
@@ -44,14 +46,14 @@ class Model:
         self.labels = labels
 
         # 選択されたモデルのバージョンをチェック
+        print(f"Use {model_type} model. model name: {self.model_name}")
         if model_type == "YOLOv7":
-            print(f"Use YOLO v7 model. model name: {self.model_name}")
-
             # モデルの読み込み
             self.model = self.load_model(f"./models/{self.model_name}_v7.onnx")
+        elif model_type == "YOLOv9":
+            # モデルの読み込み
+            self.model = self.load_model(f"./models/{self.model_name}_v9.onnx")
         elif model_type == "YOLOv10":
-            print(f"Use YOLO v10 model. model name: {self.model_name}")
-
             # モデルの読み込み
             self.model = self.load_model(f"./models/{self.model_name}_v10.onnx")
 

@@ -2,6 +2,8 @@ from typing import Literal
 
 import customtkinter
 
+from function.const.model import ModelType
+from function.const.crop import CropType
 from image_recognition import ImageRecognition
 
 
@@ -11,8 +13,8 @@ class ViewProcess(customtkinter.CTkFrame):
         master: customtkinter.CTkFrame,
         is_serial: bool,
         is_test: bool,
-        inference_model_value: Literal["YOLOv7", "YOLOv10"],
-        crops_value: Literal["sugarcane", "pineapple"],
+        inference_model_value: ModelType,
+        crops_value: CropType,
         camera_index: int | str,
     ) -> None:
         """
