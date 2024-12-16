@@ -41,9 +41,6 @@ class Model:
         :param labels     : ラベルの名前を格納したリスト
         """
 
-        self.yolov9_cfg = load_yaml_config("./cfg/yolov9.yml")
-        self.yolov10_cfg = load_yaml_config("./cfg/yolov10.yml")
-
         self.model_type = model_type
         self.model_name = model_name
         self.labels = labels
