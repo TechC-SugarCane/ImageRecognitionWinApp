@@ -27,6 +27,7 @@ mypy==1.13.0
 mypy-extensions==1.0.0
 networkx==3.3
 numpy==1.26.4
+onnx==1.17.0
 onnxruntime==1.18.0
 opencv-python==4.10.0.84
 packaging==24.1
