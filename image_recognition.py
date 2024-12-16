@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Literal
 
 import customtkinter
@@ -12,6 +13,7 @@ class ImageRecognition(customtkinter.CTkFrame):
         self,
         master: customtkinter.CTkFrame,
         is_serial: bool,
+        is_test: bool,
         model_type: Literal["YOLOv7", "YOLOv10"],
         model_name: Literal["sugarcane", "pineapple"],
         camera_index: int | str,
@@ -20,6 +22,7 @@ class ImageRecognition(customtkinter.CTkFrame):
         画像描画用のクラス
         :param master       : 親クラス
         :param is_serial    : シリアル通信モードかどうか
+        :param is_test      : テストモードかどうか
         :param model_type   : 使用するモデルのバージョン
         :param model_name   : 使用するモデルの名前
         :param camera_index : 使用するカメラのインデックス or 動画のパス
@@ -27,6 +30,7 @@ class ImageRecognition(customtkinter.CTkFrame):
         super().__init__(master=master)
 
         self.is_serial = is_serial
+        self.is_test = is_test
 
         window_width = self.winfo_width()
         window_height = self.winfo_height()
@@ -39,6 +43,19 @@ class ImageRecognition(customtkinter.CTkFrame):
 
         # TODO ここで二つのカメラの映像
         self.capture = cv2.VideoCapture(camera_index)  # type: ignore
+
+        if not is_test:
+            # 保存用の動画ファイル設定
+            w = int(self.capture.get(cv2.CAP_PROP_FRAME_WIDTH))
+            h = int(self.capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
+            # 大体決め打ちで10fps, 石垣島PCで推論する時のfpsと合わせる
+            fps = 10.0
+            fourcc = cv2.VideoWriter_fourcc(*"mp4v")  # type: ignore
+            now = datetime.now().strftime("%Y%m%d_%H%M%S")
+            save_video_path = f"video/{now}.mp4"
+            save_infer_video_path = f"video/{now}_infer.mp4"
+            self.save_video = cv2.VideoWriter(save_video_path, fourcc, fps, (w, h))
+            self.save_infer_video = cv2.VideoWriter(save_infer_video_path, fourcc, fps, (w, h))
 
         self.display_id = ""
 
@@ -55,7 +72,13 @@ class ImageRecognition(customtkinter.CTkFrame):
         """画像を描画する"""
         is_success, frame = self.capture.read()
 
+        if not self.is_test:
+            self.save_video.write(frame)
+
         infer_frame, fps = self.model.infer(self.is_serial, frame)  # type: ignore
+
+        if not self.is_test:
+            self.save_infer_video.write(infer_frame)
 
         self.fps_label.configure(text=fps)
         self.fps_label.update()
@@ -87,3 +110,11 @@ class ImageRecognition(customtkinter.CTkFrame):
         """描画を再開する"""
         if not self.display_id:
             self.display_image()
+
+    def destroy(self) -> None:
+        """ウィンドウを閉じる"""
+        self.capture.release()
+        if not self.is_test:
+            self.save_video.release()
+            self.save_infer_video.release()
+        super().destroy()
