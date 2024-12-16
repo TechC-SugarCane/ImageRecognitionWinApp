@@ -1,4 +1,3 @@
-
 import customtkinter
 
 from function.const.crop import CropType
