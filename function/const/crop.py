@@ -1,4 +1,6 @@
 from typing import Literal
 
-CropType = Literal["sugarcane", "pineapple"]
-LabelName = Literal["sugarcane", "pineapple", "weed"]
+type CropType = Literal["sugarcane", "pineapple"]
+type LabelName = Literal["sugarcane", "pineapple", "weed"]
+
+CROP_NAME_LIST: list[CropType] = ["sugarcane", "pineapple"]
