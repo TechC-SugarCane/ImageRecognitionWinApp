@@ -39,6 +39,7 @@ class Model:
         :param labels     : ラベルの名前を格納したリスト
         """
 
+        self.yolov9_cfg = load_yaml_config("./cfg/yolov9.yml")
         self.yolov10_cfg = load_yaml_config("./cfg/yolov10.yml")
 
         self.model_type = model_type
@@ -99,6 +100,9 @@ class Model:
         if self.model_type == "YOLOv7":
             copy_frame, ratio, dwdh = self.pre_process_yolov7(copy_frame)
 
+        if self.model_type == "YOLOv9":
+            copy_frame = self.pre_process_yolov9(copy_frame)
+
         if self.model_type == "YOLOv10":
             copy_frame = self.pre_process_yolov10(copy_frame)
 
@@ -110,6 +114,9 @@ class Model:
 
         if self.model_type == "YOLOv7":
             boxes, confidences, class_ids = self.post_process_yolov7(outputs)
+
+        if self.model_type == "YOLOv9":
+            boxes, confidences, class_ids = self.post_process_yolov9(outputs)
 
         if self.model_type == "YOLOv10":
             boxes, confidences, class_ids = self.post_process_yolov10(outputs)
@@ -170,6 +177,54 @@ class Model:
         :return processed_outputs : 後処理後の推論結果. (boxes(x0, y0, x1, y1), confidences, class_ids)
         """
         return output[:, 1:5], output[:, 6], output[:, 5].astype(int)
+
+    def pre_process_yolov9(self, frame: MatLike) -> np.ndarray:
+        """
+        YOLO v9 の前処理
+
+        :param frame : 入力画像データ
+
+        :return processed_tensor : 前処理後の画像データ
+        """
+        self.img_height, self.img_width = frame.shape[:2]
+
+        processed_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+        # Resize input image
+        processed_frame = cv2.resize(processed_frame, (self.input_width, self.input_height))
+
+        # Scale input pixel values to 0 to 1
+        processed_frame = processed_frame / 255.0
+        processed_frame = processed_frame.transpose(2, 0, 1)
+        processed_tensor = processed_frame[np.newaxis, :, :, :].astype(np.float32)
+
+        return processed_tensor
+
+    def post_process_yolov9(self, output: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+        """
+        YOLO v9 の後処理
+
+        :param output : 推論結果
+
+        :return processed_outputs : 後処理後の推論結果. (boxes(x0, y0, x1, y1), confidences, class_ids)
+        """
+        boxes = output[:, :-2]
+        boxes = boxes.reshape(-1, 4)
+        confidences = output[:, -2]
+        confidences = confidences.squeeze()
+        class_ids = output[:, -1].astype(int)
+        class_ids = class_ids.squeeze()
+
+        mask = confidences > self.yolov9_cfg["conf_thres"]
+        mask = mask.squeeze()
+
+        boxes = boxes[mask, :]
+        confidences = confidences[mask]
+        class_ids = class_ids[mask]
+
+        boxes = self.rescale_boxes(boxes)
+
+        return boxes, confidences, class_ids
 
     def pre_process_yolov10(self, frame: MatLike) -> np.ndarray:
         """
