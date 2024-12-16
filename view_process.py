@@ -1,9 +1,8 @@
-from typing import Literal
 
 import customtkinter
 
-from function.const.model import ModelType
 from function.const.crop import CropType
+from function.const.model import ModelType
 from image_recognition import ImageRecognition
 
 

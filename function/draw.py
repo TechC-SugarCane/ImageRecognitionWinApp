@@ -1,4 +1,3 @@
-from typing import Literal
 
 import cv2
 from cv2.typing import MatLike

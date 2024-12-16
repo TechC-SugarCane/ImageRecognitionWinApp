@@ -1,9 +1,8 @@
 import os
 import random
 import time
-from typing import Literal, Tuple
+from typing import Tuple
 
-import cv2
 from cv2.typing import MatLike
 import numpy as np
 import onnxruntime as ort
@@ -11,8 +10,8 @@ from ultralytics import YOLO
 from ultralytics.engine.results import Results
 import yaml
 
-from function.const.model import ModelType
 from function.const.crop import CropType, LabelName
+from function.const.model import ModelType
 from function.draw import draw
 from function.letterbox import letterbox
 from function.nozzle import calc_nozzle_byte_idx, execute_nozzle

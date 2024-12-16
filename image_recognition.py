@@ -1,12 +1,11 @@
 from datetime import datetime
-from typing import Literal
 
 import customtkinter
 import cv2
 from PIL import Image, ImageOps, ImageTk  # 画像データ用
 
-from function.const.model import ModelType
 from function.const.crop import CropType
+from function.const.model import ModelType
 from function.infer import Model
 
 
