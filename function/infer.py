@@ -45,7 +45,7 @@ class Model:
         self.model_name = model_name
         self.labels = labels
 
-        task = 'detect'
+        task = "detect"
 
         # 選択されたモデルのバージョンをチェック
         print(f"Use {model_type} model. model name: {self.model_name}")
