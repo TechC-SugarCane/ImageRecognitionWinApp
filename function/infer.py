@@ -101,6 +101,7 @@ class Model:
         copy_frame = frame.copy()
         ratio = 1.0
         dwdh = (0.0, 0.0)
+        outputs: np.ndarray | Results = np.empty(0)
 
         # preprocess
         if self.model_type == "YOLOv7":
@@ -109,7 +110,7 @@ class Model:
             inp = {self.inname[0]: copy_frame}
             outputs = self.model.run(self.outname, inp)[0]
         else:
-            outputs: Results = self.model(copy_frame)[0]
+            outputs = self.model(copy_frame)[0]
 
         boxes, confidences, class_ids = None, None, None
 
