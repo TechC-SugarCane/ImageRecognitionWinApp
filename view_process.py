@@ -47,14 +47,18 @@ class ViewProcess(customtkinter.CTkFrame):
             text="停止",
             command=self.image_recognition.display_stop,
             state="normal",
+            fg_color="#b81f1a",
+            hover_color="#DE433E",
         )
-        self.stop_button.pack(side="left", padx=10)
+        self.stop_button.pack(side="left", padx=10, pady=10)
 
         self.restart_button = customtkinter.CTkButton(
             master=button_frame,
             text="再開",
             command=self.image_recognition.display_restart,
             state="normal",
+            fg_color="#1c961a",
+            hover_color="#42a340",
         )
 
-        self.restart_button.pack(side="left", padx=10)
+        self.restart_button.pack(side="left", padx=10, pady=10)

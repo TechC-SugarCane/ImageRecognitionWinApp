@@ -88,8 +88,8 @@ class Setup(customtkinter.CTk):
             command=self.back_screen,
             width=70,
             text_color="black",
-            fg_color="gray",
-            hover_color="lightgray",
+            fg_color=("gray", "white"),
+            hover_color=("lightgray", "white"),
         )
         # 左上に配置
         self.back_button.pack(side="bottom", anchor="center", fill="both")
