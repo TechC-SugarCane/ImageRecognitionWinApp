@@ -54,18 +54,19 @@ class Setup(customtkinter.CTk):
             self.execute_button.destroy()
             self.option_frame.destroy()
 
-            left_camera_index = 0
-            right_camera_index = 1
+            left_camera_index: str | int = 0
+            right_camera_index: str | int = 1
 
             # テストモードの場合はカメラではなく動画を読み込む
             if is_test:
-                left_camera_index = "video/multi_data1.mp4"
-                right_camera_index = "video/multi_data2.mp4"
+                left_camera_index = "video/tests/multi_data1.mp4"
+                right_camera_index = "video/tests/multi_data2.mp4"
 
             # 左の画面設定
             self.left_view_process = ViewProcess(
                 master=self,
                 is_serial=is_serial,
+                is_test=is_test,
                 inference_model_value=inference_model_value,
                 crops_value=crops_value,
                 camera_index=left_camera_index,
@@ -76,6 +77,7 @@ class Setup(customtkinter.CTk):
             self.right_view_process = ViewProcess(
                 master=self,
                 is_serial=is_serial,
+                is_test=is_test,
                 inference_model_value=inference_model_value,
                 crops_value=crops_value,
                 camera_index=right_camera_index,

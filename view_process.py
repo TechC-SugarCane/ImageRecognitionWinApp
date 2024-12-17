@@ -1,7 +1,7 @@
-from typing import Literal
-
 import customtkinter
 
+from function.const.crop import CropType
+from function.const.model import ModelType
 from image_recognition import ImageRecognition
 
 
@@ -10,14 +10,16 @@ class ViewProcess(customtkinter.CTkFrame):
         self,
         master: customtkinter.CTkFrame,
         is_serial: bool,
-        inference_model_value: Literal["YOLOv7", "YOLOv10"],
-        crops_value: Literal["sugarcane", "pineapple"],
+        is_test: bool,
+        inference_model_value: ModelType,
+        crops_value: CropType,
         camera_index: int | str,
     ) -> None:
         """
         描画処理を行う
         :param master                : 親クラス
         :param is_serial             : シリアル通信モードかどうか
+        :param is_test               : テストモードかどうか
         :param inference_model_value : 使用するモデルのバージョン
         :param crops_value           : 推論する作物の名前
         :param camera_index          : 使用するカメラのインデックス or 動画のパス
@@ -27,6 +29,7 @@ class ViewProcess(customtkinter.CTkFrame):
         self.image_recognition = ImageRecognition(
             master=self,
             is_serial=is_serial,
+            is_test=is_test,
             model_type=inference_model_value,
             model_name=crops_value,
             camera_index=camera_index,

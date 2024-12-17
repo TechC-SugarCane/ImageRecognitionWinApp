@@ -1,14 +1,17 @@
 import os
 import random
 import time
-from typing import Literal, Tuple
+from typing import Tuple
 
-import cv2
 from cv2.typing import MatLike
 import numpy as np
 import onnxruntime as ort
+from ultralytics import YOLO
+from ultralytics.engine.results import Results
 import yaml
 
+from function.const.crop import CropType, LabelName
+from function.const.model import ModelType
 from function.draw import draw
 from function.letterbox import letterbox
 from function.nozzle import calc_nozzle_byte_idx, execute_nozzle
@@ -26,9 +29,9 @@ def load_yaml_config(file_path: str) -> dict:
 class Model:
     def __init__(
         self,
-        model_type: Literal["YOLOv7", "YOLOv10"],
-        model_name: Literal["sugarcane", "pineapple"],
-        labels: list[Literal["sugarcane", "pineapple", "weed"]],
+        model_type: ModelType,
+        model_name: CropType,
+        labels: list[LabelName],
     ) -> None:
         """
         モデルの読み込み、基礎設定を行う
@@ -37,31 +40,37 @@ class Model:
         :param labels     : ラベルの名前を格納したリスト
         """
 
-        self.yolov10_cfg = load_yaml_config("./cfg/yolov10.yml")
-
         self.model_type = model_type
         self.model_name = model_name
         self.labels = labels
 
-        # 選択されたモデルのバージョンをチェック
-        if model_type == "YOLOv7":
-            print(f"Use YOLO v7 model. model name: {self.model_name}")
+        task = "detect"
 
+        # 選択されたモデルのバージョンをチェック
+        print(f"Use {model_type} model. model name: {self.model_name}")
+        if model_type == "YOLOv7":
             # モデルの読み込み
             self.model = self.load_model(f"./models/{self.model_name}_v7.onnx")
-        elif model_type == "YOLOv10":
-            print(f"Use YOLO v10 model. model name: {self.model_name}")
-
+        elif model_type == "YOLOv9":
             # モデルの読み込み
-            self.model = self.load_model(f"./models/{self.model_name}_v10.onnx")
+            # self.model = self.load_model(f"./models/{self.model_name}_v9.onnx")
+            self.model = YOLO(f"./models/{self.model_name}_v9.onnx", task=task)
+        elif model_type == "YOLOv10":
+            # モデルの読み込み
+            # self.model = self.load_model(f"./models/{self.model_name}_v10.onnx")
+            self.model = YOLO(f"./models/{self.model_name}_v10.onnx", task=task)
 
-        self.outname = [self.model.get_outputs()[0].name]
-        model_inputs = self.model.get_inputs()
-        self.inname = [i.name for i in model_inputs]
+        if model_type == "YOLOv7":
+            self.outname = [self.model.get_outputs()[0].name]
+            model_inputs = self.model.get_inputs()
+            self.inname = [i.name for i in model_inputs]
 
-        input_shape = model_inputs[0].shape
-        self.input_width = input_shape[2]
-        self.input_height = input_shape[3]
+            input_shape = model_inputs[0].shape
+            self.input_width = input_shape[2]
+            self.input_height = input_shape[3]
+        else:
+            self.input_width = 640
+            self.input_height = 640
 
         # ランダムでバウンディングボックスの色を決める
         self.colors = {name: [random.randint(0, 255) for _ in range(3)] for i, name in enumerate(self.labels)}
@@ -90,27 +99,28 @@ class Model:
         start_time = time.perf_counter()
 
         copy_frame = frame.copy()
-        ratio = 1
-        dwdh = (0, 0)
+        ratio = 1.0
+        dwdh = (0.0, 0.0)
+        outputs: np.ndarray | Results = np.empty(0)
 
         # preprocess
         if self.model_type == "YOLOv7":
             copy_frame, ratio, dwdh = self.pre_process_yolov7(copy_frame)
-
-        if self.model_type == "YOLOv10":
-            copy_frame = self.pre_process_yolov10(copy_frame)
-
-        # 推論処理の実装
-        inp = {self.inname[0]: copy_frame}
-        outputs = self.model.run(self.outname, inp)[0]
+            # 推論処理の実装
+            inp = {self.inname[0]: copy_frame}
+            outputs = self.model.run(self.outname, inp)[0]
+        else:
+            outputs = self.model(copy_frame)[0]
 
         boxes, confidences, class_ids = None, None, None
 
         if self.model_type == "YOLOv7":
             boxes, confidences, class_ids = self.post_process_yolov7(outputs)
-
-        if self.model_type == "YOLOv10":
-            boxes, confidences, class_ids = self.post_process_yolov10(outputs)
+        else:
+            boxes_obj = outputs.boxes
+            boxes = boxes_obj.xyxy.cpu().numpy()
+            confidences = boxes_obj.conf.cpu().numpy()
+            class_ids = boxes_obj.cls.cpu().numpy().astype(np.int32)
 
         if boxes is None or confidences is None or class_ids is None:
             raise ValueError("The values of boxes, confidences, and class_ids must not be None.")
@@ -156,7 +166,7 @@ class Model:
         frame = np.expand_dims(frame, 0)
         frame = np.ascontiguousarray(frame)
         frame = frame.astype(np.float32)
-        frame /= 255
+        frame /= 255  # type: ignore
         return frame, ratio, dwdh
 
     def post_process_yolov7(self, output: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
@@ -168,62 +178,3 @@ class Model:
         :return processed_outputs : 後処理後の推論結果. (boxes(x0, y0, x1, y1), confidences, class_ids)
         """
         return output[:, 1:5], output[:, 6], output[:, 5].astype(int)
-
-    def pre_process_yolov10(self, frame: MatLike) -> np.ndarray:
-        """
-        YOLO v10 の前処理
-
-        :param frame : 入力画像データ
-
-        :return processed_tensor : 前処理後の画像データ
-        """
-        self.img_height, self.img_width = frame.shape[:2]
-
-        processed_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
-        # Resize input image
-        processed_frame = cv2.resize(processed_frame, (self.input_width, self.input_height))
-
-        # Scale input pixel values to 0 to 1
-        processed_frame = processed_frame / 255.0
-        processed_frame = processed_frame.transpose(2, 0, 1)
-        processed_tensor = processed_frame[np.newaxis, :, :, :].astype(np.float32)
-
-        return processed_tensor
-
-    def post_process_yolov10(self, output: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
-        """
-        YOLO v10 の後処理
-
-        :param output : 推論結果
-
-        :return processed_outputs : 後処理後の推論結果. (boxes(x0, y0, x1, y1), confidences, class_ids)
-        """
-        output = output.squeeze()
-        boxes = output[:, :-2]
-        confidences = output[:, -2]
-        class_ids = output[:, -1].astype(int)
-
-        mask = confidences > self.yolov10_cfg["conf_thres"]
-        boxes = boxes[mask, :]
-        confidences = confidences[mask]
-        class_ids = class_ids[mask]
-
-        boxes = self.rescale_boxes(boxes)
-
-        return boxes, confidences, class_ids
-
-    def rescale_boxes(self, boxes: np.ndarray) -> np.ndarray:
-        """
-        バウンディングボックスをリスケールする
-
-        :param boxes : バウンディングボックスの座標
-
-        :return rescaled_boxes : リスケール後のバウンディングボックスの座標
-        """
-        rescaled_boxes = boxes.copy()
-        input_shape = np.array([self.input_width, self.input_height, self.input_width, self.input_height])
-        rescaled_boxes = np.divide(rescaled_boxes, input_shape)
-        rescaled_boxes *= np.array([self.img_width, self.img_height, self.img_width, self.img_height])
-
-        return rescaled_boxes

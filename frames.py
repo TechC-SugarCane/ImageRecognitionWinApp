@@ -1,5 +1,8 @@
 import customtkinter
 
+from function.const.crop import CROP_NAME_LIST, CropType
+from function.const.model import MODEL_NAME_LIST, ModelType
+
 
 class CropsFrame(customtkinter.CTkFrame):
     def __init__(self, master: customtkinter.CTkFrame) -> None:
@@ -8,25 +11,23 @@ class CropsFrame(customtkinter.CTkFrame):
 
         self.selected_rbtn = customtkinter.StringVar()
 
-        pineapple_rbtn = customtkinter.CTkRadioButton(
-            master=self,
-            text="パイナップル",
-            variable=self.selected_rbtn,
-            value="pineapple",
-        )
-        pineapple_rbtn.grid(row=0, column=0, padx=10, pady=10)
+        self.set_crop_rbtn(CROP_NAME_LIST)
 
-        sugarcane_rbtn = customtkinter.CTkRadioButton(
-            master=self,
-            text="サトウキビ",
-            variable=self.selected_rbtn,
-            value="sugarcane",
-        )
-        sugarcane_rbtn.grid(row=1, column=0, padx=10, pady=10)
-
-    def get_selected_rbtn_value(self) -> str:
+    def get_selected_rbtn_value(self) -> CropType:
         """選択された作物を取得"""
         return self.selected_rbtn.get()
+
+    def set_crop_rbtn(self, crop_types: list[CropType]) -> None:
+        """選択された作物をセット"""
+
+        for idx, crop_type in enumerate(crop_types):
+            crop_rbtn = customtkinter.CTkRadioButton(
+                master=self,
+                text=crop_type,
+                variable=self.selected_rbtn,
+                value=crop_type,
+            )
+            crop_rbtn.grid(row=idx, column=0, padx=10, pady=10)
 
 
 class InferenceModelFrame(customtkinter.CTkFrame):
@@ -36,25 +37,23 @@ class InferenceModelFrame(customtkinter.CTkFrame):
 
         self.selected_rbtn = customtkinter.StringVar()
 
-        yolov7_rbtn = customtkinter.CTkRadioButton(
-            master=self,
-            text="YOLOv7",
-            variable=self.selected_rbtn,
-            value="YOLOv7",
-        )
-        yolov7_rbtn.grid(row=0, column=0, padx=10, pady=10)
+        self.set_model_rbtn(MODEL_NAME_LIST)
 
-        yolov10_rbtn = customtkinter.CTkRadioButton(
-            master=self,
-            text="YOLOv10",
-            variable=self.selected_rbtn,
-            value="YOLOv10",
-        )
-        yolov10_rbtn.grid(row=2, column=0, padx=10, pady=10)
-
-    def get_selected_rbtn_value(self) -> str:
+    def get_selected_rbtn_value(self) -> ModelType:
         """選択された推論モデルを取得"""
         return self.selected_rbtn.get()
+
+    def set_model_rbtn(self, model_types: list[ModelType]) -> None:
+        """選択された推論モデルをセット"""
+
+        for idx, model_type in enumerate(model_types):
+            model_rbtn = customtkinter.CTkRadioButton(
+                master=self,
+                text=model_type,
+                variable=self.selected_rbtn,
+                value=model_type,
+            )
+            model_rbtn.grid(row=idx, column=0, padx=10, pady=10)
 
 
 class OptionFrame(customtkinter.CTkFrame):

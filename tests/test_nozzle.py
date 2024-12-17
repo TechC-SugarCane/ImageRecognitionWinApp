@@ -3,12 +3,11 @@ import sys
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../function"))
 
-from nozzle import execute_nozzle, nozzle
-import numpy as np
+from nozzle import calc_nozzle_byte_idx, execute_nozzle
 import pytest
 
-# FRAMEを定義
-FRAME = np.zeros((640, 640, 3), dtype=np.uint8)
+# 疑似フレームのサイズ
+FRAME_SIZE = (640, 640, 3)
 
 
 # テストをパラメータ化
@@ -38,11 +37,11 @@ FRAME = np.zeros((640, 640, 3), dtype=np.uint8)
         ([0, 310, 40, 350], None),
     ],
 )
-def test_nozzle(weed_bbox, expected_output):
+def test_calc_nozzle_byte_idx(weed_bbox, expected_output):
     """
-    nozzle関数の出力が期待通りか確認するテスト
+    calc_nozzle_byte_idx関数の出力が期待通りか確認するテスト
     """
-    result = nozzle(FRAME, weed_bbox)
+    result = calc_nozzle_byte_idx(FRAME_SIZE, weed_bbox)
     assert result == expected_output
 
 
