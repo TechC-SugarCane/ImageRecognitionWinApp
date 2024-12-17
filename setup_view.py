@@ -1,8 +1,8 @@
 import customtkinter
 
+from frames import CropsFrame, InferenceModelFrame, ModelSelectionFrame, OptionFrame
 from function.const.crop import CropType
 from function.const.model import ModelType
-from frames import CropsFrame, InferenceModelFrame, ModelSelectionFrame, OptionFrame
 from view_process import ViewProcess
 
 
@@ -29,7 +29,9 @@ class Setup(customtkinter.CTk):
         self.option_frame.pack(side="left", padx=40, pady=10, anchor="center")
 
         # モデル選択のFrameを表示
-        self.set_model_selection(self.crops_frame.get_selected_rbtn_value(), self.inference_model_frame.get_selected_rbtn_value())
+        self.set_model_selection(
+            self.crops_frame.get_selected_rbtn_value(), self.inference_model_frame.get_selected_rbtn_value()
+        )
 
         # 実行ボタン
         self.execute_button = customtkinter.CTkButton(master=self, text="実行", command=self.screen_transition)
@@ -40,7 +42,9 @@ class Setup(customtkinter.CTk):
         モデル選択
         """
         self.model_selection_frame.destroy()
-        self.set_model_selection(self.crops_frame.get_selected_rbtn_value(), self.inference_model_frame.get_selected_rbtn_value())
+        self.set_model_selection(
+            self.crops_frame.get_selected_rbtn_value(), self.inference_model_frame.get_selected_rbtn_value()
+        )
 
     def set_model_selection(self, crop: CropType, model: ModelType) -> None:
         """
@@ -49,14 +53,13 @@ class Setup(customtkinter.CTk):
         self.model_selection_frame = ModelSelectionFrame(self, crop, model)
         self.model_selection_frame.pack(side="left", padx=40, pady=10, anchor="center")
 
-
     def screen_transition(self) -> None:
         """画面遷移"""
         crops_value = self.crops_frame.get_selected_rbtn_value()
         inference_model_value = self.inference_model_frame.get_selected_rbtn_value()
         is_test = self.option_frame.get_is_test()
         is_serial = self.option_frame.get_is_serial()
-        model_path = self.model_selection_frame.get_model_selection()
+        model_path = self.model_selection_frame.get_model_path()
         print("Selected crops: ", crops_value)
         print("Selected inference model: ", inference_model_value)
         print("Is test mode: ", is_test)

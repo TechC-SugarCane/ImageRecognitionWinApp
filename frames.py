@@ -1,4 +1,6 @@
 import customtkinter
+from glob import glob
+from pathlib import Path
 
 from function.const.crop import CROP_NAME_LIST, CropType
 from function.const.model import MODEL_NAME_LIST, ModelType
@@ -94,27 +96,28 @@ class OptionFrame(customtkinter.CTkFrame):
 
 
 class ModelSelectionFrame(customtkinter.CTkFrame):
-    def __init__(self, master: customtkinter.CTkFrame, crop:  CropType, inference_model:  ModelType) -> None:
+    def __init__(self, master: customtkinter.CTkFrame, crop: CropType, inference_model: ModelType) -> None:
         """モデルの選択画面"""
         super().__init__(master=master)
 
-        self.optionmenu_var = customtkinter.StringVar()
+        self.optionmenu_var = customtkinter.StringVar(value="YOLOv9s")
 
-        from glob import glob
-        models_path = f"models/{inference_model}-models/{crop}"
+        models_path = f"models/{inference_model.lower()}-models/{crop}"
 
-        models = glob(f"{models_path}/*.onnx")
+        models_path = glob(f"{models_path}/*.onnx")
+        models_name = [Path(model_path).stem for model_path in models_path]
+
+        self.models = {model_name: model_path for model_name, model_path in zip(models_name, models_path, strict=True)}
 
         optionmenu = customtkinter.CTkOptionMenu(
-            self, values=models, command=self.optionmenu_callback, variable=self.optionmenu_var
+            self, values=models_name, command=self.optionmenu_callback, variable=self.optionmenu_var
         )
 
         optionmenu.grid(row=0, column=0, padx=10, pady=10)
 
-
     def optionmenu_callback(self, choice):
         print("optionmenu dropdown clicked:", choice)
 
-    def get_model_selection(self) -> str:
+    def get_model_path(self) -> str:
         """選択されたモデルを取得"""
-        return self.optionmenu_var.get()
+        return self.models[self.optionmenu_var.get()]
