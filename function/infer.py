@@ -31,12 +31,14 @@ class Model:
         self,
         model_type: ModelType,
         model_name: CropType,
+        model_path: str,
         labels: list[LabelName],
     ) -> None:
         """
         モデルの読み込み、基礎設定を行う
         :param model_type : 使用するモデルのバージョン
         :param model_name : 使用するモデルの名前
+        :param model_path : モデルのパス
         :param labels     : ラベルの名前を格納したリスト
         """
 
@@ -50,15 +52,10 @@ class Model:
         print(f"Use {model_type} model. model name: {self.model_name}")
         if model_type == "YOLOv7":
             # モデルの読み込み
-            self.model = self.load_model(f"./models/{self.model_name}_v7.onnx")
-        elif model_type == "YOLOv9":
+            self.model = self.load_model(model_path)
+        else:
             # モデルの読み込み
-            # self.model = self.load_model(f"./models/{self.model_name}_v9.onnx")
-            self.model = YOLO(f"./models/{self.model_name}_v9.onnx", task=task)
-        elif model_type == "YOLOv10":
-            # モデルの読み込み
-            # self.model = self.load_model(f"./models/{self.model_name}_v10.onnx")
-            self.model = YOLO(f"./models/{self.model_name}_v10.onnx", task=task)
+            self.model = YOLO(model_path, task=task)
 
         if model_type == "YOLOv7":
             self.outname = [self.model.get_outputs()[0].name]

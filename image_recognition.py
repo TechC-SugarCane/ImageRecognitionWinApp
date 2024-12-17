@@ -17,6 +17,7 @@ class ImageRecognition(customtkinter.CTkFrame):
         is_test: bool,
         model_type: ModelType,
         model_name: CropType,
+        model_path: str,
         camera_index: int | str,
     ) -> None:
         """
@@ -26,6 +27,7 @@ class ImageRecognition(customtkinter.CTkFrame):
         :param is_test      : テストモードかどうか
         :param model_type   : 使用するモデルのバージョン
         :param model_name   : 使用するモデルの名前
+        :param model_path   : モデルのパス
         :param camera_index : 使用するカメラのインデックス or 動画のパス
         """
         super().__init__(master=master)
@@ -63,6 +65,7 @@ class ImageRecognition(customtkinter.CTkFrame):
         self.model = Model(
             model_type=model_type,
             model_name=model_name,
+            model_path=model_path,
             labels=[model_name, "weed"],  # ここでラベルを設定
         )
 
