@@ -1,4 +1,5 @@
 from glob import glob
+import os
 from pathlib import Path
 from typing import Callable
 
@@ -102,9 +103,20 @@ class ModelSelectionFrame(customtkinter.CTkFrame):
         """モデルの選択画面"""
         super().__init__(master=master)
 
+        self.optionmenu_var = customtkinter.StringVar()
+
         models_root_path = f"models/{inference_model.lower()}-models/{crop}"
 
+        if not os.path.exists(models_root_path):
+            message = f"Model directory not found: {models_root_path}. Please see models/README.md and download the model."
+            raise FileNotFoundError(message)
+
         models_path = glob(f"{models_root_path}/*.onnx")
+
+        if models_path == []:
+            message = f"ONNX model file not found: {models_root_path}. Please see models/README.md and download the model."
+            raise FileNotFoundError(message)
+
         models_name = [Path(model_path).stem for model_path in models_path]
 
         self.models = {model_name: model_path for model_name, model_path in zip(models_name, models_path, strict=True)}
