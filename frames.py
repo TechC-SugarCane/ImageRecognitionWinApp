@@ -108,13 +108,13 @@ class ModelSelectionFrame(customtkinter.CTkFrame):
         models_root_path = f"models/{inference_model.lower()}-models/{crop}"
 
         if not os.path.exists(models_root_path):
-            message = f"Model directory not found: {models_root_path}. Please see models/README.md and download the model."
+            message = f"Model directory not found: {models_root_path}. Please see models/README.md and download the model."  # noqa
             raise FileNotFoundError(message)
 
         models_path = glob(f"{models_root_path}/*.onnx")
 
         if models_path == []:
-            message = f"ONNX model file not found: {models_root_path}. Please see models/README.md and download the model."
+            message = f"ONNX model file not found: {models_root_path}. Please see models/README.md and download the model."  # noqa
             raise FileNotFoundError(message)
 
         models_name = [Path(model_path).stem for model_path in models_path]
