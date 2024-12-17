@@ -18,15 +18,15 @@ class Setup(customtkinter.CTk):
 
         # 作物のFrameを表示
         self.crops_frame = CropsFrame(self, self.model_selection)
-        self.crops_frame.pack(side="left", padx=40, pady=10, anchor="center")
+        self.crops_frame.pack(side="left", padx=30, pady=10, anchor="center")
 
         # 推論モデルのFrameを表示
         self.inference_model_frame = InferenceModelFrame(self, self.model_selection)
-        self.inference_model_frame.pack(side="left", padx=40, pady=10, anchor="center")
+        self.inference_model_frame.pack(side="left", padx=30, pady=10, anchor="center")
 
         # オプションのFrameを表示
         self.option_frame = OptionFrame(self)
-        self.option_frame.pack(side="left", padx=40, pady=10, anchor="center")
+        self.option_frame.pack(side="left", padx=30, pady=10, anchor="center")
 
         # モデル選択のFrameを表示
         self.set_model_selection(
@@ -35,7 +35,7 @@ class Setup(customtkinter.CTk):
 
         # 実行ボタン
         self.execute_button = customtkinter.CTkButton(master=self, text="実行", command=self.screen_transition)
-        self.execute_button.pack(side="right", padx=10, pady=10, anchor="center")
+        self.execute_button.pack(side="right", padx=20, pady=10, anchor="center")
 
     def model_selection(self) -> None:
         """
@@ -51,7 +51,7 @@ class Setup(customtkinter.CTk):
         モデル選択
         """
         self.model_selection_frame = ModelSelectionFrame(self, crop, model)
-        self.model_selection_frame.pack(side="left", padx=40, pady=10, anchor="center")
+        self.model_selection_frame.pack(side="left", padx=30, pady=10, anchor="center")
 
     def screen_transition(self) -> None:
         """画面遷移"""
