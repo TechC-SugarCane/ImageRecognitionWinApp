@@ -1,6 +1,7 @@
-import customtkinter
 from glob import glob
 from pathlib import Path
+
+import customtkinter
 
 from function.const.crop import CROP_NAME_LIST, CropType
 from function.const.model import MODEL_NAME_LIST, ModelType
@@ -99,7 +100,6 @@ class ModelSelectionFrame(customtkinter.CTkFrame):
     def __init__(self, master: customtkinter.CTkFrame, crop: CropType, inference_model: ModelType) -> None:
         """モデルの選択画面"""
         super().__init__(master=master)
-
 
         models_path = f"models/{inference_model.lower()}-models/{crop}"
 
