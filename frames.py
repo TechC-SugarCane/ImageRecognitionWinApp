@@ -1,5 +1,6 @@
 from glob import glob
 from pathlib import Path
+from typing import Callable
 
 import customtkinter
 
@@ -8,7 +9,7 @@ from function.const.model import MODEL_NAME_LIST, ModelType
 
 
 class CropsFrame(customtkinter.CTkFrame):
-    def __init__(self, master: customtkinter.CTkFrame, command: callable) -> None:
+    def __init__(self, master: customtkinter.CTkFrame, command: Callable) -> None:
         """作物の選択画面"""
         super().__init__(master=master)
 
@@ -37,7 +38,7 @@ class CropsFrame(customtkinter.CTkFrame):
 
 
 class InferenceModelFrame(customtkinter.CTkFrame):
-    def __init__(self, master: customtkinter.CTkFrame, command: callable) -> None:
+    def __init__(self, master: customtkinter.CTkFrame, command: Callable) -> None:
         """推論モデルの選択画面"""
         super().__init__(master=master)
 
@@ -101,9 +102,9 @@ class ModelSelectionFrame(customtkinter.CTkFrame):
         """モデルの選択画面"""
         super().__init__(master=master)
 
-        models_path = f"models/{inference_model.lower()}-models/{crop}"
+        models_root_path = f"models/{inference_model.lower()}-models/{crop}"
 
-        models_path = glob(f"{models_path}/*.onnx")
+        models_path = glob(f"{models_root_path}/*.onnx")
         models_name = [Path(model_path).stem for model_path in models_path]
 
         self.models = {model_name: model_path for model_name, model_path in zip(models_name, models_path, strict=True)}
