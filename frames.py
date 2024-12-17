@@ -13,7 +13,7 @@ class CropsFrame(customtkinter.CTkFrame):
 
         self.command = command
 
-        self.selected_rbtn = customtkinter.StringVar(value="sugarcane")
+        self.selected_rbtn = customtkinter.StringVar(value=CROP_NAME_LIST[0])
 
         self.set_crop_rbtn(CROP_NAME_LIST)
 
@@ -42,7 +42,7 @@ class InferenceModelFrame(customtkinter.CTkFrame):
 
         self.command = command
 
-        self.selected_rbtn = customtkinter.StringVar(value="YOLOv9")
+        self.selected_rbtn = customtkinter.StringVar(value=MODEL_NAME_LIST[0])
 
         self.set_model_rbtn(MODEL_NAME_LIST)
 
