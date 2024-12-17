@@ -100,7 +100,6 @@ class ModelSelectionFrame(customtkinter.CTkFrame):
         """モデルの選択画面"""
         super().__init__(master=master)
 
-        self.optionmenu_var = customtkinter.StringVar(value="YOLOv9s")
 
         models_path = f"models/{inference_model.lower()}-models/{crop}"
 
@@ -108,6 +107,8 @@ class ModelSelectionFrame(customtkinter.CTkFrame):
         models_name = [Path(model_path).stem for model_path in models_path]
 
         self.models = {model_name: model_path for model_name, model_path in zip(models_name, models_path, strict=True)}
+
+        self.optionmenu_var = customtkinter.StringVar(value=models_name[0])
 
         optionmenu = customtkinter.CTkOptionMenu(
             self, values=models_name, command=self.optionmenu_callback, variable=self.optionmenu_var
