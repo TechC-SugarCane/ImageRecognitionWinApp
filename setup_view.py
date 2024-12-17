@@ -56,12 +56,12 @@ class Setup(customtkinter.CTk):
         inference_model_value = self.inference_model_frame.get_selected_rbtn_value()
         is_test = self.option_frame.get_is_test()
         is_serial = self.option_frame.get_is_serial()
-        model = self.model_selection_frame.get_model_selection()
+        model_path = self.model_selection_frame.get_model_selection()
         print("Selected crops: ", crops_value)
         print("Selected inference model: ", inference_model_value)
         print("Is test mode: ", is_test)
         print("Is serial mode: ", is_serial)
-        print("Selected model: ", model)
+        print("Selected model: ", model_path)
 
         if crops_value != "" and inference_model_value != "":
             print("両方選択されている")
@@ -70,6 +70,7 @@ class Setup(customtkinter.CTk):
             self.inference_model_frame.destroy()
             self.execute_button.destroy()
             self.option_frame.destroy()
+            self.model_selection_frame.destroy()
 
             left_camera_index: str | int = 0
             right_camera_index: str | int = 1
@@ -86,6 +87,7 @@ class Setup(customtkinter.CTk):
                 is_test=is_test,
                 inference_model_value=inference_model_value,
                 crops_value=crops_value,
+                model_path=model_path,
                 camera_index=left_camera_index,
             )
             self.left_view_process.pack(side="left", expand=True, fill="both")
@@ -97,6 +99,7 @@ class Setup(customtkinter.CTk):
                 is_test=is_test,
                 inference_model_value=inference_model_value,
                 crops_value=crops_value,
+                model_path=model_path,
                 camera_index=right_camera_index,
             )
             self.right_view_process.pack(side="right", expand=True, fill="both")

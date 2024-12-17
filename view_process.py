@@ -13,6 +13,7 @@ class ViewProcess(customtkinter.CTkFrame):
         is_test: bool,
         inference_model_value: ModelType,
         crops_value: CropType,
+        model_path: str,
         camera_index: int | str,
     ) -> None:
         """
@@ -22,6 +23,7 @@ class ViewProcess(customtkinter.CTkFrame):
         :param is_test               : テストモードかどうか
         :param inference_model_value : 使用するモデルのバージョン
         :param crops_value           : 推論する作物の名前
+        :param model_path            : モデルのパス
         :param camera_index          : 使用するカメラのインデックス or 動画のパス
         """
         super().__init__(master=master)
@@ -32,6 +34,7 @@ class ViewProcess(customtkinter.CTkFrame):
             is_test=is_test,
             model_type=inference_model_value,
             model_name=crops_value,
+            model_path=model_path,
             camera_index=camera_index,
         )
         self.image_recognition.pack(side="top", fill="both", expand="True")
