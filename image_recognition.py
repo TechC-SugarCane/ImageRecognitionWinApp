@@ -1,10 +1,11 @@
 from datetime import datetime
-from typing import Literal
 
 import customtkinter
 import cv2
 from PIL import Image, ImageOps, ImageTk  # 画像データ用
 
+from function.const.crop import CropType
+from function.const.model import ModelType
 from function.infer import Model
 
 
@@ -14,8 +15,8 @@ class ImageRecognition(customtkinter.CTkFrame):
         master: customtkinter.CTkFrame,
         is_serial: bool,
         is_test: bool,
-        model_type: Literal["YOLOv7", "YOLOv10"],
-        model_name: Literal["sugarcane", "pineapple"],
+        model_type: ModelType,
+        model_name: CropType,
         camera_index: int | str,
     ) -> None:
         """
