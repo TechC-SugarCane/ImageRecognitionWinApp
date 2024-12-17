@@ -81,6 +81,19 @@ class Setup(customtkinter.CTk):
             left_camera_index = "video/tests/multi_data1.mp4"
             right_camera_index = "video/tests/multi_data2.mp4"
 
+        # 前の画面に戻るボタン
+        self.back_button = customtkinter.CTkButton(
+            master=self,
+            text="戻る",
+            command=self.back_screen,
+            width=70,
+            text_color="black",
+            fg_color="gray",
+            hover_color="lightgray",
+        )
+        # 左上に配置
+        self.back_button.pack(side="bottom", anchor="center", fill="both")
+
         # 左の画面設定
         self.left_view_process = ViewProcess(
             master=self,
@@ -92,15 +105,6 @@ class Setup(customtkinter.CTk):
             camera_index=left_camera_index,
         )
         self.left_view_process.pack(side="left", expand=True, fill="both")
-
-        # 前の画面に戻るボタン
-        self.back_button = customtkinter.CTkButton(
-            master=self,
-            text="戻る",
-            command=self.back_screen,
-        )
-        self.back_button.pack(side="left", padx=20, pady=10, anchor="center")
-
 
         # 右の画面設定
         self.right_view_process = ViewProcess(
