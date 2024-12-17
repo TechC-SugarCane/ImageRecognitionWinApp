@@ -1,5 +1,7 @@
 import customtkinter
 
+from function.const.crop import CropType
+from function.const.model import ModelType
 from frames import CropsFrame, InferenceModelFrame, ModelSelectionFrame, OptionFrame
 from view_process import ViewProcess
 
@@ -15,23 +17,38 @@ class Setup(customtkinter.CTk):
         self.geometry(geometry_string="1000x800")
 
         # 作物のFrameを表示
-        self.crops_frame = CropsFrame(self)
+        self.crops_frame = CropsFrame(self, self.model_selection)
         self.crops_frame.pack(side="left", padx=40, pady=10, anchor="center")
 
         # 推論モデルのFrameを表示
-        self.inference_model_frame = InferenceModelFrame(self)
+        self.inference_model_frame = InferenceModelFrame(self, self.model_selection)
         self.inference_model_frame.pack(side="left", padx=40, pady=10, anchor="center")
 
         # オプションのFrameを表示
         self.option_frame = OptionFrame(self)
         self.option_frame.pack(side="left", padx=40, pady=10, anchor="center")
 
-        self.model_selection_frame = ModelSelectionFrame(self)
-        self.model_selection_frame.pack(side="left", padx=40, pady=10, anchor="center")
+        # モデル選択のFrameを表示
+        self.set_model_selection(self.crops_frame.get_selected_rbtn_value(), self.inference_model_frame.get_selected_rbtn_value())
 
         # 実行ボタン
         self.execute_button = customtkinter.CTkButton(master=self, text="実行", command=self.screen_transition)
         self.execute_button.pack(side="right", padx=10, pady=10, anchor="center")
+
+    def model_selection(self) -> None:
+        """
+        モデル選択
+        """
+        self.model_selection_frame.destroy()
+        self.set_model_selection(self.crops_frame.get_selected_rbtn_value(), self.inference_model_frame.get_selected_rbtn_value())
+
+    def set_model_selection(self, crop: CropType, model: ModelType) -> None:
+        """
+        モデル選択
+        """
+        self.model_selection_frame = ModelSelectionFrame(self, crop, model)
+        self.model_selection_frame.pack(side="left", padx=40, pady=10, anchor="center")
+
 
     def screen_transition(self) -> None:
         """画面遷移"""

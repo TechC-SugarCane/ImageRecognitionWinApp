@@ -5,11 +5,13 @@ from function.const.model import MODEL_NAME_LIST, ModelType
 
 
 class CropsFrame(customtkinter.CTkFrame):
-    def __init__(self, master: customtkinter.CTkFrame) -> None:
+    def __init__(self, master: customtkinter.CTkFrame, command: callable) -> None:
         """作物の選択画面"""
         super().__init__(master=master)
 
-        self.selected_rbtn = customtkinter.StringVar()
+        self.command = command
+
+        self.selected_rbtn = customtkinter.StringVar(value="sugarcane")
 
         self.set_crop_rbtn(CROP_NAME_LIST)
 
@@ -26,16 +28,19 @@ class CropsFrame(customtkinter.CTkFrame):
                 text=crop_type,
                 variable=self.selected_rbtn,
                 value=crop_type,
+                command=self.command,
             )
             crop_rbtn.grid(row=idx, column=0, padx=10, pady=10)
 
 
 class InferenceModelFrame(customtkinter.CTkFrame):
-    def __init__(self, master: customtkinter.CTkFrame) -> None:
+    def __init__(self, master: customtkinter.CTkFrame, command: callable) -> None:
         """推論モデルの選択画面"""
         super().__init__(master=master)
 
-        self.selected_rbtn = customtkinter.StringVar()
+        self.command = command
+
+        self.selected_rbtn = customtkinter.StringVar(value="YOLOv9")
 
         self.set_model_rbtn(MODEL_NAME_LIST)
 
@@ -52,6 +57,7 @@ class InferenceModelFrame(customtkinter.CTkFrame):
                 text=model_type,
                 variable=self.selected_rbtn,
                 value=model_type,
+                command=self.command,
             )
             model_rbtn.grid(row=idx, column=0, padx=10, pady=10)
 
@@ -88,13 +94,19 @@ class OptionFrame(customtkinter.CTkFrame):
 
 
 class ModelSelectionFrame(customtkinter.CTkFrame):
-    def __init__(self, master: customtkinter.CTkFrame) -> None:
+    def __init__(self, master: customtkinter.CTkFrame, crop:  CropType, inference_model:  ModelType) -> None:
         """モデルの選択画面"""
         super().__init__(master=master)
 
-        self.optionmenu_var = customtkinter.StringVar(value="option 2")
+        self.optionmenu_var = customtkinter.StringVar()
+
+        from glob import glob
+        models_path = f"models/{inference_model}-models/{crop}"
+
+        models = glob(f"{models_path}/*.onnx")
+
         optionmenu = customtkinter.CTkOptionMenu(
-            self, values=["option 1", "option 2"], command=self.optionmenu_callback, variable=self.optionmenu_var
+            self, values=models, command=self.optionmenu_callback, variable=self.optionmenu_var
         )
 
         optionmenu.grid(row=0, column=0, padx=10, pady=10)
