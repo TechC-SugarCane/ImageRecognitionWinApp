@@ -37,7 +37,7 @@ class Setup(customtkinter.CTk):
         )
 
         # 実行ボタン
-        self.execute_button = customtkinter.CTkButton(master=self, text="実行", command=self.screen_transition)
+        self.execute_button = customtkinter.CTkButton(master=self, text="推論画面へ", fg_color="#1c961a", hover_color="#42a340", command=self.screen_transition)
         self.execute_button.pack(side="right", padx=20, pady=10, anchor="center")
 
 
