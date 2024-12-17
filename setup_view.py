@@ -89,6 +89,15 @@ class Setup(customtkinter.CTk):
         )
         self.left_view_process.pack(side="left", expand=True, fill="both")
 
+        # 前の画面に戻るボタン
+        self.back_button = customtkinter.CTkButton(
+            master=self,
+            text="戻る",
+            command=self.back_screen,
+        )
+        self.back_button.pack(side="right", padx=10, pady=10)
+
+
         # 右の画面設定
         self.right_view_process = ViewProcess(
             master=self,
@@ -108,6 +117,24 @@ class Setup(customtkinter.CTk):
         self.execute_button.destroy()
         self.option_frame.destroy()
         self.model_selection_frame.destroy()
+
+    def back_screen(self) -> None:
+        """前の画面に戻る"""
+        self.left_view_process.destroy()
+        self.right_view_process.destroy()
+        self.back_button.destroy()
+
+        self.crops_frame = CropsFrame(self)
+        self.crops_frame.pack(side="left", padx=40, pady=10, anchor="center")
+
+        self.inference_model_frame = InferenceModelFrame(self)
+        self.inference_model_frame.pack(side="left", padx=40, pady=10, anchor="center")
+
+        self.option_frame = OptionFrame(self)
+        self.option_frame.pack(side="left", padx=40, pady=10, anchor="center")
+
+        self.execute_button = customtkinter.CTkButton(master=self, text="実行", command=self.screen_transition)
+        self.execute_button.pack(side="right", padx=10, pady=10, anchor="center")
 
 
 if __name__ == "__main__":
