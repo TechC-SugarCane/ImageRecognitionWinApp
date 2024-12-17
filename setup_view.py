@@ -16,6 +16,9 @@ class Setup(customtkinter.CTk):
         # ウィンドウサイズ（幅x高さ）
         self.geometry(geometry_string="1000x800")
 
+        self.set_setup_frame()
+
+    def set_setup_frame(self) -> None:
         # 作物のFrameを表示
         self.crops_frame = CropsFrame(self, self.model_selection)
         self.crops_frame.pack(side="left", padx=30, pady=10, anchor="center")
@@ -34,7 +37,9 @@ class Setup(customtkinter.CTk):
         )
 
         # 実行ボタン
-        self.execute_button = customtkinter.CTkButton(master=self, text="実行", command=self.screen_transition)
+        self.execute_button = customtkinter.CTkButton(
+            master=self, text="推論画面へ", fg_color="#1c961a", hover_color="#42a340", command=self.screen_transition
+        )
         self.execute_button.pack(side="right", padx=20, pady=10, anchor="center")
 
     def model_selection(self) -> None:
@@ -77,6 +82,19 @@ class Setup(customtkinter.CTk):
             left_camera_index = "video/tests/multi_data1.mp4"
             right_camera_index = "video/tests/multi_data2.mp4"
 
+        # 前の画面に戻るボタン
+        self.back_button = customtkinter.CTkButton(
+            master=self,
+            text="戻る",
+            command=self.back_screen,
+            width=70,
+            text_color="black",
+            fg_color=("gray", "white"),
+            hover_color=("lightgray", "white"),
+        )
+        # 左上に配置
+        self.back_button.pack(side="bottom", anchor="center", fill="both")
+
         # 左の画面設定
         self.left_view_process = ViewProcess(
             master=self,
@@ -108,6 +126,14 @@ class Setup(customtkinter.CTk):
         self.execute_button.destroy()
         self.option_frame.destroy()
         self.model_selection_frame.destroy()
+
+    def back_screen(self) -> None:
+        """前の画面に戻る"""
+        self.left_view_process.destroy()
+        self.right_view_process.destroy()
+        self.back_button.destroy()
+
+        self.set_setup_frame()
 
 
 if __name__ == "__main__":
