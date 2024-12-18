@@ -1,9 +1,16 @@
+from typing import Optional
+
 import customtkinter
+import serial
 
 from frames import CropsFrame, InferenceModelFrame, ModelSelectionFrame, OptionFrame
 from function.const.crop import CropType
 from function.const.model import ModelType
+from function.nozzle import close_serial_port, set_serial_port
 from view_process import ViewProcess
+
+VID = "0x0483"
+PID = "0x5740"
 
 
 class Setup(customtkinter.CTk):
@@ -12,6 +19,8 @@ class Setup(customtkinter.CTk):
         画面のセットアップを行う
         """
         super().__init__()
+
+        self.ser: Optional[serial.Serial] = None
 
         # ウィンドウサイズ（幅x高さ）
         self.geometry(geometry_string="1000x800")
@@ -64,6 +73,7 @@ class Setup(customtkinter.CTk):
         inference_model_value = self.inference_model_frame.get_selected_rbtn_value()
         is_test = self.option_frame.get_is_test()
         is_serial = self.option_frame.get_is_serial()
+        self.is_serial = self.option_frame.get_is_serial()
         model_path = self.model_selection_frame.get_model_path()
         print("Selected crops: ", crops_value)
         print("Selected inference model: ", inference_model_value)
@@ -73,6 +83,9 @@ class Setup(customtkinter.CTk):
 
         # 前の画面のframeを削除
         self.destroy_pre_frame()
+
+        if self.is_serial:
+            self.ser = set_serial_port(VID, PID)
 
         left_camera_index: str | int = 0
         right_camera_index: str | int = 1
@@ -100,6 +113,7 @@ class Setup(customtkinter.CTk):
             master=self,
             is_serial=is_serial,
             is_test=is_test,
+            ser=self.ser,
             inference_model_value=inference_model_value,
             crops_value=crops_value,
             model_path=model_path,
@@ -112,6 +126,7 @@ class Setup(customtkinter.CTk):
             master=self,
             is_serial=is_serial,
             is_test=is_test,
+            ser=self.ser,
             inference_model_value=inference_model_value,
             crops_value=crops_value,
             model_path=model_path,
@@ -132,6 +147,8 @@ class Setup(customtkinter.CTk):
         self.left_view_process.destroy()
         self.right_view_process.destroy()
         self.back_button.destroy()
+        if self.is_serial:
+            close_serial_port(self.ser)
 
         self.set_setup_frame()
 

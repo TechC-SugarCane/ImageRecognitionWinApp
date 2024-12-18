@@ -1,12 +1,15 @@
 from datetime import datetime
+from typing import Optional
 
 import customtkinter
 import cv2
 from PIL import Image, ImageOps, ImageTk  # 画像データ用
+import serial
 
 from function.const.crop import CropType
 from function.const.model import ModelType
 from function.infer import Model
+from function.nozzle import close_serial_port
 
 
 class ImageRecognition(customtkinter.CTkFrame):
@@ -15,6 +18,7 @@ class ImageRecognition(customtkinter.CTkFrame):
         master: customtkinter.CTkFrame,
         is_serial: bool,
         is_test: bool,
+        ser: Optional[serial.Serial],
         model_type: ModelType,
         model_name: CropType,
         model_path: str,
@@ -25,6 +29,7 @@ class ImageRecognition(customtkinter.CTkFrame):
         :param master       : 親クラス
         :param is_serial    : シリアル通信モードかどうか
         :param is_test      : テストモードかどうか
+        :param ser          : シリアル用のオブジェクト
         :param model_type   : 使用するモデルのバージョン
         :param model_name   : 使用するモデルの名前
         :param model_path   : モデルのパス
@@ -34,6 +39,7 @@ class ImageRecognition(customtkinter.CTkFrame):
 
         self.is_serial = is_serial
         self.is_test = is_test
+        self.ser = ser
 
         window_width = self.winfo_width()
         window_height = self.winfo_height()
@@ -79,7 +85,7 @@ class ImageRecognition(customtkinter.CTkFrame):
         if not self.is_test:
             self.save_video.write(frame)
 
-        infer_frame, fps = self.model.infer(self.is_serial, frame)  # type: ignore
+        infer_frame, fps = self.model.infer(self.is_serial, self.ser, frame)  # type: ignore
 
         if not self.is_test:
             self.save_infer_video.write(infer_frame)
@@ -121,4 +127,6 @@ class ImageRecognition(customtkinter.CTkFrame):
         if not self.is_test:
             self.save_video.release()
             self.save_infer_video.release()
+        if self.is_serial:
+            close_serial_port(self.ser)
         super().destroy()
