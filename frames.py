@@ -23,7 +23,7 @@ class CropsFrame(customtkinter.CTkFrame):
     def get_selected_rbtn_value(self) -> CropType:
         """選択された作物を取得"""
         return self.selected_rbtn.get()
-    
+
     def set_rbtn_value(self, value: str) -> None:
         self.selected_rbtn.set(value)
 
@@ -98,7 +98,7 @@ class OptionFrame(customtkinter.CTkFrame):
     def get_is_test(self) -> bool:
         """選択されたテストモードのモードを取得"""
         return self.is_test.get()
-    
+
     def set_is_test(self, value: bool) -> None:
         self.is_test.set(value)
 

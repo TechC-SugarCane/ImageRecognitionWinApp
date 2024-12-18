@@ -142,6 +142,7 @@ class Setup(customtkinter.CTk):
         self.option_frame.set_is_test(self.is_test)
         self.model_selection_frame.set_model_path(self.model_name)
 
+
 if __name__ == "__main__":
     app = Setup()
     app.title(string="画像認識")
