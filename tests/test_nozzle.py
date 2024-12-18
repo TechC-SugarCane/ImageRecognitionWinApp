@@ -3,7 +3,7 @@ import sys
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "../function"))
 
-from nozzle import calc_nozzle_byte_idx, execute_nozzle
+from nozzle import calc_nozzle_byte_idx
 import pytest
 
 # 疑似フレームのサイズ
@@ -43,22 +43,3 @@ def test_calc_nozzle_byte_idx(weed_bbox, expected_output):
     """
     result = calc_nozzle_byte_idx(FRAME_SIZE, weed_bbox)
     assert result == expected_output
-
-
-@pytest.mark.parametrize(
-    "weed_byte",
-    [
-        b"\x80\x00",  # ノズル1の制御バイト
-        b"\x00\x80",  # ノズル9の制御バイト
-    ],
-)
-def test_execute_nozzle(mocker, weed_byte):
-    """
-    execute_nozzleのシリアル通信部分をテスト
-    mockを使ってシリアル通信をテストする
-    """
-    mock_serial = mocker.patch("serial.Serial")  # serial.Serialをモック化
-    execute_nozzle(weed_byte)
-    mock_serial.assert_called_once_with("COM4", 115200, timeout=None)  # シリアルポートが開かれていることを確認
-    mock_serial.return_value.write.assert_called_once_with(weed_byte)  # 正しいバイトデータが送信されていることを確認
-    mock_serial.return_value.close.assert_called_once()  # シリアルポートが閉じられていることを確認

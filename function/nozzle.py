@@ -46,6 +46,7 @@ def calc_nozzle_byte_idx(
 
     # 発射部分
     if 280 <= bbox_center_y <= 300:
+        # if 1 <= bbox_center_y <= 600:
         frontbit = 0b00000000
         backbit = 0b00000000
         # 1バイト*2＝8ビット*2
@@ -68,7 +69,22 @@ def calc_nozzle_byte_idx(
     return None
 
 
+def set_serial_port(vid: str, pid: str) -> serial.Serial:
+    # 自動でシリアルポートを認識して接続する
+    port = find_serial_port(vid, pid)
+    if port is None:
+        raise Exception("No serial port found for the given VID and PID")
+
+    # 送信部分
+    return serial.Serial(port, 115200, timeout=None)
+
+
+def close_serial_port(ser: serial.Serial) -> None:
+    ser.close()
+
+
 def execute_nozzle(
+    ser: Optional[serial.Serial],
     nozzle_control_bytes: bytes,
 ) -> None:
     """
@@ -76,15 +92,5 @@ def execute_nozzle(
 
     :param nozzle_control_bytes: ノズルを制御するためのバイトデータ
     """
-
-    # 自動でシリアルポートを認識して接続する
-    vid = "0x0483"
-    pid = "0x5740"
-    port = find_serial_port(vid, pid)
-    if port is None:
-        raise Exception("No serial port found for the given VID and PID")
-
-    # 送信部分
-    ser = serial.Serial(port, 115200, timeout=None)
-    ser.write(nozzle_control_bytes)
-    ser.close()
+    if ser is not None:
+        ser.write(nozzle_control_bytes)
