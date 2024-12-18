@@ -1,4 +1,7 @@
+from typing import Optional
+
 import customtkinter
+import serial
 
 from function.const.crop import CropType
 from function.const.model import ModelType
@@ -11,6 +14,7 @@ class ViewProcess(customtkinter.CTkFrame):
         master: customtkinter.CTkFrame,
         is_serial: bool,
         is_test: bool,
+        ser: Optional[serial.Serial],
         inference_model_value: ModelType,
         crops_value: CropType,
         model_path: str,
@@ -21,6 +25,7 @@ class ViewProcess(customtkinter.CTkFrame):
         :param master                : 親クラス
         :param is_serial             : シリアル通信モードかどうか
         :param is_test               : テストモードかどうか
+        :param ser                   : シリアル用のオブジェクト
         :param inference_model_value : 使用するモデルのバージョン
         :param crops_value           : 推論する作物の名前
         :param model_path            : モデルのパス
@@ -32,6 +37,7 @@ class ViewProcess(customtkinter.CTkFrame):
             master=self,
             is_serial=is_serial,
             is_test=is_test,
+            ser=ser,
             model_type=inference_model_value,
             model_name=crops_value,
             model_path=model_path,
