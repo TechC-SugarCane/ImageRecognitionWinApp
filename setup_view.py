@@ -60,16 +60,17 @@ class Setup(customtkinter.CTk):
 
     def screen_transition(self) -> None:
         """画面遷移"""
-        crops_value = self.crops_frame.get_selected_rbtn_value()
-        inference_model_value = self.inference_model_frame.get_selected_rbtn_value()
-        is_test = self.option_frame.get_is_test()
-        is_serial = self.option_frame.get_is_serial()
-        model_path = self.model_selection_frame.get_model_path()
-        print("Selected crops: ", crops_value)
-        print("Selected inference model: ", inference_model_value)
-        print("Is test mode: ", is_test)
-        print("Is serial mode: ", is_serial)
-        print("Selected model: ", model_path)
+        self.crops_value = self.crops_frame.get_selected_rbtn_value()
+        self.inference_model_value = self.inference_model_frame.get_selected_rbtn_value()
+        self.is_test = self.option_frame.get_is_test()
+        self.is_serial = self.option_frame.get_is_serial()
+        self.model_name = self.model_selection_frame.get_model_name()
+        self.model_path = self.model_selection_frame.get_model_path()
+        print("Selected crops: ", self.crops_value)
+        print("Selected inference model: ", self.inference_model_value)
+        print("Is test mode: ", self.is_test)
+        print("Is serial mode: ", self.is_serial)
+        print("Selected model: ", self.model_path)
 
         # 前の画面のframeを削除
         self.destroy_pre_frame()
@@ -78,7 +79,7 @@ class Setup(customtkinter.CTk):
         right_camera_index: str | int = 1
 
         # テストモードの場合はカメラではなく動画を読み込む
-        if is_test:
+        if self.is_test:
             left_camera_index = "video/tests/multi_data1.mp4"
             right_camera_index = "video/tests/multi_data2.mp4"
 
@@ -98,11 +99,11 @@ class Setup(customtkinter.CTk):
         # 左の画面設定
         self.left_view_process = ViewProcess(
             master=self,
-            is_serial=is_serial,
-            is_test=is_test,
-            inference_model_value=inference_model_value,
-            crops_value=crops_value,
-            model_path=model_path,
+            is_serial=self.is_serial,
+            is_test=self.is_test,
+            inference_model_value=self.inference_model_value,
+            crops_value=self.crops_value,
+            model_path=self.model_path,
             camera_index=left_camera_index,
         )
         self.left_view_process.pack(side="left", expand=True, fill="both")
@@ -110,11 +111,11 @@ class Setup(customtkinter.CTk):
         # 右の画面設定
         self.right_view_process = ViewProcess(
             master=self,
-            is_serial=is_serial,
-            is_test=is_test,
-            inference_model_value=inference_model_value,
-            crops_value=crops_value,
-            model_path=model_path,
+            is_serial=self.is_serial,
+            is_test=self.is_test,
+            inference_model_value=self.inference_model_value,
+            crops_value=self.crops_value,
+            model_path=self.model_path,
             camera_index=right_camera_index,
         )
         self.right_view_process.pack(side="right", expand=True, fill="both")
@@ -135,6 +136,11 @@ class Setup(customtkinter.CTk):
 
         self.set_setup_frame()
 
+        self.crops_frame.set_rbtn_value(self.crops_value)
+        self.inference_model_frame.set_rbtn_value(self.inference_model_value)
+        self.option_frame.set_is_serial(self.is_serial)
+        self.option_frame.set_is_test(self.is_test)
+        self.model_selection_frame.set_model_path(self.model_name)
 
 if __name__ == "__main__":
     app = Setup()

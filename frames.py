@@ -23,6 +23,9 @@ class CropsFrame(customtkinter.CTkFrame):
     def get_selected_rbtn_value(self) -> CropType:
         """選択された作物を取得"""
         return self.selected_rbtn.get()
+    
+    def set_rbtn_value(self, value: str) -> None:
+        self.selected_rbtn.set(value)
 
     def set_crop_rbtn(self, crop_types: list[CropType]) -> None:
         """選択された作物をセット"""
@@ -52,6 +55,9 @@ class InferenceModelFrame(customtkinter.CTkFrame):
     def get_selected_rbtn_value(self) -> ModelType:
         """選択された推論モデルを取得"""
         return self.selected_rbtn.get()
+
+    def set_rbtn_value(self, value: str) -> None:
+        self.selected_rbtn.set(value)
 
     def set_model_rbtn(self, model_types: list[ModelType]) -> None:
         """選択された推論モデルをセット"""
@@ -92,10 +98,16 @@ class OptionFrame(customtkinter.CTkFrame):
     def get_is_test(self) -> bool:
         """選択されたテストモードのモードを取得"""
         return self.is_test.get()
+    
+    def set_is_test(self, value: bool) -> None:
+        self.is_test.set(value)
 
     def get_is_serial(self) -> bool:
         """選択されたシリアル通信のモードを取得"""
         return self.is_serial.get()
+
+    def set_is_serial(self, value: bool) -> None:
+        self.is_serial.set(value)
 
 
 class ModelSelectionFrame(customtkinter.CTkFrame):
@@ -136,6 +148,12 @@ class ModelSelectionFrame(customtkinter.CTkFrame):
     def optionmenu_callback(self, choice):
         print("optionmenu dropdown clicked:", choice)
 
+    def get_model_name(self) -> str:
+        return self.optionmenu_var.get()
+
     def get_model_path(self) -> str:
         """選択されたモデルを取得"""
         return self.models[self.optionmenu_var.get()]
+
+    def set_model_path(self, value: str) -> None:
+        self.optionmenu_var.set(value)
