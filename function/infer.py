@@ -100,20 +100,14 @@ class Model:
         dwdh = (0.0, 0.0)
         outputs: np.ndarray | Results = np.empty(0)
 
-        # preprocess
         if self.model_type == "YOLOv7":
             copy_frame, ratio, dwdh = self.pre_process_yolov7(copy_frame)
             # 推論処理の実装
             inp = {self.inname[0]: copy_frame}
             outputs = self.model.run(self.outname, inp)[0]
-        else:
-            outputs = self.model(copy_frame)[0]
-
-        boxes, confidences, class_ids = None, None, None
-
-        if self.model_type == "YOLOv7":
             boxes, confidences, class_ids = self.post_process_yolov7(outputs)
         else:
+            outputs = self.model(copy_frame)[0]
             boxes_obj = outputs.boxes
             boxes = boxes_obj.xyxy.cpu().numpy()
             confidences = boxes_obj.conf.cpu().numpy()
