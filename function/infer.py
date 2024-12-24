@@ -57,7 +57,7 @@ class Model:
         else:
             # モデルの読み込み
             self.model = YOLO(model_path, task=task)
-            self.labels = self.model.names
+            self.labels = [name for _, name in self.model.names.items()]
 
         if model_type == "YOLOv7":
             self.outname = [self.model.get_outputs()[0].name]
