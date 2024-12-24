@@ -1,4 +1,7 @@
+from typing import Optional
+
 import customtkinter
+import serial
 
 from function.const.crop import CropType
 from function.const.model import ModelType
@@ -11,6 +14,7 @@ class ViewProcess(customtkinter.CTkFrame):
         master: customtkinter.CTkFrame,
         is_serial: bool,
         is_test: bool,
+        ser: Optional[serial.Serial],
         inference_model_value: ModelType,
         crops_value: CropType,
         model_path: str,
@@ -21,6 +25,7 @@ class ViewProcess(customtkinter.CTkFrame):
         :param master                : 親クラス
         :param is_serial             : シリアル通信モードかどうか
         :param is_test               : テストモードかどうか
+        :param ser                   : シリアル用のオブジェクト
         :param inference_model_value : 使用するモデルのバージョン
         :param crops_value           : 推論する作物の名前
         :param model_path            : モデルのパス
@@ -32,6 +37,7 @@ class ViewProcess(customtkinter.CTkFrame):
             master=self,
             is_serial=is_serial,
             is_test=is_test,
+            ser=ser,
             model_type=inference_model_value,
             model_name=crops_value,
             model_path=model_path,
@@ -44,17 +50,21 @@ class ViewProcess(customtkinter.CTkFrame):
 
         self.stop_button = customtkinter.CTkButton(
             master=button_frame,
-            text="停止",
+            text="Stop",
             command=self.image_recognition.display_stop,
             state="normal",
+            fg_color="#b81f1a",
+            hover_color="#DE433E",
         )
-        self.stop_button.pack(side="left", padx=10)
+        self.stop_button.pack(side="left", padx=10, pady=10)
 
         self.restart_button = customtkinter.CTkButton(
             master=button_frame,
-            text="再開",
+            text="Start",
             command=self.image_recognition.display_restart,
             state="normal",
+            fg_color="#1c961a",
+            hover_color="#42a340",
         )
 
-        self.restart_button.pack(side="left", padx=10)
+        self.restart_button.pack(side="left", padx=10, pady=10)

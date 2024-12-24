@@ -1,11 +1,12 @@
 import os
 import random
 import time
-from typing import Tuple
+from typing import Optional, Tuple
 
 from cv2.typing import MatLike
 import numpy as np
 import onnxruntime as ort
+import serial
 from ultralytics import YOLO
 from ultralytics.engine.results import Results
 import yaml
@@ -82,10 +83,11 @@ class Model:
             raise FileNotFoundError(f"Model file not found: {model_path}")
         return ort.InferenceSession(model_path, providers=PROVIDERS)
 
-    def infer(self, is_serial: bool, frame: MatLike) -> Tuple[MatLike, int]:
+    def infer(self, is_serial: bool, ser: Optional[serial.Serial], frame: MatLike) -> Tuple[MatLike, int]:
         """
         入力された画像を選択されたモデルを使用して推論を行う
         :param is_serial : シリアル通信モードかどうか
+        :param ser       : シリアル用のオブジェクト
         :param frame     : 入力された画像データまたは動画データ
 
         :return frame    : バウンディングボックスが描画されているフレームデータ
@@ -131,7 +133,7 @@ class Model:
             if is_serial and label_name == "weed":
                 nozzle_control_bytes = calc_nozzle_byte_idx(frame.shape, box)
                 if nozzle_control_bytes is not None:
-                    execute_nozzle(nozzle_control_bytes)
+                    execute_nozzle(ser, nozzle_control_bytes)
 
             # 元フレームに上書きする形でバウンディングボックスを描画
             frame = draw(frame, label_name, score, box, self.colors)
