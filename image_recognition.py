@@ -4,7 +4,7 @@ import customtkinter
 import cv2
 from PIL import Image, ImageOps, ImageTk  # 画像データ用
 
-from function.const.crop import CropType
+from function.const.crop import CropType, SUGARCANE_LABEL_LIST, PINEAPPLE_LABEL_LIST
 from function.const.model import ModelType
 from function.infer import Model
 
@@ -66,7 +66,7 @@ class ImageRecognition(customtkinter.CTkFrame):
             model_type=model_type,
             model_name=model_name,
             model_path=model_path,
-            labels=[model_name, "weed"],  # ここでラベルを設定
+            labels=SUGARCANE_LABEL_LIST if model_name == "sugarcane" else PINEAPPLE_LABEL_LIST,
         )
 
         self.fps_label = customtkinter.CTkLabel(master=self, text="")
