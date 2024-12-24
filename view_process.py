@@ -68,3 +68,8 @@ class ViewProcess(customtkinter.CTkFrame):
         )
 
         self.restart_button.pack(side="left", padx=10, pady=10)
+
+    def destroy(self):
+        # カメラや録画のリソースを解放
+        self.image_recognition.destroy()
+        super().destroy()
