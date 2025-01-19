@@ -145,9 +145,9 @@ class ImageRecognition(customtkinter.CTkFrame):
     def print_results(self) -> None:
         if self.infer_fps:
             print()
-            print('+' * 50)
-            print('Infer FPS')
-            print('Max FPS:', max(self.infer_fps))
-            print('Mean FPS:', sum(self.infer_fps) / len(self.infer_fps))
-            print('Min FPS:', min(self.infer_fps))
-            print('+' * 50)
+            print("+" * 50)
+            print("Infer FPS")
+            print("Max FPS:", max(self.infer_fps))
+            print("Mean FPS:", sum(self.infer_fps) / len(self.infer_fps))
+            print("Min FPS:", min(self.infer_fps))
+            print("+" * 50)
