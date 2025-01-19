@@ -41,6 +41,8 @@ class ImageRecognition(customtkinter.CTkFrame):
         self.is_test = is_test
         self.ser = ser
 
+        self.infer_fps = []
+
         window_width = self.winfo_width()
         window_height = self.winfo_height()
 
@@ -86,6 +88,7 @@ class ImageRecognition(customtkinter.CTkFrame):
             self.save_video.write(frame)
 
         infer_frame, fps = self.model.infer(self.is_serial, self.ser, frame)  # type: ignore
+        self.infer_fps.append(fps)
 
         if not self.is_test:
             self.save_infer_video.write(infer_frame)
@@ -130,3 +133,14 @@ class ImageRecognition(customtkinter.CTkFrame):
         if self.is_serial:
             close_serial_port(self.ser)
         super().destroy()
+        self.print_results()
+
+    def print_results(self) -> None:
+        if self.infer_fps:
+            print()
+            print('+' * 50)
+            print('Infer FPS')
+            print('Max FPS:', max(self.infer_fps))
+            print('Mean FPS:', sum(self.infer_fps) / len(self.infer_fps))
+            print('Min FPS:', min(self.infer_fps))
+            print('+' * 50)
