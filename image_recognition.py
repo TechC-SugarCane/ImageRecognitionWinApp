@@ -87,6 +87,13 @@ class ImageRecognition(customtkinter.CTkFrame):
         if not self.is_test:
             self.save_video.write(frame)
 
+        # 推論開始の合図
+        if not self.infer_fps:
+            print()
+            print("** Start inference **")
+            print("Please wait a moment...")
+            print()
+
         infer_frame, fps = self.model.infer(self.is_serial, self.ser, frame)  # type: ignore
         self.infer_fps.append(fps)
 
