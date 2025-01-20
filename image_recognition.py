@@ -41,7 +41,7 @@ class ImageRecognition(customtkinter.CTkFrame):
         self.is_test = is_test
         self.ser = ser
 
-        self.infer_fps = []
+        self.infer_fps: list[float] = []
 
         window_width = self.winfo_width()
         window_height = self.winfo_height()
