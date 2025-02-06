@@ -30,6 +30,8 @@ def get_video_path(crop_type: CropType) -> str:
     :return video_path: 動画のパス
     """
     video_list = glob(f"video/tests/{crop_type}/*.mp4")
+    if len(video_list) == 0:
+        raise FileNotFoundError(f"テストに使用できる動画が存在しません: video/tests/{crop_type}/\n`video/README.md`に従って動画をダウンロードしてください")
     return random.choice(video_list)
 
 
