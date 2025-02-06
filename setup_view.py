@@ -17,6 +17,12 @@ PID = "0x5740"
 
 # 読み込む動画パスを乱数で指定
 def get_video_path(crop_type: CropType) -> str:
+    """
+    ランダムに動画を選択
+
+    :param crop_type: 作物の種類
+    :return video_path: 動画のパス
+    """
     video_list = glob(f"video/tests/{crop_type}/*.mp4")
     return random.choice(video_list)
 
