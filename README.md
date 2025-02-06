@@ -101,6 +101,12 @@ pip install -r requirements-cpu.txt
 pip install -r requirements-gpu.txt
 ```
 
+### 7. テスト動画をダウンロードする
+
+GitHubのlfsストレージの容量制限により、リポジトリ内に動画を配置することができなくなったため、sharepointからダウンロードするように変更しました。
+
+そのため、[./video/README.md](./video/README.md)に従い、テスト動画をダウンロードしてください。
+
 ## Usage
 
 ### 1. モデルのダウンロード
