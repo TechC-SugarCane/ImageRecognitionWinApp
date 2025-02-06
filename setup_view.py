@@ -1,3 +1,5 @@
+from glob import glob
+import random
 from typing import Optional
 
 import customtkinter
@@ -11,6 +13,12 @@ from view_process import ViewProcess
 
 VID = "0x0483"
 PID = "0x5740"
+
+
+# 読み込む動画パスを乱数で指定
+def get_video_path(crop_type: CropType) -> str:
+    video_list = glob(f"video/tests/{crop_type}/*.mp4")
+    return random.choice(video_list)
 
 
 class Setup(customtkinter.CTk):
@@ -92,8 +100,8 @@ class Setup(customtkinter.CTk):
 
         # テストモードの場合はカメラではなく動画を読み込む
         if self.is_test:
-            left_camera_index = "video/tests/multi_data1.mp4"
-            right_camera_index = "video/tests/multi_data2.mp4"
+            left_camera_index = get_video_path(self.crops_value)
+            right_camera_index = get_video_path(self.crops_value)
 
         # 前の画面に戻るボタン
         self.back_button = customtkinter.CTkButton(
