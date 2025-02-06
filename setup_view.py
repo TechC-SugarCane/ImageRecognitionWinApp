@@ -1,3 +1,4 @@
+import argparse
 from glob import glob
 import random
 from typing import Optional
@@ -13,6 +14,11 @@ from view_process import ViewProcess
 
 VID = "0x0483"
 PID = "0x5740"
+
+
+def fix_seed(seed: int) -> None:
+    """乱数固定"""
+    random.seed(seed)
 
 
 # 読み込む動画パスを乱数で指定
@@ -174,6 +180,12 @@ class Setup(customtkinter.CTk):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--video-seed", "-s", type=int, help="random video seed")
+    args = parser.parse_args()
+    if args.video_seed:
+        fix_seed(args.video_seed)
+
     app = Setup()
     app.title(string="画像認識")
 
