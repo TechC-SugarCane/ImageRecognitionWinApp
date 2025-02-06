@@ -156,6 +156,7 @@ class Setup(customtkinter.CTk):
         self.inference_model_frame.set_rbtn_value(self.inference_model_value)
         self.option_frame.set_is_serial(self.is_serial)
         self.option_frame.set_is_test(self.is_test)
+        self.model_selection_frame.set_model_selection(self.crops_value, self.inference_model_value)
         self.model_selection_frame.set_model_path(self.model_name)
 
 
