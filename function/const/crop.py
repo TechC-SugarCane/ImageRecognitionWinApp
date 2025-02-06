@@ -1,8 +1,9 @@
 from typing import Literal
 
 type CropType = Literal["sugarcane", "pineapple"]
-type LabelName = Literal["sugarcane", "pineapple", "weed"]
+type LabelName = Literal["weed"]
 
 CROP_NAME_LIST: list[CropType] = ["sugarcane", "pineapple"]
-SUGARCANE_LABEL_LIST: list[LabelName] = ["sugarcane", "weed"]
-PINEAPPLE_LABEL_LIST: list[LabelName] = ["pineapple", "weed"]
+# メンテナンス性を考慮して、各作物のラベル名を管理
+SUGARCANE_LABEL_LIST: list[LabelName] = ["weed"]
+PINEAPPLE_LABEL_LIST: list[LabelName] = ["weed"]
