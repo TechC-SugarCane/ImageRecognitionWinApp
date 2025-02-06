@@ -6,7 +6,7 @@ import cv2
 from PIL import Image, ImageOps, ImageTk  # 画像データ用
 import serial
 
-from function.const.crop import CropType, SUGARCANE_LABEL_LIST, PINEAPPLE_LABEL_LIST
+from function.const.crop import PINEAPPLE_LABEL_LIST, SUGARCANE_LABEL_LIST, CropType
 from function.const.model import ModelType
 from function.infer import Model
 from function.nozzle import close_serial_port
