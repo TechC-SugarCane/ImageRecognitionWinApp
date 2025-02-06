@@ -113,6 +113,14 @@ pip install -r requirements-gpu.txt
 python setup_view.py
 ```
 
+#### テスト用動画のランダムを固定する
+
+テスト動画が複数ある時を見据えて、`video/tests/{crop_type}/`にある動画をランダムで選択するようになっています。そのため、テスト動画を固定したい場合は、`--video_seed`オプションを指定してください。
+
+```bash
+python setup_view.py --video_seed 0
+```
+
 ### 3. アプリの操作
 
 1. モデルのバージョンと推論させたい対象を選択
