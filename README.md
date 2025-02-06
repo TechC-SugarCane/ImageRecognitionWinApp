@@ -105,7 +105,7 @@ pip install -r requirements-gpu.txt
 
 GitHubのlfsストレージの容量制限により、リポジトリ内に動画を配置することができなくなったため、sharepointからダウンロードするように変更しました。
 
-そのため、[./video/README.md](./video/README.md)に従い、テスト動画をダウンロードしてください。
+そのため、[./video/tests/README.md](./video/tests/README.md)に従い、テスト動画をダウンロードしてください。
 
 ## Usage
 
