@@ -9,9 +9,10 @@ __pycache__
 *.onnx
 video/*
 
-!video/README.md
-# !video/tests/
-# !video/tests/*
+video/*
+!video/tests/
+video/tests/*
+!video/tests/README.md
 
 *.pth
 
