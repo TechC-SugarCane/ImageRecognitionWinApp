@@ -119,6 +119,8 @@ python setup_view.py
 
 ```bash
 python setup_view.py --video_seed 0
+# or
+python setup_view.py -s 0
 ```
 
 ### 3. アプリの操作
