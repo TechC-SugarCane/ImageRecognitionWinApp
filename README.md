@@ -75,30 +75,14 @@ pyenv install
 exec $SHELL -l
 ```
 
-### 4. 仮想環境を作成
-
-```bash
-python -m venv .venv
-```
-
-### 5. 仮想環境を有効化
-
-```bash
-# mac
-source .venv/bin/activate
-
-# windows
-.venv\Scripts\activate
-```
-
-### 6. ライブラリをインストール
+### 4. ライブラリをインストール
 
 ```bash
 # CPUで推論を行う場合
-pip install -r requirements-cpu.txt
+uv sync --extra cpu
 
 # GPUで推論を行う場合
-pip install -r requirements-gpu.txt
+uv sync --extra gpu
 ```
 
 ## Usage
@@ -110,7 +94,7 @@ pip install -r requirements-gpu.txt
 ### 2. アプリの起動
 
 ```bash
-python setup_view.py
+uv run setup_view.py
 ```
 
 ### 3. アプリの操作
@@ -128,7 +112,7 @@ setup_view.pyをexe化して簡単にアプリを起動できるようにする�
 
 ```bash
 # --noconsoleというオプションは、エラーが出てもわからないため基本おすすめしません
-pyinstaller --onefile setup_view.py
+uv run pyinstaller --onefile setup_view.py
 
 # --onefile: 1つのexeファイルにまとめる
 ```
@@ -149,19 +133,19 @@ PRを出す前に、下記コマンドでlintを実行し、エラーが出た�
 
 ```bash
 # lint
-ruff check .
+uv run ruff check
 # lintの修正コマンド
-ruff check . --fix
+uv run ruff check --fix
 ```
 
 #### formatter
 
 ```bash
-ruff format .
+uv run ruff format
 ```
 
 #### type check
 
 ```bash
-mypy --ignore-missing-imports --explicit-package-bases .
+uv run mypy --ignore-missing-imports --explicit-package-bases .
 ```
