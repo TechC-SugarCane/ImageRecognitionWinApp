@@ -37,6 +37,7 @@ gpu = [
 ]
 
 [tool.uv]
+default-groups = ["dev", "exe"]
 conflicts = [
     [
         { extra = "cpu" },
