@@ -108,6 +108,7 @@ class Setup(customtkinter.CTk):
         # 左上に配置
         self.back_button.pack(side="bottom", anchor="center", fill="both")
 
+
         # 左の画面設定
         self.left_view_process = ViewProcess(
             master=self,
