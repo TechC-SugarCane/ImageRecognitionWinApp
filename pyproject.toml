@@ -1,0 +1,7 @@
+[project]
+name = "ImageRecognitionWinApp"
+version = "0.1.0"
+description = "A simple application for image recognition."
+readme = "README.md"
+requires-python = ">=3.12.7"
+dependencies = []
