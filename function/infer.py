@@ -7,7 +7,6 @@ from cv2.typing import MatLike
 import numpy as np
 import serial
 from ultralytics import YOLO
-from ultralytics.engine.results import Results
 import yaml
 
 from function.const.crop import CropType
