@@ -4,8 +4,6 @@
 
 推論には、下記リポジトリで作成したモデルを使って行います。
 
-- [YOLOv7](https://github.com/TechC-SugarCane/train-YOLOv7)
-- [YOLOv9](https://github.com/TechC-SugarCane/train-YOLOv9)
 - [YOLOv10](https://github.com/TechC-SugarCane/train-YOLOv10)
 
 また、GUIアプリのフレームワークには、CustomTkinterというPythonでGUIアプリが作れるものを使っています。

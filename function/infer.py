@@ -5,7 +5,6 @@ from typing import Optional, Tuple
 
 from cv2.typing import MatLike
 import numpy as np
-import onnxruntime as ort
 import serial
 from ultralytics import YOLO
 from ultralytics.engine.results import Results
@@ -14,7 +13,6 @@ import yaml
 from function.const.crop import CropType, LabelName
 from function.const.model import ModelType
 from function.draw import draw
-from function.letterbox import letterbox
 from function.nozzle import calc_nozzle_byte_idx, execute_nozzle
 
 # onnxでモデルを読み込んだ時のプロバイダー
@@ -51,36 +49,21 @@ class Model:
 
         # 選択されたモデルのバージョンをチェック
         print(f"Use {model_type} model. model name: {self.model_name}")
-        if model_type == "YOLOv7":
-            # モデルの読み込み
-            self.model = self.load_model(model_path)
-        else:
-            # モデルの読み込み
-            self.model = YOLO(model_path, task=task)
-
-        if model_type == "YOLOv7":
-            self.outname = [self.model.get_outputs()[0].name]
-            model_inputs = self.model.get_inputs()
-            self.inname = [i.name for i in model_inputs]
-
-            input_shape = model_inputs[0].shape
-            self.input_width = input_shape[2]
-            self.input_height = input_shape[3]
-        else:
-            self.input_width = 640
-            self.input_height = 640
+        # モデルの読み込み
+        self.model = self.load_model(model_path, task)
 
         # ランダムでバウンディングボックスの色を決める
         self.colors = {name: [random.randint(0, 255) for _ in range(3)] for i, name in enumerate(self.labels)}
 
-    def load_model(self, model_path: str) -> ort.InferenceSession:
+    def load_model(self, model_path: str, task: str) -> YOLO:
         """
         モデルを読み込む
         :param model_path : モデルのパス
+        :param task       : タスク名
         """
         if not os.path.exists(model_path):
             raise FileNotFoundError(f"Model file not found: {model_path}")
-        return ort.InferenceSession(model_path, providers=PROVIDERS)
+        return YOLO(model_path, task=task)
 
     def infer(self, is_serial: bool, ser: Optional[serial.Serial], frame: MatLike) -> Tuple[MatLike, int]:
         """
@@ -98,28 +81,14 @@ class Model:
         start_time = time.perf_counter()
 
         copy_frame = frame.copy()
-        ratio = 1.0
-        dwdh = (0.0, 0.0)
         outputs: np.ndarray | Results = np.empty(0)
 
-        # preprocess
-        if self.model_type == "YOLOv7":
-            copy_frame, ratio, dwdh = self.pre_process_yolov7(copy_frame)
-            # 推論処理の実装
-            inp = {self.inname[0]: copy_frame}
-            outputs = self.model.run(self.outname, inp)[0]
-        else:
-            outputs = self.model(copy_frame)[0]
+        outputs = self.model(copy_frame)[0]
 
-        boxes, confidences, class_ids = None, None, None
-
-        if self.model_type == "YOLOv7":
-            boxes, confidences, class_ids = self.post_process_yolov7(outputs)
-        else:
-            boxes_obj = outputs.boxes
-            boxes = boxes_obj.xyxy.cpu().numpy()
-            confidences = boxes_obj.conf.cpu().numpy()
-            class_ids = boxes_obj.cls.cpu().numpy().astype(np.int32)
+        boxes_obj = outputs.boxes
+        boxes = boxes_obj.xyxy.cpu().numpy()
+        confidences = boxes_obj.conf.cpu().numpy()
+        class_ids = boxes_obj.cls.cpu().numpy().astype(np.int32)
 
         if boxes is None or confidences is None or class_ids is None:
             raise ValueError("The values of boxes, confidences, and class_ids must not be None.")
@@ -127,10 +96,6 @@ class Model:
         for box, confidence, class_id in zip(boxes, confidences, class_ids, strict=True):
             label_name = self.labels[class_id]
             score = round(float(confidence), 3)
-
-            if self.model_type == "YOLOv7":
-                box -= np.array(dwdh * 2)
-                box /= ratio
 
             box = box.round().astype(np.int32).tolist()
 
@@ -148,32 +113,3 @@ class Model:
         fps = int(1 / (end_time - start_time))
 
         return frame, fps
-
-    def pre_process_yolov7(self, frame: MatLike) -> Tuple[MatLike, float, Tuple[float, float]]:
-        """
-        YOLO v7 の前処理
-
-        :param frame : 入力画像データ
-
-        :return processed_frame : 前処理後の画像データ
-        :return ratio           : リサイズ後の画像サイズとリサイズ前の画像サイズの比率
-        :return (dw, dh)        : パディングした分の画像サイズ
-        """
-        # コピーされたフレームを処理して推論用の型に変換する (type: numpy -> type: tensor)
-        frame, ratio, dwdh = letterbox(frame, auto=False)
-        frame = frame.transpose((2, 0, 1))
-        frame = np.expand_dims(frame, 0)
-        frame = np.ascontiguousarray(frame)
-        frame = frame.astype(np.float32)
-        frame /= 255  # type: ignore
-        return frame, ratio, dwdh
-
-    def post_process_yolov7(self, output: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
-        """
-        YOLO v7 の後処理
-
-        :param output : 推論結果. (batch_id, x0, y0, x1, y1, cls_id, score)
-
-        :return processed_outputs : 後処理後の推論結果. (boxes(x0, y0, x1, y1), confidences, class_ids)
-        """
-        return output[:, 1:5], output[:, 6], output[:, 5].astype(int)
