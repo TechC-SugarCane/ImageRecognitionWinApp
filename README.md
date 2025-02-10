@@ -106,9 +106,9 @@ uv run setup_view.py
 テスト動画が複数ある時を見据えて、`video/tests/{crop_type}/`にある動画をランダムで選択するようになっています。そのため、テスト動画を固定したい場合は、`--video_seed`オプションを指定してください。
 
 ```bash
-python setup_view.py --video_seed 0
+uv run setup_view.py --video_seed 0
 # or
-python setup_view.py -s 0
+uv run setup_view.py -s 0
 ```
 
 ### 3. アプリの操作
