@@ -55,7 +55,7 @@ cd ImageRecognitionWinApp
 
 ```bash
 # Windows
-pyenv install
+uv python install
 
 
 # Macの場合はちょっと特殊
@@ -68,7 +68,7 @@ echo 'export CPPFLAGS="-I$tkinterPath/include"' >> ~/.zshrc
 echo 'export PKG_CONFIG_PATH="$tkinterPath/lib/pkgconfig"' >> ~/.zshrc
 
 source ~/.zshrc
-pyenv install
+uv python install
 # shellの再起動
 exec $SHELL -l
 ```
