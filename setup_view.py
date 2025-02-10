@@ -1,3 +1,6 @@
+import argparse
+from glob import glob
+import random
 from typing import Optional
 
 import customtkinter
@@ -11,6 +14,27 @@ from view_process import ViewProcess
 
 VID = "0x0483"
 PID = "0x5740"
+
+
+def fix_seed(seed: int) -> None:
+    """乱数固定"""
+    random.seed(seed)
+
+
+# 読み込む動画パスを乱数で指定
+def get_video_path(crop_type: CropType) -> str:
+    """
+    ランダムに動画を選択
+
+    :param crop_type: 作物の種類
+    :return video_path: 動画のパス
+    """
+    video_list = glob(f"video/tests/{crop_type}/*.mp4")
+    if len(video_list) == 0:
+        raise FileNotFoundError(
+            f"テストに使用できる動画が存在しません: video/tests/{crop_type}/\n`video/README.md`に従って動画をダウンロードしてください"  # noqa
+        )
+    return random.choice(video_list)
 
 
 class Setup(customtkinter.CTk):
@@ -92,8 +116,8 @@ class Setup(customtkinter.CTk):
 
         # テストモードの場合はカメラではなく動画を読み込む
         if self.is_test:
-            left_camera_index = "video/tests/multi_data1.mp4"
-            right_camera_index = "video/tests/multi_data2.mp4"
+            left_camera_index = get_video_path(self.crops_value)
+            right_camera_index = get_video_path(self.crops_value)
 
         # 前の画面に戻るボタン
         self.back_button = customtkinter.CTkButton(
@@ -156,10 +180,17 @@ class Setup(customtkinter.CTk):
         self.inference_model_frame.set_rbtn_value(self.inference_model_value)
         self.option_frame.set_is_serial(self.is_serial)
         self.option_frame.set_is_test(self.is_test)
+        self.model_selection_frame.set_model_selection(self.crops_value, self.inference_model_value)
         self.model_selection_frame.set_model_path(self.model_name)
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--video-seed", "-s", type=int, help="random video seed")
+    args = parser.parse_args()
+    if args.video_seed:
+        fix_seed(args.video_seed)
+
     app = Setup()
     app.title(string="画像認識")
 

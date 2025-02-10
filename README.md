@@ -99,6 +99,12 @@ pip install -r requirements-cpu.txt
 pip install -r requirements-gpu.txt
 ```
 
+### 7. テスト動画をダウンロードする
+
+GitHubのlfsストレージの容量制限により、リポジトリ内に動画を配置することができなくなったため、sharepointからダウンロードするように変更しました。
+
+そのため、[./video/tests/README.md](./video/tests/README.md)に従い、テスト動画をダウンロードしてください。
+
 ## Usage
 
 ### 1. モデルのダウンロード
@@ -109,6 +115,16 @@ pip install -r requirements-gpu.txt
 
 ```bash
 python setup_view.py
+```
+
+#### テスト用動画のランダムを固定する
+
+テスト動画が複数ある時を見据えて、`video/tests/{crop_type}/`にある動画をランダムで選択するようになっています。そのため、テスト動画を固定したい場合は、`--video_seed`オプションを指定してください。
+
+```bash
+python setup_view.py --video_seed 0
+# or
+python setup_view.py -s 0
 ```
 
 ### 3. アプリの操作
