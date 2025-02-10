@@ -14,15 +14,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: setup python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
-      - name: Install uv
+      - name: Install uv and set the python version
         uses: astral-sh/setup-uv@v5
         with:
           # Install a specific version of uv.
+          python-version: "3.12"
           version: "0.5.29"
           enable-cache: true
           cache-dependency-glob: "uv.lock"
