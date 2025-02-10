@@ -4,10 +4,10 @@ from cv2.typing import MatLike
 
 def draw(
     frame: MatLike,
-    label_name: list[str],
+    label_name: str,
     score: float,
     box: list[int],
-    colors: dict[list[str], list[int]],
+    colors: dict[str, list[int]],
 ) -> MatLike:
     """
     推論した結果をフレームに描画させる
