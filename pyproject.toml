@@ -1,0 +1,67 @@
+[project]
+name = "ImageRecognitionWinApp"
+version = "0.1.0"
+description = "A simple application for image recognition."
+readme = "README.md"
+requires-python = ">=3.12.7"
+dependencies = [
+    "customtkinter==5.2.2",
+    "numpy==1.26.4",
+    "onnx==1.17.0",
+    "opencv-python==4.10.0.84",
+    "pyserial==3.5",
+    "ultralytics==8.3.49",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.15.0",
+    "pytest==8.3.3",
+    "pytest-mock==3.14.0",
+    "ruff==0.7.4",
+    "types-pyyaml==6.0.12.20240917",
+]
+exe = [
+    "pyinstaller==6.11.0",
+]
+
+[project.optional-dependencies]
+cpu = [
+    "torch==2.3.1",
+    "torchvision==0.18.1",
+    "onnxruntime==1.18.0"
+]
+gpu = [
+    "torch==2.3.1",
+    "torchvision==0.18.1",
+    "onnxruntime-gpu==1.18.0"
+]
+
+[tool.uv]
+default-groups = ["dev", "exe"]
+conflicts = [
+    [
+        { extra = "cpu" },
+        { extra = "gpu" },
+    ],
+]
+
+[tool.uv.sources]
+torch = [
+    { index = "pytorch-cpu", extra = "cpu" },
+    { index = "pytorch-cu118", extra = "gpu" },
+]
+torchvision = [
+    { index = "pytorch-cpu", extra = "cpu" },
+    { index = "pytorch-cu118", extra = "gpu" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cu118"
+url = "https://download.pytorch.org/whl/cu118"
+explicit = true
