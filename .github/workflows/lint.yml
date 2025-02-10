@@ -19,19 +19,25 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          # Install a specific version of uv.
+          version: "0.5.29"
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
       - name: Install dependencies
         run: |
-            python -m pip install --upgrade pip
-            pip install -r requirements-cpu.txt
-            pip install ruff==0.7.4 mypy==1.13.0
+          uv sync --extra cpu --dev
     # Update output format to enable automatic inline annotations.
       - name: Run Ruff
         run: |
-            ruff check --output-format=github .
-            ruff format . --check --diff
+          uv run ruff check --output-format=github .
+          uv run ruff format . --check --diff
 
       - uses: AustinScola/mypy-cache-github-action@v1
         name: Cache mypy cache
 
       - name: Run mypy
-        run: mypy --ignore-missing-imports --explicit-package-bases .
+        run: uv run mypy --ignore-missing-imports --explicit-package-bases .
