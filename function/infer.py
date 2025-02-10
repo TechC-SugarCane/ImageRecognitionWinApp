@@ -46,7 +46,7 @@ class Model:
         # 選択されたモデルのバージョンをチェック
         print(f"Use {model_type} model. model name: {self.model_name}")
         # モデルの読み込み
-        self.model = YOLO(model_path, task=task)
+        self.model = self.load_model(model_path, task)
         self.labels = [name for _, name in self.model.names.items()]
 
         # ランダムでバウンディングボックスの色を決める
