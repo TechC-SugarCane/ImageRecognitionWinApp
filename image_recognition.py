@@ -6,7 +6,7 @@ import cv2
 from PIL import Image, ImageOps, ImageTk  # 画像データ用
 import serial
 
-from function.const.crop import PINEAPPLE_LABEL_LIST, SUGARCANE_LABEL_LIST, CropType
+from function.const.crop import CropType
 from function.const.model import ModelType
 from function.infer import Model
 from function.nozzle import close_serial_port
@@ -74,7 +74,6 @@ class ImageRecognition(customtkinter.CTkFrame):
             model_type=model_type,
             model_name=model_name,
             model_path=model_path,
-            labels=SUGARCANE_LABEL_LIST if model_name == "sugarcane" else PINEAPPLE_LABEL_LIST,
         )
 
         self.fps_label = customtkinter.CTkLabel(master=self, text="")

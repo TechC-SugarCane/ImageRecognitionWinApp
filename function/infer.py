@@ -10,7 +10,7 @@ from ultralytics import YOLO
 from ultralytics.engine.results import Results
 import yaml
 
-from function.const.crop import CropType, LabelName
+from function.const.crop import CropType
 from function.const.model import ModelType
 from function.draw import draw
 from function.nozzle import calc_nozzle_byte_idx, execute_nozzle
@@ -31,19 +31,16 @@ class Model:
         model_type: ModelType,
         model_name: CropType,
         model_path: str,
-        labels: list[LabelName],
     ) -> None:
         """
         モデルの読み込み、基礎設定を行う
         :param model_type : 使用するモデルのバージョン
         :param model_name : 使用するモデルの名前
         :param model_path : モデルのパス
-        :param labels     : ラベルの名前を格納したリスト
         """
 
         self.model_type = model_type
         self.model_name = model_name
-        self.labels = labels
 
         task = "detect"
 
