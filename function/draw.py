@@ -1,15 +1,13 @@
 import cv2
 from cv2.typing import MatLike
 
-from function.const.crop import LabelName
-
 
 def draw(
     frame: MatLike,
-    label_name: LabelName,
+    label_name: str,
     score: float,
     box: list[int],
-    colors: dict[LabelName, list[int]],
+    colors: dict[str, list[int]],
 ) -> MatLike:
     """
     推論した結果をフレームに描画させる

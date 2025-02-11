@@ -7,10 +7,9 @@ from cv2.typing import MatLike
 import numpy as np
 import serial
 from ultralytics import YOLO
-from ultralytics.engine.results import Results
 import yaml
 
-from function.const.crop import CropType, LabelName
+from function.const.crop import CropType
 from function.const.model import ModelType
 from function.draw import draw
 from function.nozzle import calc_nozzle_byte_idx, execute_nozzle
@@ -31,19 +30,16 @@ class Model:
         model_type: ModelType,
         model_name: CropType,
         model_path: str,
-        labels: list[LabelName],
     ) -> None:
         """
         モデルの読み込み、基礎設定を行う
         :param model_type : 使用するモデルのバージョン
         :param model_name : 使用するモデルの名前
         :param model_path : モデルのパス
-        :param labels     : ラベルの名前を格納したリスト
         """
 
         self.model_type = model_type
         self.model_name = model_name
-        self.labels = labels
 
         task = "detect"
 
@@ -51,6 +47,7 @@ class Model:
         print(f"Use {model_type} model. model name: {self.model_name}")
         # モデルの読み込み
         self.model = self.load_model(model_path, task)
+        self.labels = [name for _, name in self.model.names.items()]
 
         # ランダムでバウンディングボックスの色を決める
         self.colors = {name: [random.randint(0, 255) for _ in range(3)] for i, name in enumerate(self.labels)}
@@ -81,10 +78,7 @@ class Model:
         start_time = time.perf_counter()
 
         copy_frame = frame.copy()
-        outputs: np.ndarray | Results = np.empty(0)
-
         outputs = self.model(copy_frame)[0]
-
         boxes_obj = outputs.boxes
         boxes = boxes_obj.xyxy.cpu().numpy()
         confidences = boxes_obj.conf.cpu().numpy()

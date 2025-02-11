@@ -74,7 +74,6 @@ class ImageRecognition(customtkinter.CTkFrame):
             model_type=model_type,
             model_name=model_name,
             model_path=model_path,
-            labels=[model_name, "weed"],  # ここでラベルを設定
         )
 
         self.fps_label = customtkinter.CTkLabel(master=self, text="")
