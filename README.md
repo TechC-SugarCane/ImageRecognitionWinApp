@@ -55,7 +55,7 @@ cd ImageRecognitionWinApp
 
 ```bash
 # Windows
-pyenv install
+uv python install
 
 
 # Macの場合はちょっと特殊
@@ -68,7 +68,7 @@ echo 'export CPPFLAGS="-I$tkinterPath/include"' >> ~/.zshrc
 echo 'export PKG_CONFIG_PATH="$tkinterPath/lib/pkgconfig"' >> ~/.zshrc
 
 source ~/.zshrc
-pyenv install
+uv python install
 # shellの再起動
 exec $SHELL -l
 ```
@@ -106,9 +106,9 @@ uv run setup_view.py
 テスト動画が複数ある時を見据えて、`video/tests/{crop_type}/`にある動画をランダムで選択するようになっています。そのため、テスト動画を固定したい場合は、`--video_seed`オプションを指定してください。
 
 ```bash
-python setup_view.py --video_seed 0
+uv run setup_view.py --video_seed 0
 # or
-python setup_view.py -s 0
+uv run setup_view.py -s 0
 ```
 
 ### 3. アプリの操作
