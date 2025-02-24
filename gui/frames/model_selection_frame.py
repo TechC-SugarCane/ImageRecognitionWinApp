@@ -57,7 +57,7 @@ class ModelSelectionFrame(customtkinter.CTkFrame):
         """選択されたモデルを取得"""
         return self.models[self.optionmenu_var.get()]
 
-    def set_model_path(self, value: str) -> None:
+    def set_model_name(self, value: str) -> None:
         self.optionmenu_var.set(value)
 
     def set_model_selection(self, crop: CropType, model: ModelType) -> None:

@@ -112,7 +112,7 @@ class SetupView(customtkinter.CTkFrame):
         self.option_frame.set_is_serial(params["is_serial"])
         self.option_frame.set_is_test(params["is_test"])
         self.model_selection_frame.set_model_selection(params["crops_value"], params["inference_model_value"])
-        self.model_selection_frame.set_model_path(params["model_name"])
+        self.model_selection_frame.set_model_name(params["model_name"])
 
     def create_modal_windows(self, master: customtkinter.CTk, title: str, message: str) -> None:
         """
