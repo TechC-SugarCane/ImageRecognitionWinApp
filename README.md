@@ -98,7 +98,7 @@ GitHubのlfsストレージの容量制限により、リポジトリ内に動�
 ### 2. アプリの起動
 
 ```bash
-uv run setup_view.py
+uv run main.py
 ```
 
 #### テスト用動画のランダムを固定する
@@ -106,9 +106,9 @@ uv run setup_view.py
 テスト動画が複数ある時を見据えて、`video/tests/{crop_type}/`にある動画をランダムで選択するようになっています。そのため、テスト動画を固定したい場合は、`--video_seed`オプションを指定してください。
 
 ```bash
-uv run setup_view.py --video_seed 0
+uv run main.py --video_seed 0
 # or
-uv run setup_view.py -s 0
+uv run main.py -s 0
 ```
 
 ### 3. アプリの操作
@@ -122,11 +122,11 @@ uv run setup_view.py -s 0
 
 ## スクリプトをexe化する
 
-setup_view.pyをexe化して簡単にアプリを起動できるようにすることができます。
+main.pyをexe化して簡単にアプリを起動できるようにすることができます。
 
 ```bash
 # --noconsoleというオプションは、エラーが出てもわからないため基本おすすめしません
-uv run pyinstaller --onefile setup_view.py
+uv run pyinstaller --onefile main.py
 
 # --onefile: 1つのexeファイルにまとめる
 ```
