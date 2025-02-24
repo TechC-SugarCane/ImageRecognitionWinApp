@@ -15,11 +15,6 @@ VID = "0x0483"
 PID = "0x5740"
 
 
-def fix_seed(seed: int) -> None:
-    """乱数固定"""
-    random.seed(seed)
-
-
 # 読み込む動画パスを乱数で指定
 def get_video_path(crop_type: CropType) -> str:
     """

@@ -1,11 +1,10 @@
-import argparse
+from gui.setup_view import Setup
+from utils.arg_utils import parse_args
+from utils.random_utils import fix_seed
 
-from gui.setup_view import Setup, fix_seed
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--video-seed", "-s", type=int, help="random video seed")
-    args = parser.parse_args()
+    args = parse_args()
     if args.video_seed:
         fix_seed(args.video_seed)
 
