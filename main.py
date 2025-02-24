@@ -3,7 +3,7 @@ from utils.arg_utils import parse_args
 from utils.random_utils import fix_seed
 
 
-if __name__ == "__main__":
+def main() -> None:
     args = parse_args()
     if args.video_seed:
         fix_seed(args.video_seed)
@@ -12,3 +12,6 @@ if __name__ == "__main__":
     app.title(string="画像認識")
 
     app.mainloop()
+
+if __name__ == "__main__":
+    main()
