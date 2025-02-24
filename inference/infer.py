@@ -9,10 +9,10 @@ import serial
 from ultralytics import YOLO
 import yaml
 
-from function.const.crop import CropType
-from function.const.model import ModelType
-from function.draw import draw
-from function.nozzle import calc_nozzle_byte_idx, execute_nozzle
+from utils.constants.crop import CropType
+from utils.constants.model import ModelType
+from utils.draw import draw
+from hardware.nozzle import calc_nozzle_byte_idx, execute_nozzle
 
 # onnxでモデルを読み込んだ時のプロバイダー
 PROVIDERS = ["CUDAExecutionProvider", "CPUExecutionProvider"]

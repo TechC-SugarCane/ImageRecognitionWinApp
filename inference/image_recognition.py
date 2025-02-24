@@ -6,10 +6,10 @@ import cv2
 from PIL import Image, ImageOps, ImageTk  # 画像データ用
 import serial
 
-from function.const.crop import CropType
-from function.const.model import ModelType
-from function.infer import Model
-from function.nozzle import close_serial_port
+from utils.constants.crop import CropType
+from utils.constants.model import ModelType
+from inference.infer import Model
+from hardware.nozzle import close_serial_port
 
 
 class ImageRecognition(customtkinter.CTkFrame):

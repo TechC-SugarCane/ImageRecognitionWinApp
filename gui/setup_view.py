@@ -1,4 +1,3 @@
-import argparse
 from glob import glob
 import random
 from typing import Optional
@@ -6,11 +5,11 @@ from typing import Optional
 import customtkinter
 import serial
 
-from frames import CropsFrame, InferenceModelFrame, ModelSelectionFrame, OptionFrame
-from function.const.crop import CropType
-from function.const.model import ModelType
-from function.nozzle import close_serial_port, set_serial_port
-from view_process import ViewProcess
+from gui.frames import CropsFrame, InferenceModelFrame, ModelSelectionFrame, OptionFrame
+from utils.constants.crop import CropType
+from utils.constants.model import ModelType
+from hardware.nozzle import close_serial_port, set_serial_port
+from gui.view_process import ViewProcess
 
 VID = "0x0483"
 PID = "0x5740"
@@ -182,16 +181,3 @@ class Setup(customtkinter.CTk):
         self.option_frame.set_is_test(self.is_test)
         self.model_selection_frame.set_model_selection(self.crops_value, self.inference_model_value)
         self.model_selection_frame.set_model_path(self.model_name)
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--video-seed", "-s", type=int, help="random video seed")
-    args = parser.parse_args()
-    if args.video_seed:
-        fix_seed(args.video_seed)
-
-    app = Setup()
-    app.title(string="画像認識")
-
-    app.mainloop()

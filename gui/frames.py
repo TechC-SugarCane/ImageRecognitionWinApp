@@ -5,8 +5,8 @@ from typing import Callable, Tuple
 
 import customtkinter
 
-from function.const.crop import CROP_NAME_LIST, CropType
-from function.const.model import MODEL_NAME_LIST, ModelType
+from utils.constants.crop import CROP_NAME_LIST, CropType
+from utils.constants.model import MODEL_NAME_LIST, ModelType
 
 
 class CropsFrame(customtkinter.CTkFrame):
