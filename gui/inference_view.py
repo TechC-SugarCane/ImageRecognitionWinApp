@@ -7,7 +7,9 @@ from gui.view_process import ViewProcess
 
 
 class InferenceView(customtkinter.CTkFrame):
-    def __init__(self, master: customtkinter.CTk, controller, params: dict, ser: Serial, back_callback: Callable) -> None:
+    def __init__(
+        self, master: customtkinter.CTk, controller, params: dict, ser: Serial, back_callback: Callable
+    ) -> None:
         """
         推論画面のview
         :param master    : 親クラス

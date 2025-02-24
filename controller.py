@@ -73,4 +73,3 @@ class AppController:
     def clear_root(self):
         for widget in self.root.winfo_children():
             widget.destroy()
-

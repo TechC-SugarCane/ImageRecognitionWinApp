@@ -4,6 +4,7 @@ from typing import Callable
 
 from utils.constants.crop import CROP_NAME_LIST, CropType
 
+
 class CropsFrame(customtkinter.CTkFrame):
     def __init__(self, master: customtkinter.CTkFrame, command: Callable) -> None:
         """作物の選択画面"""
