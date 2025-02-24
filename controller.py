@@ -1,4 +1,7 @@
+from typing import Optional
+
 import customtkinter
+from serial import Serial
 
 from gui.inference_view import InferenceView
 from gui.setup_view import SetupView
@@ -12,9 +15,9 @@ class AppController:
     def __init__(self) -> None:
         """アプリケーションのコントローラ"""
         self.root = customtkinter.CTk()
-        self.setup_view = None
-        self.inference_view = None
-        self.serial_port = None
+        self.setup_view: Optional[SetupView] = None
+        self.inference_view: Optional[InferenceView] = None
+        self.serial_port: Optional[Serial] = None
 
     def run(self) -> None:
         """アプリケーションを実行する"""
@@ -23,7 +26,7 @@ class AppController:
         self.root.geometry("1000x800")
         self.root.mainloop()
 
-    def show_setup_view(self, params: dict = None) -> None:
+    def show_setup_view(self, params: Optional[dict] = None) -> None:
         """
         セットアップ画面を表示する
         :param params: セットアップ画面に渡すパラメータ
@@ -44,7 +47,7 @@ class AppController:
             try:
                 self.serial_port = set_serial_port(VID, PID)
             except Exception as e:
-                self.setup_view.create_modal_windows(self.root, "error", f"シリアル通信の接続に失敗しました\n{e}")
+                self.setup_view.create_modal_windows(self.root, "error", f"シリアル通信の接続に失敗しました\n{e}")  # type: ignore
                 return
         else:
             self.serial_port = None
