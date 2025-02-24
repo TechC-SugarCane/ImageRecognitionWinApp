@@ -1,8 +1,10 @@
 from glob import glob
-from typing import Tuple
 import os
 from pathlib import Path
+from typing import Tuple
+
 import customtkinter
+
 from utils.constants.crop import CropType
 from utils.constants.model import ModelType
 

@@ -1,6 +1,6 @@
-import customtkinter
-
 from typing import Callable
+
+import customtkinter
 
 from utils.constants.crop import CROP_NAME_LIST, CropType
 
