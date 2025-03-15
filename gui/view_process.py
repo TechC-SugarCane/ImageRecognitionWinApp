@@ -3,9 +3,9 @@ from typing import Optional
 import customtkinter
 import serial
 
-from function.const.crop import CropType
-from function.const.model import ModelType
-from image_recognition import ImageRecognition
+from inference.image_recognition import ImageRecognition
+from utils.constants.crop import CropType
+from utils.constants.model import ModelType
 
 
 class ViewProcess(customtkinter.CTkFrame):

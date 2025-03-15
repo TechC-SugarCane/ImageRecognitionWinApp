@@ -1,7 +1,7 @@
 import os
 import sys
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "../function"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "../hardware"))
 
 from nozzle import calc_nozzle_byte_idx
 import pytest
